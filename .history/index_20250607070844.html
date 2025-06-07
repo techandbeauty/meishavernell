@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MeishaVernell</title>
+  <link rel="stylesheet" href="landing.css" />
+  <!-- Google reCAPTCHA -->
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <!-- Netlify Forms -->
+  <script>
+    // Netlify form handling
+    window.netlifyIdentity && window.netlifyIdentity.on('init', user => {
+      if (!user) {
+        window.netlifyIdentity.on('login', () => {
+          document.location.href = "/admin/";
+        });
+      }
+    });
+  </script>
+</head>
+<body>
+  <!-- Navigation -->
+  <header class="landing-nav">
+    <nav>
+      <div class="nav-logo">
+        <img src="photos/Meisha Vernell Primary Logo Champagne.png" alt="MeishaVernell" class="logo-img">
+      </div>
+      <div class="nav-links" id="navLinks">
+        <a href="main.html" class="main-site-link" id="mainSiteLink">ENTER SITE</a>
+        <div class="coming-soon-badge" id="comingSoonBadge">
+          <span>6.7.25 6:00 PM EDT</span>
+          </span>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Background Video Slider -->
+  <section class="video-slider">
+    <div class="video-slides">
+      <div class="video-slide active">
+        <video autoplay muted loop playsinline>
+          <source src="videos/copy_7DEBFD68-BC4C-4DB7-A279-EAA688A2504E.mp4" type="video/mp4">
+          <source src="videos/copy_7DEBFD68-BC4C-4DB7-A279-EAA688A2504E.webm" type="video/webm">
+        </video>
+        <div class="video-fallback" style="background: linear-gradient(135deg, #4A148C, #DC143C);"></div>
+      </div>
+      <div class="video-slide">
+        <video muted loop playsinline>
+          <source src="videos/copy_7DEBFD68-BC4C-4DB7-A279-EAA688A2504E.mp4" type="video/mp4">
+          <source src="videos/copy_7DEBFD68-BC4C-4DB7-A279-EAA688A2504E.webm" type="video/webm">
+        </video>
+        <div class="video-fallback" style="background: linear-gradient(45deg, #DC143C, #F8BBD9);"></div>
+      </div>
+      <div class="video-slide">
+        <video muted loop playsinline>
+          <source src="videos/copy_7DEBFD68-BC4C-4DB7-A279-EAA688A2504E.mp4" type="video/mp4">
+          <source src="videos/copy_7DEBFD68-BC4C-4DB7-A279-EAA688A2504E.webm" type="video/webm">
+        </video>
+        <div class="video-fallback" style="background: linear-gradient(135deg, #F8BBD9, #4A148C);"></div>
+      </div>
+    </div>
+    
+    <!-- Video overlay -->
+    <div class="video-overlay"></div>
+  </section>
+
+  <!-- Main Content Overlay -->
+  <div class="content-overlay">
+    <!-- Brand Header -->
+    <div class="brand-header">
+      <h1 class="brand-title">Hey, welcome</h1>
+      <p class="brand-tagline">It’s beautiful inside — so many cool things waiting.</p>
+      <p class="brand-tagline">Step into my world 6.7.25 at PM </p>
+    </div>
+
+    <!-- iPhone 16 Pro Phone Mockup -->
+    <div class="phone-mockup">
+      <div class="phone-screen">
+        <!-- System Message (replaces announcement at bottom) -->
+        <div class="system-message" id="systemMessage">
+          <p id="announcementText">Special announcement coming 6.15.25 • Thank you for being here</p>
+        </div>
+        
+        <div class="form-container" id="formContainer">
+          <h2>Be The First To Know</h2>
+          <form name="meisha-landing" method="POST" data-netlify="true" data-netlify-recaptcha="true" id="notify-form">
+            <input type="hidden" name="form-name" value="meisha-landing" />
+            
+            <input 
+              type="text" 
+              id="name" 
+              name="name" 
+              placeholder="Your Name" 
+              required 
+              minlength="2"
+              pattern="[A-Za-z\s]+"
+              title="Please enter a valid name (letters only)"
+            />
+            <div class="error-message" id="nameError">Please enter a valid name</div>
+            
+            <input 
+              type="email" 
+              id="email" 
+              name="email" 
+              placeholder="Your Email" 
+              required 
+              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+              title="Please enter a valid email address"
+            />
+            <div class="error-message" id="emailError">Please enter a valid email address</div>
+            
+            <select id="interest" name="interest" required>
+              <option value="">What interests you most?</option>
+              <option value="development">Web/Mobile Development</option>
+              <option value="consulting">Technical Consulting</option>
+              <option value="collaboration">Brand Collaboration</option>
+              <option value="employment">Job Opportunities</option>
+              <option value="all">Everything!</option>
+            </select>
+            <div class="error-message" id="interestError">Please select an option</div>
+            
+            <div class="recaptcha-container">
+              <div data-netlify-recaptcha="true"></div>
+            </div>
+            
+            <button type="submit" id="submitBtn">
+              <span class="btn-text">Notify Me</span>
+              <span class="btn-loader">Sending...</span>
+            </button>
+          </form>
+        </div>
+        
+        <div class="thank-you" id="thankYou">
+          <div class="success-icon">✓</div>
+          <h3>Welcome to the MeishaVernell Site!</h3>
+          <p>You'll be the first to know when the site goes live. 
+            As well as, you will be one of the first to receive a special gift from MeishaVernell and her sponsor(s)</p>
+          <div class="social-links">
+            <a href="https://instagram.com/meisha_vernell" target="_blank">IG</a>
+            <!-- <a href="https://linkedin.com/in/meishavernon" target="_blank">LI</a> -->
+            <a href="https://youtube.com/@meishavernell" target="_blank">YT</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="landing-footer">
+    <div class="footer-content">
+      <p>© 2026 MeishaVernell. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Form validation and submission
+    class FormValidator {
+      constructor() {
+        this.form = document.getElementById('notify-form');
+        this.submitBtn = document.getElementById('submitBtn');
+        this.setupEventListeners();
+      }
+
+      setupEventListeners() {
+        this.form.addEventListener('submit', this.handleSubmit.bind(this));
+        
+        // Real-time validation
+        document.getElementById('name').addEventListener('blur', this.validateName.bind(this));
+        document.getElementById('email').addEventListener('blur', this.validateEmail.bind(this));
+        document.getElementById('interest').addEventListener('change', this.validateInterest.bind(this));
+      }
+
+      validateName() {
+        const name = document.getElementById('name').value.trim();
+        const nameError = document.getElementById('nameError');
+        const namePattern = /^[A-Za-z\s]{2,}$/;
+        
+        if (!namePattern.test(name)) {
+          nameError.style.display = 'block';
+          return false;
+        }
+        nameError.style.display = 'none';
+        return true;
+      }
+
+      validateEmail() {
+        const email = document.getElementById('email').value.trim();
+        const emailError = document.getElementById('emailError');
+        const emailPattern = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i;
+        
+        // Check for suspicious patterns
+        const suspiciousPatterns = [
+          /test@test/i,
+          /example@example/i,
+          /fake@fake/i,
+          /spam@spam/i,
+          /temp@temp/i
+        ];
+        
+        if (!emailPattern.test(email) || suspiciousPatterns.some(pattern => pattern.test(email))) {
+          emailError.style.display = 'block';
+          return false;
+        }
+        emailError.style.display = 'none';
+        return true;
+      }
+
+      validateInterest() {
+        const interest = document.getElementById('interest').value;
+        const interestError = document.getElementById('interestError');
+        
+        if (!interest) {
+          interestError.style.display = 'block';
+          return false;
+        }
+        interestError.style.display = 'none';
+        return true;
+      }
+
+      async handleSubmit(e) {
+        e.preventDefault();
+        
+        // Validate all fields
+        const isNameValid = this.validateName();
+        const isEmailValid = this.validateEmail();
+        const isInterestValid = this.validateInterest();
+        
+        if (!isNameValid || !isEmailValid || !isInterestValid) {
+          return;
+        }
+
+        // Show loading state
+        this.submitBtn.classList.add('loading');
+        this.submitBtn.disabled = true;
+
+        try {
+          // Netlify form submission
+          const formData = new FormData(this.form);
+          
+          const response = await fetch('/', {
+            method: 'POST',
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams(formData).toString()
+          });
+
+          if (response.ok) {
+            // Check launch date - redirect to main site if it's live
+            const launchDate = new Date('2025-06-07T18:00:00-04:00'); // June 7, 2025 at 6:00 PM Eastern
+            const now = new Date();
+            
+            if (now >= launchDate) {
+              // Site is live, redirect to main site
+              console.log('Redirecting to main site - launch date reached!');
+              window.location.href = 'main.html';
+            } else {
+              // Show thank you message
+              document.getElementById('formContainer').style.display = 'none';
+              document.getElementById('thankYou').style.display = 'flex';
+              document.getElementById('thankYou').classList.add('success-animation');
+              
+              // Analytics tracking
+              if (typeof gtag !== 'undefined') {
+                gtag('event', 'form_submit', {
+                  event_category: 'engagement',
+                  event_label: 'landing_page_signup'
+                });
+              }
+            }
+          } else {
+            throw new Error('Network response was not ok');
+          }
+        } catch (error) {
+          console.error('Form submission error:', error);
+          alert('There was an error submitting your form. Please try again.');
+        } finally {
+          this.submitBtn.classList.remove('loading');
+          this.submitBtn.disabled = false;
+        }
+      }
+    }
+
+    // Video slider functionality
+    const videoSlides = document.querySelectorAll('.video-slide');
+    const videos = document.querySelectorAll('.video-slide video');
+    let currentVideoSlide = 0;
+    let videoInterval;
+
+    function startVideoSlider() {
+      videoInterval = setInterval(() => {
+        videoSlides[currentVideoSlide].classList.remove('active');
+        videos[currentVideoSlide].pause();
+        
+        currentVideoSlide = (currentVideoSlide + 1) % videoSlides.length;
+        
+        videoSlides[currentVideoSlide].classList.add('active');
+        videos[currentVideoSlide].play().catch(e => {
+          console.log('Video autoplay prevented:', e);
+          const fallback = videos[currentVideoSlide].nextElementSibling;
+          if (fallback) fallback.style.display = 'block';
+        });
+      }, 12000); // 12 seconds per video
+    }
+
+    // Initialize videos
+    videos.forEach((video, index) => {
+      video.addEventListener('loadeddata', () => {
+        const fallback = video.nextElementSibling;
+        if (fallback) fallback.style.display = 'none';
+      });
+
+      video.addEventListener('error', () => {
+        const fallback = video.nextElementSibling;
+        if (fallback) fallback.style.display = 'block';
+      });
+    });
+
+    // Launch date logic - June 7, 2025 at 6:00 PM Eastern Time
+    const launchDate = new Date('2025-06-07T18:00:00-04:00'); // EDT (Eastern Daylight Time)
+    const mainSiteLink = document.getElementById('mainSiteLink');
+    const comingSoonBadge = document.getElementById('comingSoonBadge');
+    const announcementText = document.getElementById('announcementText');
+    const systemMessage = document.getElementById('systemMessage');
+
+    function checkLaunchDate() {
+      const now = new Date();
+      console.log('Current time:', now.toLocaleString());
+      console.log('Launch time (Eastern):', launchDate.toLocaleString());
+      console.log('Site launched:', now >= launchDate);
+      
+      if (now >= launchDate) {
+        // Site is live - update UI
+        mainSiteLink.style.display = 'block';
+        comingSoonBadge.style.display = 'none';
+        
+        // Update system message with welcome
+        announcementText.textContent = 'Welcome to MeishaVernell.com • The future is here • Come on in!';
+        systemMessage.classList.add('live');
+        
+        console.log('Site is now live! ENTER SITE button activated.');
+      } else {
+        // Site not yet live - show coming soon
+        mainSiteLink.style.display = 'none';
+        comingSoonBadge.style.display = 'block';
+        
+        // Keep original system message
+        announcementText.textContent = 'Special announcement coming 6.15.25 • Thank you for being here';
+        systemMessage.classList.remove('live');
+        
+        // Show countdown in console for debugging
+        const timeLeft = launchDate - now;
+        const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+        console.log(`Time until launch: ${days} days, ${hours} hours, ${minutes} minutes`);
+      }
+    }
+
+    // Handle page visibility
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        clearInterval(videoInterval);
+        videos.forEach(video => video.pause());
+      } else {
+        startVideoSlider();
+        videos[currentVideoSlide].play().catch(e => console.log('Resume failed'));
+      }
+    });
+
+    // Initialize everything
+    document.addEventListener('DOMContentLoaded', () => {
+      new FormValidator();
+      checkLaunchDate();
+      startVideoSlider();
+      
+      // Play first video
+      videos[0].play().catch(e => {
+        console.log('Initial video autoplay prevented:', e);
+        const fallback = videos[0].nextElementSibling;
+        if (fallback) fallback.style.display = 'block';
+      });
+      
+      // Check launch date every 30 seconds for more responsive updates
+      setInterval(checkLaunchDate, 30000);
+    });
+  </script>
+</body>
+</html>

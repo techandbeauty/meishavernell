@@ -1,0 +1,41 @@
+/* Replace this section in your landing.css file */
+
+.video-slide video {
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  object-position: center top; /* Changed from 'center' to 'center top' */
+}
+
+/* Alternative positioning options to try: */
+
+/* Option 1: Show more of the top (your head area) */
+/*
+.video-slide video {
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  object-position: center 20%; 
+}
+*/
+
+/* Option 2: Show full video with black bars if needed */
+/*
+.video-slide video {
+  width: 100vw;
+  height: 100vh;
+  object-fit: contain;
+  object-position: center;
+  background: #000;
+}
+*/
+
+/* Option 3: Custom positioning - adjust percentage as needed */
+/*
+.video-slide video {
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  object-position: center 30%; /* Higher percentage = shows more bottom, lower = shows more top */
+}
+*/

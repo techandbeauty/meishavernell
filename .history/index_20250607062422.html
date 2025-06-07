@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MeishaVernell - Coming Soon</title>
+  <link rel="stylesheet" href="landing.css" />
+</head>
+<body>
+  <!-- Navigation -->
+  <header class="landing-nav">
+    <nav>
+      <div class="nav-logo">
+        <img src="photos/meisha-vernell-logo.png" alt="MeishaVernell" class="logo-img">
+      </div>
+      <div class="nav-links" id="navLinks">
+        <a href="main.html" class="main-site-link" id="mainSiteLink">ENTER SITE</a>
+        <div class="coming-soon-badge" id="comingSoonBadge">
+          <span>LAUNCHING SOON</span>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Background Video Slider -->
+  <section class="video-slider">
+    <div class="video-slides">
+      <div class="video-slide active">
+        <video autoplay muted loop playsinline>
+          <source src="videos/launch1.mp4" type="video/mp4">
+          <source src="videos/launch1.webm" type="video/webm">
+        </video>
+        <div class="video-fallback" style="background: linear-gradient(135deg, #4A148C, #DC143C);"></div>
+      </div>
+      <div class="video-slide">
+        <video muted loop playsinline>
+          <source src="videos/launch2.mp4" type="video/mp4">
+          <source src="videos/launch2.webm" type="video/webm">
+        </video>
+        <div class="video-fallback" style="background: linear-gradient(45deg, #DC143C, #F8BBD9);"></div>
+      </div>
+      <div class="video-slide">
+        <video muted loop playsinline>
+          <source src="videos/launch3.mp4" type="video/mp4">
+          <source src="videos/launch3.webm" type="video/webm">
+        </video>
+        <div class="video-fallback" style="background: linear-gradient(135deg, #F8BBD9, #4A148C);"></div>
+      </div>
+    </div>
+    
+    <!-- Video overlay -->
+    <div class="video-overlay"></div>
+  </section>
+
+  <!-- Main Content Overlay -->
+  <div class="content-overlay">
+    <!-- Brand Header -->
+    <div class="brand-header">
+      <h1 class="brand-title">MEISHAVERNELL</h1>
+      <p class="brand-tagline">Building Tomorrow's Technology Today</p>
+    </div>
+
+    <!-- Phone Mockup with Form -->
+    <div class="phone-mockup">
+      <div class="phone-screen">
+        <div class="form-container" id="formContainer">
+          <h2>Be The First To Know</h2>
+          <form id="notify-form">
+            <input type="text" id="name" name="name" placeholder="Your Name" required />
+            <input type="email" id="email" name="email" placeholder="Your Email" required />
+            <select id="interest" name="interest">
+              <option value="">What interests you most?</option>
+              <option value="development">Web/Mobile Development</option>
+              <option value="consulting">Technical Consulting</option>
+              <option value="collaboration">Brand Collaboration</option>
+              <option value="employment">Job Opportunities</option>
+              <option value="all">Everything!</option>
+            </select>
+            <button type="submit" id="submitBtn">
+              <span class="btn-text">Notify Me</span>
+              <span class="btn-loader">Sending...</span>
+            </button>
+          </form>
+        </div>
+        
+        <div class="thank-you" id="thankYou">
+          <div class="success-icon">✓</div>
+          <h3>Welcome to the MV crew!</h3>
+          <p>You'll be the first to know when the site goes live.</p>
+          <div class="social-links">
+            <a href="https://instagram.com/meisha_vernell" target="_blank">IG</a>
+            <a href="https://linkedin.com/in/meishavernon" target="_blank">LI</a>
+            <a href="https://youtube.com/@meishavernell" target="_blank">YT</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Announcement -->
+    <div class="announcement">
+      <p>Special announcement coming 6.15.25 • Thank you for being here</p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="landing-footer">
+    <div class="footer-content">
+      <p>© 2025 MeishaVernell. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Video slider functionality
+    const videoSlides = document.querySelectorAll('.video-slide');
+    const videos = document.querySelectorAll('.video-slide video');
+    let currentVideoSlide = 0;
+    let videoInterval;
+
+    function startVideoSlider() {
+      videoInterval = setInterval(() => {
+        // Hide current slide
+        videoSlides[currentVideoSlide].classList.remove('active');
+        videos[currentVideoSlide].pause();
+        
+        // Move to next slide
+        currentVideoSlide = (currentVideoSlide + 1) % videoSlides.length;
+        
+        // Show new slide
+        videoSlides[currentVideoSlide].classList.add('active');
+        videos[currentVideoSlide].play().catch(e => {
+          console.log('Video autoplay prevented:', e);
+          // Show fallback
+          const fallback = videos[currentVideoSlide].nextElementSibling;
+          if (fallback) fallback.style.display = 'block';
+        });
+      }, 10000); // Change every 10 seconds
+    }
+
+    // Initialize videos
+    videos.forEach((video, index) => {
+      video.addEventListener('loadeddata', () => {
+        const fallback = video.nextElementSibling;
+        if (fallback) fallback.style.display = 'none';
+      });
+
+      video.addEventListener('error', () => {
+        const fallback = video.nextElementSibling;
+        if (fallback) fallback.style.display = 'block';
+      });
+    });
+
+    // Launch date logic
+    const launchDate = new Date(2025, 5, 7, 18, 0, 0); // June 7, 2025 18:00 local
+    const mainSiteLink = document.getElementById('mainSiteLink');
+    const comingSoonBadge = document.getElementById('comingSoonBadge');
+
+    function checkLaunchDate() {
+      const now = new Date();
+      if (now >= launchDate) {
+        mainSiteLink.style.display = 'block';
+        comingSoonBadge.style.display = 'none';
+      } else {
+        mainSiteLink.style.display = 'none';
+        comingSoonBadge.style.display = 'block';
+      }
+    }
+
+    // Form submission
+    const form = document.getElementById('notify-form');
+    const thankYou = document.getElementById('thankYou');
+    const formContainer = document.getElementById('formContainer');
+    const submitBtn = document.getElementById('submitBtn');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Show loading state
+      submitBtn.classList.add('loading');
+      
+      setTimeout(() => {
+        const now = new Date();
+        if (now >= launchDate) {
+          window.location.href = 'main.html';
+        } else {
+          formContainer.style.display = 'none';
+          thankYou.style.display = 'flex';
+          
+          // Track subscription (replace with your analytics)
+          console.log('Subscription:', {
+            name: document.getElementById('name').value,
+            email: document.getElementById('email').value,
+            interest: document.getElementById('interest').value
+          });
+        }
+        submitBtn.classList.remove('loading');
+      }, 1500);
+    });
+
+    // Handle page visibility
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        clearInterval(videoInterval);
+        videos.forEach(video => video.pause());
+      } else {
+        startVideoSlider();
+        videos[currentVideoSlide].play().catch(e => console.log('Resume failed'));
+      }
+    });
+
+    // Initialize everything
+    checkLaunchDate();
+    startVideoSlider();
+    
+    // Play first video
+    videos[0].play().catch(e => {
+      console.log('Initial video autoplay prevented:', e);
+      const fallback = videos[0].nextElementSibling;
+      if (fallback) fallback.style.display = 'block';
+    });
+
+    // Check launch date every minute
+    setInterval(checkLaunchDate, 60000);
+  </script>
+</body>
+</html>

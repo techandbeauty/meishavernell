@@ -29,7 +29,8 @@
       <div class="nav-links" id="navLinks">
         <a href="main.html" class="main-site-link" id="mainSiteLink">ENTER SITE</a>
         <div class="coming-soon-badge" id="comingSoonBadge">
-          <span> Launching at 8pm </span>
+          <span> </span>
+          </span>
         </div>
       </div>
     </nav>
@@ -70,16 +71,21 @@
     <!-- Brand Header -->
     <div class="brand-header">
       <h1 class="brand-title">Hey, welcome</h1>
-      <p class="brand-tagline">It's beautiful inside, come in</p>
+      <p class="brand-tagline">It’s beautiful inside, come in</p>
       <p class="brand-tagline">6.7.25 at 8PM </p>
     </div>
 
     <!-- iPhone 16 Pro Phone Mockup -->
     <div class="phone-mockup">
-      <div class="phone-screen">        
+      <div class="phone-screen">
+        <!-- System Message (replaces announcement at bottom) -->
+        <div class="system-message" id="systemMessage">
+          <p id="announcementText"> Welcome to my site</p>
+        </div>
+        
         <div class="form-container" id="formContainer">
           <h2>Get Early Access</h2>
-          <form name="meisha-landing" method="POST" netlify data-netlify-recaptcha="true" id="notify-form">
+          <form name="meisha-landing" method="POST" data-netlify="true" data-netlify-recaptcha="true" id="notify-form">
             <input type="hidden" name="form-name" value="meisha-landing" />
             
             <input 
@@ -118,7 +124,6 @@
             <div class="recaptcha-container">
               <div data-netlify-recaptcha="true"></div>
             </div>
-            <div class="error-message" id="recaptchaError">Please complete the reCAPTCHA verification</div>
             
             <button type="submit" id="submitBtn">
               <span class="btn-text">Connect With Me</span>
@@ -134,6 +139,7 @@
             As well as, you will be one of the first to receive a special gift from MeishaVernell and her sponsor(s)</p>
           <div class="social-links">
             <a href="https://instagram.com/meisha_vernell" target="_blank">IG</a>
+            <!-- <a href="https://linkedin.com/in/meishavernon" target="_blank">LI</a> -->
             <a href="https://youtube.com/@meishavernell" target="_blank">YT</a>
           </div>
         </div>
@@ -213,33 +219,16 @@
         return true;
       }
 
-      validateRecaptcha() {
-        const recaptchaError = document.getElementById('recaptchaError');
-        
-        // Check if recaptcha is present and completed
-        const recaptchaResponse = document.querySelector('[name="g-recaptcha-response"]');
-        
-        if (!recaptchaResponse || !recaptchaResponse.value) {
-          recaptchaError.style.display = 'block';
-          return false;
-        }
-        
-        recaptchaError.style.display = 'none';
-        return true;
-      }
-
       async handleSubmit(e) {
         e.preventDefault();
         
-        // Validate all fields immediately
+        // Validate all fields
         const isNameValid = this.validateName();
         const isEmailValid = this.validateEmail();
         const isInterestValid = this.validateInterest();
-        const isRecaptchaValid = this.validateRecaptcha();
         
-        // Show errors immediately if validation fails
-        if (!isNameValid || !isEmailValid || !isInterestValid || !isRecaptchaValid) {
-          return; // Stop submission immediately
+        if (!isNameValid || !isEmailValid || !isInterestValid) {
+          return;
         }
 
         // Show loading state
@@ -250,35 +239,23 @@
           // Netlify form submission
           const formData = new FormData(this.form);
           
-          console.log('Submitting form to Netlify...');
-          
           const response = await fetch('/', {
             method: 'POST',
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
             body: new URLSearchParams(formData).toString()
           });
 
-          console.log('Response status:', response.status);
-          console.log('Response ok:', response.ok);
-
           if (response.ok) {
-            console.log('Form submitted successfully!');
-            
-            // Check launch date - redirect to main site if it's live (8PM tonight)
-            const launchDate = new Date('2025-06-07T20:00:00-04:00'); // June 7, 2025 at 8:00 PM Eastern
+            // Check launch date - redirect to main site if it's live
+            const launchDate = new Date('2025-06-07T18:00:00-04:00'); // June 7, 2025 at 6:00 PM Eastern
             const now = new Date();
             
-            console.log('Current time:', now.toLocaleString());
-            console.log('Launch time:', launchDate.toLocaleString());
-            console.log('Site launched:', now >= launchDate);
-            
             if (now >= launchDate) {
-              // Site is live at 8PM, redirect to main site
-              console.log('Redirecting to main site - launch time reached!');
+              // Site is live, redirect to main site
+              console.log('Redirecting to main site - launch date reached!');
               window.location.href = 'main.html';
             } else {
-              // Before 8PM tonight - show thank you message
-              console.log('Before launch time - showing thank you message');
+              // Show thank you message
               document.getElementById('formContainer').style.display = 'none';
               document.getElementById('thankYou').style.display = 'flex';
               document.getElementById('thankYou').classList.add('success-animation');
@@ -292,20 +269,11 @@
               }
             }
           } else {
-            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            throw new Error('Network response was not ok');
           }
         } catch (error) {
           console.error('Form submission error:', error);
-          
-          // Show user-friendly error
-          const recaptchaError = document.getElementById('recaptchaError');
-          recaptchaError.textContent = 'There was a problem submitting your form. Please try again.';
-          recaptchaError.style.display = 'block';
-          
-          // Reset reCAPTCHA if available
-          if (typeof grecaptcha !== 'undefined') {
-            grecaptcha.reset();
-          }
+          alert('There was an error submitting your form. Please try again.');
         } finally {
           this.submitBtn.classList.remove('loading');
           this.submitBtn.disabled = false;
@@ -348,10 +316,12 @@
       });
     });
 
-    // Launch date logic - June 7, 2025 at 8:00 PM Eastern Time
-    const launchDate = new Date('2025-06-07T20:00:00-04:00'); // 8:00 PM Eastern
+    // Launch date logic - June 7, 2025 at 6:00 PM Eastern Time
+    const launchDate = new Date('2025-06-07T18:00:00-04:00'); // EDT (Eastern Daylight Time)
     const mainSiteLink = document.getElementById('mainSiteLink');
     const comingSoonBadge = document.getElementById('comingSoonBadge');
+    const announcementText = document.getElementById('announcementText');
+    const systemMessage = document.getElementById('systemMessage');
 
     function checkLaunchDate() {
       const now = new Date();
@@ -364,11 +334,19 @@
         mainSiteLink.style.display = 'block';
         comingSoonBadge.style.display = 'none';
         
+        // Update system message with welcome
+        announcementText.textContent = 'Welcome to MeishaVernell.com • The future is here • Come on in!';
+        systemMessage.classList.add('live');
+        
         console.log('Site is now live! ENTER SITE button activated.');
       } else {
         // Site not yet live - show coming soon
         mainSiteLink.style.display = 'none';
         comingSoonBadge.style.display = 'block';
+        
+        // Keep original system message
+        announcementText.textContent = 'Special announcement coming 6.15.25 • Thank you for being here';
+        systemMessage.classList.remove('live');
         
         // Show countdown in console for debugging
         const timeLeft = launchDate - now;

@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MeishaVernell</title>
+  <link rel="stylesheet" href="landing.css" />
+  <script src="https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoad&render=explicit"></script>
+  <style>
+    /* reCAPTCHA Popup Modal */
+    .recaptcha-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+    }
+
+    .recaptcha-modal-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      max-width: 90vw;
+    }
+
+    .recaptcha-modal h3 {
+      margin: 0 0 20px 0;
+      color: #333;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .recaptcha-modal-buttons {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .modal-btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .modal-btn-submit {
+      background: linear-gradient(135deg, #007AFF, #5856D6);
+      color: white;
+    }
+
+    .modal-btn-cancel {
+      background: #f0f0f0;
+      color: #666;
+    }
+
+    .modal-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    /* Remove reCAPTCHA from form */
+    .recaptcha-container {
+      display: none;
+    }
+
+    /* Remove system message completely */
+    .system-message {
+      display: none !important;
+    }
+
+    /* Adjust form container margin since system message is gone */
+    .form-container {
+      margin-top: 20px;
+    }
+
+    /* Adjust thank you margin */
+    .thank-you {
+      margin-top: 40px;
+    }
+
+    /* MOBILE IMPROVEMENTS */
+    @media (max-width: 768px) {
+      /* Brand header spacing for mobile */
+      .brand-header {
+        top: 8%; /* Reduced from 15% to create space between header and phone */
+        padding: 0 1rem;
+      }
+
+      .brand-title {
+        font-size: 1.8rem !important;
+        margin-bottom: 0.3rem;
+        letter-spacing: 1px;
+      }
+
+      .brand-tagline {
+        font-size: 0.9rem !important;
+        margin: 0.2rem 0;
+      }
+
+      /* Make phone mockup more iPhone-like on mobile */
+      .phone-mockup {
+        width: 90% !important;
+        max-width: 320px !important;
+        height: 650px !important;
+        margin: 3rem auto 0 auto !important; /* Added top margin for spacing */
+        background: linear-gradient(145deg, #1d1d1f, #2d2d30);
+        border-radius: 50px !important;
+        padding: 8px !important;
+        box-shadow: 
+          0 25px 80px rgba(0,0,0,0.7),
+          inset 0 1px 0 rgba(255,255,255,0.1),
+          0 0 0 2px rgba(255,255,255,0.08) !important;
+      }
+
+      /* Enhanced Dynamic Island for mobile */
+      .phone-mockup::before {
+        top: 20px !important;
+        width: 100px !important;
+        height: 32px !important;
+        border-radius: 16px !important;
+      }
+
+      /* Mobile phone screen adjustments */
+      .phone-screen {
+        border-radius: 42px !important;
+        padding: 50px 20px 35px 20px !important;
+      }
+
+      /* Content positioning adjustments */
+      .content-overlay {
+        padding: 1rem !important;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start !important;
+      }
+
+      /* Form container mobile optimization */
+      .form-container {
+        margin-top: 15px !important;
+      }
+
+      .form-container h2 {
+        font-size: 16px !important;
+        margin-bottom: 1.2rem !important;
+      }
+
+      .form-container input,
+      .form-container select {
+        padding: 14px !important;
+        font-size: 16px !important; /* Prevents zoom on iOS */
+        margin-bottom: 12px !important;
+        border-radius: 12px !important;
+      }
+
+      .form-container button {
+        padding: 14px !important;
+        font-size: 16px !important;
+        border-radius: 12px !important;
+        margin-top: 8px !important;
+      }
+
+      /* Thank you section mobile */
+      .thank-you {
+        margin-top: 25px !important;
+      }
+
+      .thank-you h3 {
+        font-size: 18px !important;
+        margin-bottom: 12px !important;
+      }
+
+      .thank-you p {
+        font-size: 13px !important;
+        margin-bottom: 20px !important;
+        line-height: 1.4 !important;
+      }
+
+      .success-icon {
+        width: 60px !important;
+        height: 60px !important;
+        font-size: 36px !important;
+        margin: 0 auto 16px !important;
+      }
+
+      .social-links a {
+        padding: 10px 16px !important;
+        font-size: 14px !important;
+      }
+
+      /* Error messages mobile */
+      .error-message {
+        font-size: 11px !important;
+        padding: 6px 10px !important;
+        margin-top: -6px !important;
+        margin-bottom: 6px !important;
+      }
+    }
+
+    /* Extra small mobile devices */
+    @media (max-width: 480px) {
+      .brand-header {
+        top: 6%;
+      }
+
+      .brand-title {
+        font-size: 1.6rem !important;
+      }
+
+      .brand-tagline {
+        font-size: 0.8rem !important;
+      }
+
+      .phone-mockup {
+        width: 95% !important;
+        max-width: 300px !important;
+        height: 600px !important;
+        margin-top: 2.5rem !important;
+      }
+    }
+
+    /* Very small screens */
+    @media (max-width: 360px) {
+      .brand-header {
+        top: 5%;
+      }
+
+      .brand-title {
+        font-size: 1.4rem !important;
+        letter-spacing: 0.5px;
+      }
+
+      .phone-mockup {
+        width: 98% !important;
+        max-width: 280px !important;
+        height: 580px !important;
+        margin-top: 2rem !important;
+      }
+
+      .phone-screen {
+        padding: 45px 18px 30px 18px !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <header class="landing-nav">
+    <nav>
+      <div class="nav-logo">
+        <img src="photos/Meisha Vernell Primary Logo Champagne.png" alt="MeishaVernell" class="logo-img">
+      </div>
+      <div class="nav-links" id="navLinks">
+        <a href="main.html" class="main-site-link" id="mainSiteLink">ENTER SITE</a>
+        <div class="coming-soon-badge" id="comingSoonBadge">
+          <span> Launching at 11:59pm </span>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Background Video Slider -->
+  <section class="video-slider">
+    <div class="video-slides">
+      <div class="video-slide active">
+        <video autoplay muted loop playsinline>
+        <source src="https://res.cloudinary.com/dqh7qz2zh/video/upload/copy_7DEBFD68-BC4C-4DB7-A279-EAA688A2504E.mp4" type="video/mp4">
+        <source src="https://res.cloudinary.com/dqh7qz2zh/video/upload/copy_7DEBFD68-BC4C-4DB7-A279-EAA688A2504E.webm" type="video/webm">
+        </video>
+        <div class="video-fallback" style="background: linear-gradient(135deg, #4A148C, #DC143C);"></div>
+      </div>
+      <div class="video-slide">
+        <video muted loop playsinline>
+         <source src="https://res.cloudinary.com/dqh7qz2zh/video/upload/copy_7DEBFD68-BC4C-4DB7-A279-EAA688A2504E.mp4" type="video/mp4">
+          <source src="https://res.cloudinary.com/dqh7qz2zh/video/upload/copy_7DEBFD68-BC4C-4DB7-A279-EAA688A2504E.webm" type="video/webm">
+        </video>
+        <div class="video-fallback" style="background: linear-gradient(45deg, #DC143C, #F8BBD9);"></div>
+      </div>
+      <div class="video-slide">
+        <video muted loop playsinline>
+         <source src="https://res.cloudinary.com/dqh7qz2zh/video/upload/copy_7DEBFD68-BC4C-4DB7-A279-EAA688A2504E.mp4" type="video/mp4">
+<source src="https://res.cloudinary.com/dqh7qz2zh/video/upload/copy_7DEBFD68-BC4C-4DB7-A279-EAA688A2504E.webm" type="video/webm">
+        </video>
+        <div class="video-fallback" style="background: linear-gradient(135deg, #F8BBD9, #4A148C);"></div>
+      </div>
+    </div>
+    <div class="video-overlay"></div>
+  </section>
+
+  <!-- Main Content Overlay -->
+  <div class="content-overlay">
+    <!-- Brand Header -->
+    <div class="brand-header">
+      <h2 class="brand-title">Hey, welcome</h2>
+      <h1 class="brand-tagline">We go live Today!</h1>
+      <p class="brand-tagline">6.7.25 at 11:59PM </p>
+    </div>
+
+    <!-- iPhone 16 Pro Phone Mockup -->
+    <div class="phone-mockup">
+      <div class="phone-screen">        
+        <div class="form-container" id="formContainer">
+          <h2>Get Early Access</h2>
+          <form name="meisha-landing" method="POST" netlify id="notify-form">
+            <input type="hidden" name="form-name" value="meisha-landing" />
+            
+            <input type="text" id="name" name="name" placeholder="Your Name" required minlength="2" pattern="[A-Za-z\s]+" />
+            <div class="error-message" id="nameError">Please enter a valid name</div>
+            
+            <input type="email" id="email" name="email" placeholder="Your Email" required />
+            <div class="error-message" id="emailError">Please enter a valid email address</div>
+            
+            <select id="interest" name="interest" required>
+              <option value="">What interests you most?</option>
+              <option value="development">Web/Mobile Development</option>
+              <option value="consulting">Consults/interviews</option>
+              <option value="collaboration">Brand Collaborations</option>
+              <option value="employment">Game Development</option>
+              <option value="all">Content Creation</option>
+            </select>
+            <div class="error-message" id="interestError">Please select an option</div>
+            
+            <button type="submit" id="submitBtn">
+              <span class="btn-text">Connect With Me</span>
+              <span class="btn-loader">Sending...</span>
+            </button>
+          </form>
+        </div>
+        
+        <div class="thank-you" id="thankYou">
+          <div class="success-icon">✓</div>
+          <h3>Welcome to <br/> Tech, Beauty, Fitness & all things motherhood and lifestyle!</h3>
+          <p>Get exclusive perks and sneak peeks into the latest apps or projects,
+            exclusive content, tech tips, game development, motherhood and more. 
+          </p>
+          <div class="social-links">
+            <a href="https://instagram.com/meisha_vernell" target="_blank">IG</a>
+            <a href="https://www.tiktok.com/@meisha.vernell?is_from_webapp=1&sender_device=pc" target="_blank">TK</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- reCAPTCHA Popup Modal -->
+  <div class="recaptcha-modal" id="recaptchaModal">
+    <div class="recaptcha-modal-content">
+      <h3>Security Verification</h3>
+      <p>Please complete the verification to submit your form</p>
+      <div id="recaptcha-element"></div>
+      <div class="recaptcha-modal-buttons">
+        <button class="modal-btn modal-btn-cancel" onclick="closeRecaptchaModal()">Cancel</button>
+        <button class="modal-btn modal-btn-submit" id="modalSubmitBtn" onclick="submitFormWithRecaptcha()">Submit</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="landing-footer">
+    <div class="footer-content">
+      <p>© 2026 MeishaVernell. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    let recaptchaWidgetId;
+    let formDataToSubmit;
+
+    function onRecaptchaLoad() {
+      recaptchaWidgetId = grecaptcha.render('recaptcha-element', {
+        'sitekey': '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI', // Replace with your real key
+        'size': 'normal',
+        'theme': 'light'
+      });
+    }
+
+    function showRecaptchaModal() {
+      document.getElementById('recaptchaModal').style.display = 'block';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeRecaptchaModal() {
+      document.getElementById('recaptchaModal').style.display = 'none';
+      document.body.style.overflow = 'auto';
+      if (typeof grecaptcha !== 'undefined' && recaptchaWidgetId !== undefined) {
+        grecaptcha.reset(recaptchaWidgetId);
+      }
+    }
+
+    async function submitFormWithRecaptcha() {
+      const recaptchaResponse = grecaptcha.getResponse(recaptchaWidgetId);
+      
+      if (!recaptchaResponse) {
+        alert('Please complete the reCAPTCHA verification');
+        return;
+      }
+
+      // Add recaptcha response to form data
+      formDataToSubmit.append('g-recaptcha-response', recaptchaResponse);
+
+      const submitBtn = document.getElementById('submitBtn');
+      const modalSubmitBtn = document.getElementById('modalSubmitBtn');
+      
+      submitBtn.classList.add('loading');
+      submitBtn.disabled = true;
+      modalSubmitBtn.disabled = true;
+
+      try {
+        const response = await fetch('/', {
+          method: 'POST',
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: new URLSearchParams(formDataToSubmit).toString()
+        });
+
+        if (response.ok) {
+          closeRecaptchaModal();
+          
+          // Check launch date
+          const launchDate = new Date('2025-06-07T20:00:00-04:00');
+          const now = new Date();
+          
+          if (now >= launchDate) {
+            window.location.href = 'main.html';
+          } else {
+            document.getElementById('formContainer').style.display = 'none';
+            document.getElementById('thankYou').style.display = 'flex';
+            document.getElementById('thankYou').classList.add('success-animation');
+          }
+        } else {
+          throw new Error('Network response was not ok');
+        }
+      } catch (error) {
+        console.error('Form submission error:', error);
+        alert('There was a problem submitting your form. Please try again.');
+        closeRecaptchaModal();
+      } finally {
+        submitBtn.classList.remove('loading');
+        submitBtn.disabled = false;
+        modalSubmitBtn.disabled = false;
+      }
+    }
+
+    // Form validation and submission
+    class FormValidator {
+      constructor() {
+        this.form = document.getElementById('notify-form');
+        this.submitBtn = document.getElementById('submitBtn');
+        this.setupEventListeners();
+      }
+
+      setupEventListeners() {
+        this.form.addEventListener('submit', this.handleSubmit.bind(this));
+        document.getElementById('name').addEventListener('blur', this.validateName.bind(this));
+        document.getElementById('email').addEventListener('blur', this.validateEmail.bind(this));
+        document.getElementById('interest').addEventListener('change', this.validateInterest.bind(this));
+      }
+
+      validateName() {
+        const name = document.getElementById('name').value.trim();
+        const nameError = document.getElementById('nameError');
+        const namePattern = /^[A-Za-z\s]{2,}$/;
+        
+        if (!namePattern.test(name)) {
+          nameError.style.display = 'block';
+          return false;
+        }
+        nameError.style.display = 'none';
+        return true;
+      }
+
+      validateEmail() {
+        const email = document.getElementById('email').value.trim();
+        const emailError = document.getElementById('emailError');
+        const emailPattern = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i;
+        
+        if (!emailPattern.test(email)) {
+          emailError.style.display = 'block';
+          return false;
+        }
+        emailError.style.display = 'none';
+        return true;
+      }
+
+      validateInterest() {
+        const interest = document.getElementById('interest').value;
+        const interestError = document.getElementById('interestError');
+        
+        if (!interest) {
+          interestError.style.display = 'block';
+          return false;
+        }
+        interestError.style.display = 'none';
+        return true;
+      }
+
+      handleSubmit(e) {
+        e.preventDefault();
+        
+        // Validate all fields
+        const isNameValid = this.validateName();
+        const isEmailValid = this.validateEmail();
+        const isInterestValid = this.validateInterest();
+        
+        if (!isNameValid || !isEmailValid || !isInterestValid) {
+          return;
+        }
+
+        // Store form data and show reCAPTCHA modal
+        formDataToSubmit = new FormData(this.form);
+        showRecaptchaModal();
+      }
+    }
+
+    // Video and launch date logic (simplified)
+    const videoSlides = document.querySelectorAll('.video-slide');
+    const videos = document.querySelectorAll('.video-slide video');
+    let currentVideoSlide = 0;
+
+    function startVideoSlider() {
+      setInterval(() => {
+        videoSlides[currentVideoSlide].classList.remove('active');
+        videos[currentVideoSlide].pause();
+        currentVideoSlide = (currentVideoSlide + 1) % videoSlides.length;
+        videoSlides[currentVideoSlide].classList.add('active');
+        videos[currentVideoSlide].play().catch(e => console.log('Video play failed'));
+      }, 12000);
+    }
+
+    function checkLaunchDate() {
+      const launchDate = new Date('2025-06-07T20:00:00-04:00');
+      const now = new Date();
+      const mainSiteLink = document.getElementById('mainSiteLink');
+      const comingSoonBadge = document.getElementById('comingSoonBadge');
+      
+      if (now >= launchDate) {
+        mainSiteLink.style.display = 'block';
+        comingSoonBadge.style.display = 'none';
+      } else {
+        mainSiteLink.style.display = 'none';
+        comingSoonBadge.style.display = 'block';
+      }
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      new FormValidator();
+      checkLaunchDate();
+      startVideoSlider();
+      videos[0].play().catch(e => console.log('Initial video play failed'));
+      setInterval(checkLaunchDate, 30000);
+    });
+  </script>
+</body>
+</html>

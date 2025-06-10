@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MeishaVernell</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            overflow: hidden;
+            background: #000;
+            color: white;
+        }
+
+        /* Navigation */
+        .intro-nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo-img {
+            height: 40px;
+            filter: brightness(1.2);
+        }
+
+        .skip-intro {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 8px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .skip-intro:hover {
+            color: white;
+            border-color: rgba(248, 187, 217, 0.6);
+            background: rgba(248, 187, 217, 0.1);
+        }
+
+        /* Video Container */
+        .intro-video-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .intro-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            transition: background 1s ease;
+        }
+
+        .video-overlay.darken {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        /* Center Button */
+        .video-controls {
+            position: absolute;
+            top: 65%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 15;
+        }
+
+        .center-btn {
+            background: linear-gradient(135deg, #F8BBD9, #C0BBB3);
+            color: #4E463D;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(248, 187, 217, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .center-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(248, 187, 217, 0.4);
+        }
+
+        .center-btn.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #4A148C, #DC143C);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loading-content {
+            text-align: center;
+            color: white;
+        }
+
+        .loading-logo img {
+            height: 60px;
+            margin-bottom: 30px;
+            filter: brightness(1.5);
+        }
+
+        .loading-text h2 {
+            font-size: 2rem;
+            font-weight: 300;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .loading-text p {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin-bottom: 30px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-container { padding: 15px 20px; }
+            .logo-img { height: 35px; }
+            .skip-intro { font-size: 12px; padding: 6px 15px; }
+            .center-btn { padding: 10px 20px; font-size: 13px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <header class="intro-nav">
+        <nav>
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <img src="photos/Meisha Vernell Primary Logo Champagne.png" alt="MeishaVernell" class="logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <div style="display: none; color: white; font-size: 24px; font-weight: bold; letter-spacing: 2px;">MeishaVernell</div>
+                </div>
+                <div class="nav-links">
+                    <a href="#" class="skip-intro" onclick="skipToSite()">Skip Intro</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Video Section -->
+ <section class="intro-video-container">
+  <video preload="auto" class="intro-video" id="introVideo">
+    <source src=" " type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+  <div class="video-overlay" id="videoOverlay"></div>
+  <div class="video-controls">
+    <button class="center-btn" id="centerBtn">Enter Site</button>
+  </div>
+</section>
+
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-content">
+            <div class="loading-logo">
+                <img src="photos/Meisha Vernell Primary Logo Champagne.png" alt="MeishaVernell" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <div style="display: none; color: white; font-size: 32px; font-weight: bold; letter-spacing: 3px; text-align: center;">MeishaVernell</div>
+            </div>
+            <div class="loading-text">
+                <h2>Welcome</h2>
+                <p>Preparing your experience...</p>
+            </div>
+            <div class="spinner"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loadingScreen = document.getElementById('loadingScreen');
+            const introVideo = document.getElementById('introVideo');
+            const centerBtn = document.getElementById('centerBtn');
+            const videoOverlay = document.getElementById('videoOverlay');
+            
+            let videoPlayed = false;
+            
+            // Hide loading screen after 2 seconds
+            setTimeout(() => {
+                loadingScreen.classList.add('hidden');
+            }, 2000);
+            
+            // Button click handler
+            centerBtn.addEventListener('click', () => {
+                if (!videoPlayed) {
+                    // Play video with sound
+                    introVideo.muted = false;
+                    introVideo.play();
+                    centerBtn.classList.add('hidden');
+                    videoPlayed = true;
+                } else {
+                    // Go to main site
+                    window.location.href = 'main.html';
+                }
+            });
+            
+            // When video ends
+            introVideo.addEventListener('ended', () => {
+                centerBtn.textContent = 'Welcome';
+                centerBtn.classList.remove('hidden');
+                videoOverlay.classList.add('darken');
+            });
+        });
+
+        // Skip intro function
+        function skipToSite() {
+            window.location.href = 'main.html';
+        }
+    </script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,7 +9,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-    
+    <
     <style>
         * {
             margin: 0;
@@ -105,12 +105,12 @@
 
         .nav-bottom {
             display: flex;
-            justify-content: flex-end;
+            justify-content: space-between;
             align-items: center;
             width: 100%;
         }
 
-        /* Auth Section - Moved to right */
+        /* Auth Section - Updated positioning */
         .auth-section {
             display: flex;
             gap: 15px;
@@ -135,6 +135,82 @@
             background: rgba(255, 255, 255, 0.1);
             color: white;
             border-color: rgba(248, 187, 217, 0.6);
+        }
+
+        /* Audio Waves Music Control */
+        .music-control {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .music-control:hover {
+            background: rgba(248, 187, 217, 0.2);
+        }
+
+        .audio-waves {
+            display: flex;
+            gap: 3px;
+            align-items: center;
+            height: 24px;
+        }
+
+        .wave {
+            width: 4px;
+            background: #F8BBD9;
+            border-radius: 2px;
+            animation: audioWave 1.5s ease-in-out infinite;
+        }
+
+        .wave:nth-child(1) {
+            height: 10px;
+            animation-delay: 0s;
+        }
+
+        .wave:nth-child(2) {
+            height: 20px;
+            animation-delay: 0.1s;
+        }
+
+        .wave:nth-child(3) {
+            height: 14px;
+            animation-delay: 0.2s;
+        }
+
+        .wave:nth-child(4) {
+            height: 22px;
+            animation-delay: 0.3s;
+        }
+
+        .wave:nth-child(5) {
+            height: 12px;
+            animation-delay: 0.4s;
+        }
+
+        @keyframes audioWave {
+            0%, 100% {
+                transform: scaleY(1);
+                opacity: 0.7;
+            }
+            50% {
+                transform: scaleY(0.3);
+                opacity: 1;
+            }
+        }
+
+        .music-control.playing .wave {
+            animation-play-state: running;
+        }
+
+        .music-control:not(.playing) .wave {
+            animation-play-state: paused;
+            opacity: 0.5;
         }
 
         /* Hero Sliding Banner */
@@ -453,57 +529,7 @@
             box-shadow: 0 12px 35px rgba(248, 187, 217, 0.4);
         }
 
-        /* Coming Soon Pages Styling */
-        .coming-soon-container {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 70vh;
-            text-align: center;
-            background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(106, 13, 173, 0.2));
-            border-radius: 20px;
-            padding: 80px 40px;
-            margin: 40px auto;
-            max-width: 800px;
-        }
-
-        .coming-soon-title {
-            font-size: 3rem;
-            margin-bottom: 0.5rem;
-            color: #6A0DAD;
-            font-family: 'Times New Roman', serif;
-            font-weight: bold;
-            letter-spacing: 2px;
-        }
-
-        .coming-soon-subtitle {
-            font-size: 1.25rem;
-            margin-bottom: 2rem;
-            color: #ddd;
-            font-weight: 300;
-        }
-
-        .join-btn {
-            display: inline-block;
-            padding: 0.75rem 2rem;
-            font-size: 1rem;
-            text-decoration: none;
-            border: 2px solid #FFC0CB;
-            border-radius: 50px;
-            color: #FFC0CB;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 500;
-        }
-
-        .join-btn:hover {
-            background: #FFC0CB;
-            color: #000;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(255, 192, 203, 0.3);
-        }
+        /* Footer */
         .footer {
             background: linear-gradient(135deg, #4e463d, #6b5d54);
             color: white;
@@ -551,7 +577,6 @@
                 flex-direction: row;
                 justify-content: space-between;
                 gap: 10px;
-                padding: 0 20px;
             }
 
             .nav-top {
@@ -559,11 +584,7 @@
             }
 
             .nav-bottom {
-                position: fixed;
-                top: 15px;
-                right: 15px;
-                width: auto;
-                z-index: 1002;
+                display: none;
             }
 
             .nav-menu {
@@ -577,7 +598,6 @@
                 gap: 0;
                 padding: 20px 0;
                 backdrop-filter: blur(15px);
-                z-index: 1001;
             }
 
             .nav-menu.active {
@@ -597,7 +617,6 @@
 
             .menu-toggle {
                 display: block;
-                z-index: 1002;
             }
 
             .logo {
@@ -606,14 +625,18 @@
                 font-size: 24px;
             }
 
-            /* Show all nav items on mobile */
-            .nav-left, .nav-right {
-                margin: 0;
+            .auth-section {
+                position: fixed;
+                top: 15px;
+                right: 60px;
+                gap: 10px;
             }
 
-            /* Hide mobile nav menu - use original structure */
-            .mobile-nav-menu {
-                display: none;
+            .music-control {
+                position: fixed;
+                top: 15px;
+                right: 15px;
+                z-index: 2000;
             }
 
             .carousel-content h1 {
@@ -637,7 +660,8 @@
 <body>
     <!-- Background Music -->
     <audio id="backgroundMusic" loop>
-        <!-- Audio source will be added later -->
+        <source src="https://res.cloudinary.com/dpsvb4jqh/video/upload/love-solitude-junetober.mp3" type="audio/mpeg">
+        <source src="https://res.cloudinary.com/dpsvb4jqh/video/upload/love-solitude-junetober.mp4" type="audio/mp4">
     </audio>
 
     <!-- Navigation -->
@@ -665,6 +689,16 @@
                     <button class="auth-btn" onclick="showPage('signup')">Sign Up</button>
                     <button class="auth-btn" id="signOutBtn" onclick="signOut()" style="display: none;">Sign Out</button>
                 </div>
+                
+                <button class="music-control" id="musicToggle" onclick="toggleMusic()">
+                    <div class="audio-waves">
+                        <div class="wave"></div>
+                        <div class="wave"></div>
+                        <div class="wave"></div>
+                        <div class="wave"></div>
+                        <div class="wave"></div>
+                    </div>
+                </button>
             </div>
         </div>
     </nav>
@@ -786,31 +820,20 @@
         </div>
     </div>
 
-    <!-- Nexus Tech Coming Soon Page -->
     <div id="nexus" class="page-section">
-        <div class="coming-soon-container">
-            <h1 class="coming-soon-title">Nexus Tech Digital Solutions</h1>
-            <p class="coming-soon-subtitle">More information coming soon.</p>
-            <a href="#" onclick="showPage('connect')" class="join-btn">Join the Nexus Tech Community</a>
-        </div>
+        <h2>Nexus Tech Digital Solutions</h2>
+        <p>Comprehensive digital transformation consultancy for enterprise-level technology implementations.</p>
     </div>
 
-    <!-- Codex Labs Coming Soon Page -->
     <div id="codex" class="page-section">
-        <div class="coming-soon-container">
-            <h1 class="coming-soon-title">Codex Labs Institute</h1>
-            <p class="coming-soon-subtitle">More information coming soon.</p>
-            <a href="#" onclick="showPage('connect')" class="join-btn">Join the Codex Labs Community</a>
-        </div>
+        <h2>Codex Labs Institute</h2>
+        <p>Advancing technological education and research, fostering the next generation of tech leaders.</p>
     </div>
 
-    <!-- FitBodyFlex Coming Soon Page -->
     <div id="fitbody" class="page-section">
-        <div class="coming-soon-container">
-            <h1 class="coming-soon-title">FitBodyFlex</h1>
-            <p class="coming-soon-subtitle">More information coming soon.</p>
-            <a href="#" onclick="showPage('connect')" class="join-btn">Join the FitBodyFlex Community</a>
-        </div>
+        <h2>FitBodyFlex</h2>
+        <div class="coming-soon-badge">Coming Fall 2025</div>
+        <p>Wellness and fitness platform combining personalized training with advanced health tracking.</p>
     </div>
 
     <div id="connect" class="page-section">
@@ -830,27 +853,9 @@
                     <input type="email" id="contact-email" name="email" required>
                 </div>
             </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="contact-phone">Phone Number <span style="color: #999; font-weight: 300;">(Optional)</span></label>
-                    <input type="tel" id="contact-phone" name="phone" placeholder="(555) 123-4567">
-                </div>
-                <div class="form-group">
-                    <label for="contact-reason">Reason for Reaching Out</label>
-                    <select id="contact-reason" name="reason" required>
-                        <option value="">Select a reason...</option>
-                        <option value="brand-collabs">Brand Collaborations</option>
-                        <option value="interviews-meetgreet">Interviews/Meet and Greet</option>
-                        <option value="tech-services">Tech Services</option>
-                        <option value="social-media-content">Social Media Content Creation</option>
-                        <option value="investor-inquiries">Investor Inquiries</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-            </div>
             <div class="form-group">
                 <label for="contact-message">Message</label>
-                <textarea id="contact-message" name="message" rows="5" required placeholder="Please provide details about your inquiry..."></textarea>
+                <textarea id="contact-message" name="message" rows="5" required></textarea>
             </div>
             <button type="submit" class="app-signup-btn">Send Message</button>
         </form>
@@ -918,15 +923,11 @@
         </div>
     </div>
 
-    <!-- Portal Under Development Page -->
     <div id="portal" class="page-section">
-        <div class="coming-soon-container">
-            <h1 class="coming-soon-title">Member Portal</h1>
-            <p class="coming-soon-subtitle">Under Development</p>
-            <p style="color: #ddd; font-size: 1rem; margin-bottom: 2rem;">
-                Our exclusive member portal is currently being built. Sign up to get early access when it launches!
-            </p>
-            <a href="#" onclick="showPage('signup')" class="join-btn">Get Early Access</a>
+        <h2>Member Portal</h2>
+        <p>Sign in to access exclusive content and early access to applications.</p>
+        <div id="portal-content">
+            <button class="app-signup-btn" onclick="signIn()">Sign In to Portal</button>
         </div>
     </div>
 
@@ -961,35 +962,21 @@
         const db = firebase.firestore();
 
         let musicPlaying = false;
-        let congratsPopupShown = localStorage.getItem('congratsPopupShown') === 'true';
 
-        // Congratulations Popup Functions
-        function showCongratsPopup() {
-            // Only show if not shown before and user is on home page
-            if (!congratsPopupShown && document.getElementById('home-content').style.display !== 'none') {
-                const popup = document.getElementById('congratsPopup');
-                popup.classList.add('show');
-                congratsPopupShown = true;
-                localStorage.setItem('congratsPopupShown', 'true');
-            }
-        }
-
-        function closeCongratsPopup() {
-            const popup = document.getElementById('congratsPopup');
-            popup.classList.remove('show');
-        }
-
-        // Show popup after random time between 30-60 seconds, only once per visitor
-        function initCongratsPopup() {
-            if (!congratsPopupShown) {
-                const randomDelay = Math.floor(Math.random() * 30000) + 30000; // 30-60 seconds
-                setTimeout(showCongratsPopup, randomDelay);
-            }
-        }
-
-        // Music Functions (removed - keeping for potential future use)
+        // Music Functions with Audio Waves
         function toggleMusic() {
-            // Music functionality removed
+            const music = document.getElementById('backgroundMusic');
+            const button = document.getElementById('musicToggle');
+            
+            if (musicPlaying) {
+                music.pause();
+                button.classList.remove('playing');
+                musicPlaying = false;
+            } else {
+                music.play().catch(e => console.log('Music play failed:', e));
+                button.classList.add('playing');
+                musicPlaying = true;
+            }
         }
 
         // Navigation Functions

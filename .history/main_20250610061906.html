@@ -68,15 +68,8 @@
             transition: all 0.3s ease;
         }
 
-        .logo img {
-            height: 40px;
-            width: auto;
-            transition: all 0.3s ease;
-        }
-
-        .logo:hover img {
-            opacity: 0.8;
-            transform: scale(1.05);
+        .logo:hover {
+            color: #F8BBD9;
         }
 
         .nav-menu {
@@ -554,23 +547,6 @@
 
         /* Mobile Responsive */
         @media (max-width: 768px) {
-            /* Show mobile elements on mobile */
-            .mobile-header-right {
-                display: flex !important;
-            }
-            
-            .mobile-auth {
-                display: flex;
-            }
-
-            #mobileNavMenu {
-                display: none; /* Hidden by default, shown when .active */
-            }
-
-            #mobileNavMenu.active {
-                display: flex;
-            }
-
             .nav-container {
                 flex-direction: row;
                 justify-content: space-between;
@@ -595,13 +571,9 @@
             .logo {
                 position: static;
                 transform: none;
+                font-size: 20px;
                 order: 1;
                 margin-right: auto;
-            }
-
-            .logo img {
-                height: 30px;
-                width: auto;
             }
 
             /* Mobile auth and menu container */
@@ -654,6 +626,41 @@
                 display: none;
             }
 
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(255, 255, 255, 0.95);
+                flex-direction: column;
+                gap: 0;
+                padding: 20px 0;
+                backdrop-filter: blur(15px);
+                z-index: 1001;
+            }
+
+            .nav-menu.active {
+                display: flex;
+            }
+
+            .nav-menu li {
+                text-align: center;
+            }
+
+            .nav-menu a {
+                padding: 15px 20px;
+                display: block;
+                border-bottom: 1px solid rgba(248, 187, 217, 0.2);
+                color: #4E463D;
+                text-decoration: none;
+                transition: background 0.3s ease;
+            }
+
+            .nav-menu a:hover {
+                background: rgba(248, 187, 217, 0.1);
+            }
+
             .carousel-content h1 {
                 font-size: 2.5rem;
             }
@@ -682,11 +689,9 @@
     <nav class="top-nav">
         <div class="nav-container">
             <div class="nav-top">
-                <a href="#" onclick="showHome()" class="logo">
-                    <img src="photos/meisha logo-2.PNG" alt="MeishaVernell Logo" />
-                </a>
+                <a href="#" onclick="showHome()" class="logo">MeishaVernell</a>
                 <ul class="nav-menu nav-left" id="navMenuLeft">
-                    <li><a href="#" onclick="showPage('marc')">MARC</a></li>
+                    <li><a href="#" onclick="showPage('marc')">Marc</a></li>
                     <li><a href="#" onclick="showPage('techDeck')">Tech Deck</a></li>
                     <li><a href="#" onclick="showPage('nexus')">Nexus Tech</a></li>
                 </ul>
@@ -697,8 +702,8 @@
                     <li><a href="#" onclick="showPage('portal')">Portal</a></li>
                 </ul>
                 
-                <!-- Mobile header right section (hidden on desktop) -->
-                <div class="mobile-header-right" style="display: none;">
+                <!-- Mobile header right section -->
+                <div class="mobile-header-right">
                     <div class="mobile-auth" id="mobileAuthSection">
                         <button class="auth-btn" onclick="showPage('signin')">Sign In</button>
                         <button class="auth-btn" onclick="showPage('signup')">Sign Up</button>
@@ -716,14 +721,14 @@
             </div>
             
             <!-- Mobile Navigation Menu -->
-            <ul class="nav-menu" id="mobileNavMenu" style="display: none; position: absolute; top: 100%; left: 0; width: 100%; background: rgba(255, 255, 255, 0.95); flex-direction: column; gap: 0; padding: 20px 0; backdrop-filter: blur(15px); z-index: 1001;">
-                <li style="text-align: center;"><a href="#" onclick="showPage('marc')" style="padding: 15px 20px; display: block; border-bottom: 1px solid rgba(248, 187, 217, 0.2); color: #4E463D; text-decoration: none; transition: background 0.3s ease;">Marc</a></li>
-                <li style="text-align: center;"><a href="#" onclick="showPage('techDeck')" style="padding: 15px 20px; display: block; border-bottom: 1px solid rgba(248, 187, 217, 0.2); color: #4E463D; text-decoration: none; transition: background 0.3s ease;">Tech Deck</a></li>
-                <li style="text-align: center;"><a href="#" onclick="showPage('nexus')" style="padding: 15px 20px; display: block; border-bottom: 1px solid rgba(248, 187, 217, 0.2); color: #4E463D; text-decoration: none; transition: background 0.3s ease;">Nexus Tech</a></li>
-                <li style="text-align: center;"><a href="#" onclick="showPage('codex')" style="padding: 15px 20px; display: block; border-bottom: 1px solid rgba(248, 187, 217, 0.2); color: #4E463D; text-decoration: none; transition: background 0.3s ease;">Codex Labs</a></li>
-                <li style="text-align: center;"><a href="#" onclick="showPage('fitbody')" style="padding: 15px 20px; display: block; border-bottom: 1px solid rgba(248, 187, 217, 0.2); color: #4E463D; text-decoration: none; transition: background 0.3s ease;">FitBodyFlex</a></li>
-                <li style="text-align: center;"><a href="#" onclick="showPage('connect')" style="padding: 15px 20px; display: block; border-bottom: 1px solid rgba(248, 187, 217, 0.2); color: #4E463D; text-decoration: none; transition: background 0.3s ease;">Connect</a></li>
-                <li style="text-align: center;"><a href="#" onclick="showPage('portal')" style="padding: 15px 20px; display: block; border-bottom: 1px solid rgba(248, 187, 217, 0.2); color: #4E463D; text-decoration: none; transition: background 0.3s ease;">Portal</a></li>
+            <ul class="nav-menu" id="mobileNavMenu">
+                <li><a href="#" onclick="showPage('marc')">Marc</a></li>
+                <li><a href="#" onclick="showPage('techDeck')">Tech Deck</a></li>
+                <li><a href="#" onclick="showPage('nexus')">Nexus Tech</a></li>
+                <li><a href="#" onclick="showPage('codex')">Codex Labs</a></li>
+                <li><a href="#" onclick="showPage('fitbody')">FitBodyFlex</a></li>
+                <li><a href="#" onclick="showPage('connect')">Connect</a></li>
+                <li><a href="#" onclick="showPage('portal')">Portal</a></li>
             </ul>
         </div>
     </nav>
@@ -824,7 +829,7 @@
                 <div class="coming-soon-badge">Coming Soon</div>
             </div>
             
-             <p class="main-description">
+            <p class="main-description">
                 Tech Deck, A study app to help you study smarter, learn better. This app revolutionizes how you learn and retain information with TARA, an intelligent Teaching Assistant and Retention Assistant AI.
             </p>
 
@@ -872,7 +877,7 @@
         </div>
     </div>
 
-       <!-- Contact me Page -->
+    <!-- Contact me Page -->
     <div id="connect" class="page-section">
         <h2>Connect with MeishaVernell</h2>
         <p>"Tech. Business. Lifestyle."</p>

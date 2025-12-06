@@ -190,37 +190,10 @@
         }
 
         .intro-video {
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            object-fit: cover;
-            object-position: center center;
-        }
-
-        /* Mobile-first: prioritize showing full content on small screens */
-        @media (max-width: 768px) {
-            .intro-video {
-                width: 100%;
-                height: 100%;
-                object-fit: contain; /* Show full video on mobile */
-            }
-        }
-
-        /* Landscape phones - cover works better */
-        @media (max-width: 768px) and (orientation: landscape) {
-            .intro-video {
-                object-fit: cover;
-                object-position: center center;
-            }
-        }
-
-        /* Tablets */
-        @media (min-width: 769px) and (max-width: 1024px) {
-            .intro-video {
-                object-fit: cover;
-                object-position: center center;
-            }
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Shows FULL video, no cropping */
+            background: var(--black);
         }
 
         /* Skip Button */
@@ -300,44 +273,15 @@
             align-items: center;
             justify-content: center;
             overflow: hidden;
+            background: var(--black);
         }
 
         .gallery-slide img,
         .gallery-slide video {
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            object-fit: cover;
-            object-position: center center;
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Shows FULL image/video, no cropping */
             filter: brightness(0.55) contrast(1.1);
-        }
-
-        /* Mobile portrait - show more of the image */
-        @media (max-width: 768px) and (orientation: portrait) {
-            .gallery-slide img,
-            .gallery-slide video {
-                object-fit: cover;
-                object-position: center top; /* Show faces/top of images */
-            }
-        }
-
-        /* Mobile landscape */
-        @media (max-width: 768px) and (orientation: landscape) {
-            .gallery-slide img,
-            .gallery-slide video {
-                object-fit: cover;
-                object-position: center center;
-            }
-        }
-
-        /* Tablets */
-        @media (min-width: 769px) and (max-width: 1024px) {
-            .gallery-slide img,
-            .gallery-slide video {
-                object-fit: cover;
-                object-position: center center;
-            }
         }
 
         .gallery-overlay {
@@ -1536,14 +1480,8 @@
                             <source src="${media.url}" type="video/mp4">
                         </video>
                     `;
-                    
-                    // Detect video orientation and adjust fit
-                    const video = slide.querySelector('video');
-                    video.addEventListener('loadedmetadata', function() {
-                        adjustMediaFit(this);
-                    });
                 } else {
-                    slide.innerHTML = `<img src="${media.url}" alt="Meisha Vernell ${index + 1}" onload="adjustMediaFit(this)">`;
+                    slide.innerHTML = `<img src="${media.url}" alt="Meisha Vernell ${index + 1}">`;
                 }
 
                 galleryTrack.appendChild(slide);
@@ -1552,47 +1490,6 @@
             // Initialize gallery after loading
             initGallery();
         }
-
-        // ============================================
-        // SMART ASPECT RATIO DETECTION
-        // ============================================
-        function adjustMediaFit(element) {
-            const screenRatio = window.innerWidth / window.innerHeight;
-            let mediaRatio;
-            
-            if (element.tagName === 'VIDEO') {
-                mediaRatio = element.videoWidth / element.videoHeight;
-            } else {
-                mediaRatio = element.naturalWidth / element.naturalHeight;
-            }
-            
-            // If media is more portrait than screen, prioritize showing the full height
-            // If media is more landscape than screen, prioritize showing full width
-            if (mediaRatio < screenRatio) {
-                // Portrait media on landscape screen - show full height, crop sides
-                element.style.objectFit = 'cover';
-                element.style.objectPosition = 'center center';
-            } else {
-                // Landscape media - cover works well
-                element.style.objectFit = 'cover';
-                element.style.objectPosition = 'center center';
-            }
-            
-            // Special handling for very portrait media (like phone videos)
-            if (mediaRatio < 0.7) {
-                element.style.objectFit = 'contain';
-                element.style.objectPosition = 'center center';
-            }
-        }
-
-        // Re-adjust on window resize
-        window.addEventListener('resize', () => {
-            document.querySelectorAll('.gallery-slide img, .gallery-slide video').forEach(el => {
-                if (el.complete || el.readyState >= 2) {
-                    adjustMediaFit(el);
-                }
-            });
-        });
 
         // ============================================
         // INTRO VIDEO SCREEN
@@ -1619,13 +1516,7 @@
                         document.getElementById('introPoster').style.backgroundImage = `url(${introPosterUrl})`;
                         
                         // Preload video
-                        const introVideoEl = document.getElementById('introVideo');
-                        introVideoEl.src = introVideoUrl;
-                        
-                        // Apply smart fit when video loads
-                        introVideoEl.addEventListener('loadedmetadata', function() {
-                            adjustMediaFit(this);
-                        });
+                        document.getElementById('introVideo').src = introVideoUrl;
                         
                         console.log('Intro video loaded:', introVideoUrl);
                     } else {

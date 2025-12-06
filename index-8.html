@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MEISHA VERNELL | Welcome to my world</title>
+    <title>MEISHA VERNELL | Coming Soon</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Bebas+Neue&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
@@ -178,6 +178,10 @@
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
         }
 
         .intro-video-container.playing {
@@ -186,9 +190,37 @@
         }
 
         .intro-video {
-            width: 100%;
-            height: 100%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
             object-fit: cover;
+            object-position: center center;
+        }
+
+        /* Mobile-first: prioritize showing full content on small screens */
+        @media (max-width: 768px) {
+            .intro-video {
+                width: 100%;
+                height: 100%;
+                object-fit: contain; /* Show full video on mobile */
+            }
+        }
+
+        /* Landscape phones - cover works better */
+        @media (max-width: 768px) and (orientation: landscape) {
+            .intro-video {
+                object-fit: cover;
+                object-position: center center;
+            }
+        }
+
+        /* Tablets */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .intro-video {
+                object-fit: cover;
+                object-position: center center;
+            }
         }
 
         /* Skip Button */
@@ -264,15 +296,48 @@
             width: 100vw;
             height: 100%;
             position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
         }
 
         .gallery-slide img,
         .gallery-slide video {
-            width: 100%;
-            height: 100%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
             object-fit: cover;
-            object-position: center top; /* Prioritize showing top of image */
+            object-position: center center;
             filter: brightness(0.55) contrast(1.1);
+        }
+
+        /* Mobile portrait - show more of the image */
+        @media (max-width: 768px) and (orientation: portrait) {
+            .gallery-slide img,
+            .gallery-slide video {
+                object-fit: cover;
+                object-position: center top; /* Show faces/top of images */
+            }
+        }
+
+        /* Mobile landscape */
+        @media (max-width: 768px) and (orientation: landscape) {
+            .gallery-slide img,
+            .gallery-slide video {
+                object-fit: cover;
+                object-position: center center;
+            }
+        }
+
+        /* Tablets */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .gallery-slide img,
+            .gallery-slide video {
+                object-fit: cover;
+                object-position: center center;
+            }
         }
 
         .gallery-overlay {
@@ -1170,7 +1235,7 @@
         <div class="hero-content">
             <h1 class="brand-name">MEISHA VERNELL</h1>
             <p class="tagline">REBRANDING IN PROGRESS</p>
-            <p class="coming-soon">SOMETHING BEAUTIFUL IS COMING</p>
+            <p class="coming-soon">SOMETHING EXTRAORDINARY IS COMING</p>
             
             <div class="hero-cta">
                 <button class="cta-btn" id="openModalBtn">JOIN THE WAITLIST</button>
@@ -1211,7 +1276,7 @@
 
         <!-- Footer -->
         <div class="footer">
-            <p class="footer-text">© 2026 MEISHA VERNELL</p>
+            <p class="footer-text">© 2025 MEISHA VERNELL</p>
         </div>
     </section>
 
@@ -1223,7 +1288,7 @@
             <button class="modal-close" id="closeModalBtn">✕</button>
             
             <h2 class="modal-title">Join the Inner Circle</h2>
-            <p class="modal-subtitle">Be first to know about when the site goes live, see new collaborations, and more</p>
+            <p class="modal-subtitle">Be first to know about brand updates, collaborations, and partnership opportunities</p>
 
             <!-- Success Message -->
             <div class="success-message" id="successMessage">
@@ -1279,10 +1344,10 @@
                     <label class="form-label">I'm interested in...</label>
                     <select name="interest" class="form-select">
                         <option value="">Select an option</option>
-                        <option value="Brand Updates">Technical Help</option>
-                        <option value="Brand Deal">Brand Deal / Creative Collaboration</option>
-                       <!--  <option value="Partnership">Business Partnership</option>
-                       <option value="Collaboration"> Speaking Engagements</option> -->
+                        <option value="Brand Updates">Brand Updates & News</option>
+                        <option value="Brand Deal">Brand Deal / Sponsorship</option>
+                        <option value="Partnership">Business Partnership</option>
+                        <option value="Collaboration">Creative Collaboration</option>
                         <option value="Media">Media / Press Inquiry</option>
                         <option value="Other">Other</option>
                     </select>
@@ -1471,8 +1536,14 @@
                             <source src="${media.url}" type="video/mp4">
                         </video>
                     `;
+                    
+                    // Detect video orientation and adjust fit
+                    const video = slide.querySelector('video');
+                    video.addEventListener('loadedmetadata', function() {
+                        adjustMediaFit(this);
+                    });
                 } else {
-                    slide.innerHTML = `<img src="${media.url}" alt="Meisha Vernell ${index + 1}">`;
+                    slide.innerHTML = `<img src="${media.url}" alt="Meisha Vernell ${index + 1}" onload="adjustMediaFit(this)">`;
                 }
 
                 galleryTrack.appendChild(slide);
@@ -1481,6 +1552,47 @@
             // Initialize gallery after loading
             initGallery();
         }
+
+        // ============================================
+        // SMART ASPECT RATIO DETECTION
+        // ============================================
+        function adjustMediaFit(element) {
+            const screenRatio = window.innerWidth / window.innerHeight;
+            let mediaRatio;
+            
+            if (element.tagName === 'VIDEO') {
+                mediaRatio = element.videoWidth / element.videoHeight;
+            } else {
+                mediaRatio = element.naturalWidth / element.naturalHeight;
+            }
+            
+            // If media is more portrait than screen, prioritize showing the full height
+            // If media is more landscape than screen, prioritize showing full width
+            if (mediaRatio < screenRatio) {
+                // Portrait media on landscape screen - show full height, crop sides
+                element.style.objectFit = 'cover';
+                element.style.objectPosition = 'center center';
+            } else {
+                // Landscape media - cover works well
+                element.style.objectFit = 'cover';
+                element.style.objectPosition = 'center center';
+            }
+            
+            // Special handling for very portrait media (like phone videos)
+            if (mediaRatio < 0.7) {
+                element.style.objectFit = 'contain';
+                element.style.objectPosition = 'center center';
+            }
+        }
+
+        // Re-adjust on window resize
+        window.addEventListener('resize', () => {
+            document.querySelectorAll('.gallery-slide img, .gallery-slide video').forEach(el => {
+                if (el.complete || el.readyState >= 2) {
+                    adjustMediaFit(el);
+                }
+            });
+        });
 
         // ============================================
         // INTRO VIDEO SCREEN
@@ -1507,7 +1619,13 @@
                         document.getElementById('introPoster').style.backgroundImage = `url(${introPosterUrl})`;
                         
                         // Preload video
-                        document.getElementById('introVideo').src = introVideoUrl;
+                        const introVideoEl = document.getElementById('introVideo');
+                        introVideoEl.src = introVideoUrl;
+                        
+                        // Apply smart fit when video loads
+                        introVideoEl.addEventListener('loadedmetadata', function() {
+                            adjustMediaFit(this);
+                        });
                         
                         console.log('Intro video loaded:', introVideoUrl);
                     } else {

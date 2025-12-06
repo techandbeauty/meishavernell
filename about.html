@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Mei | MEISHA VERNELL</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Bebas+Neue&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --black: #000000;
+            --dark: #0a0a0a;
+            --dark-gray: #1a1a1a;
+            --mid-gray: #2a2a2a;
+            --light-gray: #888888;
+            --off-white: #f5f5f5;
+            --white: #ffffff;
+            --gold: #c9a962;
+            --gold-light: #e8d5a3;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--black);
+            color: var(--white);
+            overflow-x: hidden;
+        }
+
+        /* ============================================
+           NAVIGATION
+        ============================================ */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.7) 50%, transparent 100%);
+            transition: background 0.3s ease;
+        }
+
+        .nav.scrolled {
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            font-weight: 300;
+            font-style: italic;
+            color: var(--gold);
+            text-decoration: none;
+            letter-spacing: 0.1rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .nav-link {
+            font-size: 0.7rem;
+            font-weight: 400;
+            letter-spacing: 0.15rem;
+            color: var(--white);
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--gold);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover { color: var(--gold); }
+        .nav-link:hover::after { width: 100%; }
+        .nav-link.active { color: var(--gold); }
+        .nav-link.active::after { width: 100%; }
+
+        .nav-right {
+            min-width: 100px;
+        }
+
+        /* Mobile Menu */
+        .nav-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .nav-toggle span {
+            width: 25px;
+            height: 1px;
+            background: var(--white);
+            transition: all 0.3s ease;
+        }
+
+        /* ============================================
+           HERO - SPLIT SCREEN
+        ============================================ */
+        .hero-split {
+            min-height: 100vh;
+            display: flex;
+            padding-top: 80px;
+        }
+
+        .hero-side {
+            flex: 1;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            min-height: 100vh;
+        }
+
+        .hero-side-left {
+            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+        }
+
+        .hero-side-right {
+            background: linear-gradient(135deg, #0a0a0a 0%, #000000 100%);
+        }
+
+        .hero-image-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-top: 60px;
+        }
+
+        .hero-image {
+            max-height: 85vh;
+            width: auto;
+            max-width: 90%;
+            object-fit: contain;
+            object-position: bottom;
+            filter: grayscale(20%);
+            transition: filter 0.5s ease;
+        }
+
+        .hero-side:hover .hero-image {
+            filter: grayscale(0%);
+        }
+
+        .hero-side-content {
+            position: absolute;
+            bottom: 80px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            padding: 0 30px;
+            z-index: 10;
+        }
+
+        .hero-label {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 0.3rem;
+            color: var(--gold);
+            margin-bottom: 10px;
+        }
+
+        .hero-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 15px;
+        }
+
+        .hero-tags {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .hero-tag {
+            font-size: 0.6rem;
+            letter-spacing: 0.1rem;
+            color: var(--light-gray);
+            padding: 6px 14px;
+            border: 1px solid var(--mid-gray);
+        }
+
+        .hero-divider {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 1px;
+            height: 60%;
+            background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+            z-index: 20;
+        }
+
+        .hero-divider-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--black);
+            padding: 20px 15px;
+            z-index: 21;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1rem;
+            font-style: italic;
+            color: var(--gold);
+            writing-mode: vertical-rl;
+            letter-spacing: 0.2rem;
+        }
+
+        /* ============================================
+           BIO SECTION
+        ============================================ */
+        .bio-section {
+            padding: 100px 40px;
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .bio-quote {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            font-style: italic;
+            font-weight: 300;
+            line-height: 1.6;
+            color: var(--white);
+            margin-bottom: 40px;
+        }
+
+        .bio-quote span {
+            color: var(--gold);
+        }
+
+        .bio-text {
+            font-size: 0.9rem;
+            line-height: 2;
+            color: var(--light-gray);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* ============================================
+           CREDENTIALS DASHBOARD
+        ============================================ */
+        .credentials-section {
+            padding: 80px 40px;
+            background: linear-gradient(180deg, var(--black) 0%, var(--dark) 100%);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-label {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 0.3rem;
+            color: var(--gold);
+            margin-bottom: 15px;
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            font-weight: 300;
+        }
+
+        .credentials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .credential-card {
+            background: var(--dark-gray);
+            border: 1px solid var(--mid-gray);
+            padding: 35px;
+            transition: all 0.3s ease;
+        }
+
+        .credential-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-5px);
+        }
+
+        .credential-icon {
+            width: 50px;
+            height: 50px;
+            border: 1px solid var(--gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .credential-label {
+            font-size: 0.6rem;
+            letter-spacing: 0.2rem;
+            color: var(--gold);
+            margin-bottom: 8px;
+        }
+
+        .credential-value {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 10px;
+        }
+
+        .credential-detail {
+            font-size: 0.75rem;
+            color: var(--light-gray);
+            line-height: 1.6;
+        }
+
+        /* Status Badge */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(201, 169, 98, 0.1);
+            border: 1px solid var(--gold);
+            margin-top: 10px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #4ade80;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .status-text {
+            font-size: 0.65rem;
+            letter-spacing: 0.15rem;
+            color: var(--gold);
+        }
+
+        /* ============================================
+           SKILLS SECTION
+        ============================================ */
+        .skills-section {
+            padding: 80px 40px;
+            background: var(--dark);
+        }
+
+        .skills-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .skill-tag {
+            padding: 12px 25px;
+            background: transparent;
+            border: 1px solid var(--mid-gray);
+            font-size: 0.7rem;
+            letter-spacing: 0.1rem;
+            color: var(--white);
+            transition: all 0.3s ease;
+        }
+
+        .skill-tag:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+            transform: translateY(-3px);
+        }
+
+        /* ============================================
+           VENTURES SECTION
+        ============================================ */
+        .ventures-section {
+            padding: 80px 40px;
+            background: var(--black);
+        }
+
+        .ventures-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .venture-card {
+            background: linear-gradient(135deg, var(--dark-gray) 0%, var(--dark) 100%);
+            border: 1px solid var(--mid-gray);
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .venture-card:hover {
+            border-color: var(--gold);
+        }
+
+        .venture-type {
+            font-size: 0.55rem;
+            letter-spacing: 0.2rem;
+            color: var(--gold);
+            margin-bottom: 12px;
+        }
+
+        .venture-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            font-weight: 400;
+            margin-bottom: 10px;
+        }
+
+        .venture-desc {
+            font-size: 0.7rem;
+            color: var(--light-gray);
+            line-height: 1.6;
+        }
+
+        /* ============================================
+           TIMELINE
+        ============================================ */
+        .timeline-section {
+            padding: 80px 40px;
+            background: var(--dark);
+        }
+
+        .timeline {
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1px;
+            height: 100%;
+            background: var(--mid-gray);
+        }
+
+        .timeline-item {
+            display: flex;
+            justify-content: flex-end;
+            padding-right: 50%;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .timeline-item:nth-child(even) {
+            justify-content: flex-start;
+            padding-right: 0;
+            padding-left: 50%;
+        }
+
+        .timeline-content {
+            max-width: 280px;
+            padding: 25px;
+            background: var(--dark-gray);
+            border: 1px solid var(--mid-gray);
+            position: relative;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-right: 30px;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content {
+            margin-left: 30px;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 12px;
+            height: 12px;
+            background: var(--gold);
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .timeline-year {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 0.8rem;
+            letter-spacing: 0.2rem;
+            color: var(--gold);
+            margin-bottom: 8px;
+        }
+
+        .timeline-title {
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .timeline-desc {
+            font-size: 0.7rem;
+            color: var(--light-gray);
+        }
+
+        /* ============================================
+           CTA SECTION
+        ============================================ */
+        .cta-section {
+            padding: 100px 40px;
+            text-align: center;
+            background: linear-gradient(180deg, var(--dark) 0%, var(--black) 100%);
+        }
+
+        .cta-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 20px;
+        }
+
+        .cta-subtitle {
+            font-size: 0.85rem;
+            color: var(--light-gray);
+            margin-bottom: 40px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            padding: 18px 50px;
+            background: var(--gold);
+            color: var(--black);
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 0.2rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 1px solid var(--gold);
+        }
+
+        .cta-btn:hover {
+            background: transparent;
+            color: var(--gold);
+        }
+
+        /* ============================================
+           FOOTER
+        ============================================ */
+        .footer {
+            padding: 40px;
+            text-align: center;
+            border-top: 1px solid var(--mid-gray);
+        }
+
+        .footer-text {
+            font-size: 0.6rem;
+            letter-spacing: 0.15rem;
+            color: var(--mid-gray);
+        }
+
+        /* ============================================
+           NOISE OVERLAY
+        ============================================ */
+        .noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        }
+
+        /* ============================================
+           RESPONSIVE
+        ============================================ */
+        @media (max-width: 968px) {
+            .hero-split {
+                flex-direction: column;
+            }
+
+            .hero-side {
+                min-height: 80vh;
+            }
+
+            .hero-divider,
+            .hero-divider-text {
+                display: none;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 70%;
+                max-width: 300px;
+                height: 100vh;
+                background: var(--dark);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 30px;
+                transition: right 0.3s ease;
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .nav-toggle {
+                display: flex;
+            }
+
+            .nav-right {
+                display: none;
+            }
+
+            .timeline-item,
+            .timeline-item:nth-child(even) {
+                padding-left: 30px;
+                padding-right: 0;
+                justify-content: flex-start;
+            }
+
+            .timeline::before {
+                left: 0;
+            }
+
+            .timeline-dot {
+                left: 0;
+            }
+
+            .timeline-item:nth-child(odd) .timeline-content,
+            .timeline-item:nth-child(even) .timeline-content {
+                margin-left: 20px;
+                margin-right: 0;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .navbar { padding: 15px 20px; }
+            .hero-title { font-size: 2rem; }
+            .bio-quote { font-size: 1.5rem; }
+            .section-title { font-size: 2rem; }
+            .credentials-grid { grid-template-columns: 1fr; }
+            .cta-title { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="noise"></div>
+
+    <!-- Navigation -->
+    <nav class="nav" id="nav">
+        <a href="index.html" class="nav-logo">MV</a>
+        
+        <div class="nav-links" id="navLinks">
+            <a href="portfolio.html" class="nav-link">Portfolio</a>
+            <a href="about.html" class="nav-link active">About Mei</a>
+            <a href="connect.html" class="nav-link">Connect</a>
+        </div>
+
+        <div class="nav-right">
+            <!-- Future: Login button -->
+        </div>
+
+        <div class="nav-toggle" id="navToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <!-- Hero Split Screen -->
+    <section class="hero-split">
+        <div class="hero-side hero-side-left">
+            <div class="hero-image-container">
+                <!-- Upload meisha_laughing.PNG to Cloudinary and tag with: mv-about -->
+                <img src="https://res.cloudinary.com/didqb05ko/image/upload/q_auto,f_auto/mv-about-creator" 
+                     alt="Meisha Vernell - The Creator" 
+                     class="hero-image"
+                     onerror="this.src='https://res.cloudinary.com/didqb05ko/image/upload/q_auto,f_auto/IMG_4465_2_v42fzh.jpg'">
+            </div>
+            <div class="hero-side-content">
+                <p class="hero-label">THE CREATOR</p>
+                <h2 class="hero-title">Mother. Visionary.</h2>
+                <div class="hero-tags">
+                    <span class="hero-tag">MOM OF 2</span>
+                    <span class="hero-tag">EDUCATOR</span>
+                    <span class="hero-tag">NURTURER</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-divider"></div>
+        <span class="hero-divider-text">& MORE</span>
+
+        <div class="hero-side hero-side-right">
+            <div class="hero-image-container">
+                <!-- Upload meishavernell_close_up_.JPG to Cloudinary and tag with: mv-about -->
+                <img src="https://res.cloudinary.com/didqb05ko/image/upload/q_auto,f_auto/mv-about-engineer" 
+                     alt="Meisha Vernell - The Engineer" 
+                     class="hero-image"
+                     onerror="this.src='https://res.cloudinary.com/didqb05ko/image/upload/q_auto,f_auto/IMG_4465_2_v42fzh.jpg'">
+            </div>
+            <div class="hero-side-content">
+                <p class="hero-label">THE ENGINEER</p>
+                <h2 class="hero-title">Builder. Leader.</h2>
+                <div class="hero-tags">
+                    <span class="hero-tag">SOFTWARE ENGINEER</span>
+                    <span class="hero-tag">ENTREPRENEUR</span>
+                    <span class="hero-tag">CLEARED</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bio Section -->
+    <section class="bio-section">
+        <p class="bio-quote">
+            "I believe technology should <span>empower</span>, not intimidate. 
+            My mission is to build solutions that make people's lives easier—and to 
+            help others <span>discover their potential</span> in tech."
+        </p>
+        <p class="bio-text">
+            With over a decade of experience spanning tech support, education, and entrepreneurship, 
+            I bring a unique perspective to software engineering. From running a daycare to teaching 
+            special education, I've learned that the best technology is built with empathy and purpose.
+        </p>
+    </section>
+
+    <!-- Credentials Dashboard -->
+    <section class="credentials-section">
+        <div class="section-header">
+            <p class="section-label">MISSION CONTROL</p>
+            <h2 class="section-title">Credentials & Clearance</h2>
+        </div>
+
+        <div class="credentials-grid">
+            <!-- Security Clearance -->
+            <div class="credential-card">
+                <div class="credential-icon">🔐</div>
+                <p class="credential-label">SECURITY CLEARANCE</p>
+                <h3 class="credential-value">SECRET</h3>
+                <div class="status-badge">
+                    <span class="status-dot"></span>
+                    <span class="status-text">ACTIVE</span>
+                </div>
+            </div>
+
+            <!-- Education Current -->
+            <div class="credential-card">
+                <div class="credential-icon">🎓</div>
+                <p class="credential-label">EDUCATION</p>
+                <h3 class="credential-value">A.S. Cybersecurity</h3>
+                <p class="credential-detail">
+                    A.S. Programming & Mobile Applications<br>
+                    Tidewater Community College, 2024
+                </p>
+            </div>
+
+            <!-- Education Pursuing -->
+            <div class="credential-card">
+                <div class="credential-icon">📚</div>
+                <p class="credential-label">PURSUING</p>
+                <h3 class="credential-value">B.S. & M.S.</h3>
+                <p class="credential-detail">
+                    B.S. Information Technology<br>
+                    M.S. Artificial Intelligence<br>
+                    NC A&T State University, 2032
+                </p>
+            </div>
+
+            <!-- Experience -->
+            <div class="credential-card">
+                <div class="credential-icon">💼</div>
+                <p class="credential-label">EXPERIENCE</p>
+                <h3 class="credential-value">10+ Years</h3>
+                <p class="credential-detail">
+                    In tech since 2015<br>
+                    Started at Apple Help Desk<br>
+                    Now: Managing Partner & Founder
+                </p>
+            </div>
+
+            <!-- Role -->
+            <div class="credential-card">
+                <div class="credential-icon">👑</div>
+                <p class="credential-label">CURRENT ROLE</p>
+                <h3 class="credential-value">Managing Partner</h3>
+                <p class="credential-detail">
+                    Nexus Tech Digital Solutions<br>
+                    Codex Labs Institute
+                </p>
+            </div>
+
+            <!-- Impact -->
+            <div class="credential-card">
+                <div class="credential-icon">❤️</div>
+                <p class="credential-label">PASSION</p>
+                <h3 class="credential-value">Educator</h3>
+                <p class="credential-detail">
+                    Special Education Teacher K-12<br>
+                    Ran daycare 2008-2021<br>
+                    Dedicated to helping others succeed
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="skills-section">
+        <div class="section-header">
+            <p class="section-label">TECH STACK</p>
+            <h2 class="section-title">Skills & Expertise</h2>
+        </div>
+
+        <div class="skills-grid">
+            <span class="skill-tag">HTML / CSS</span>
+            <span class="skill-tag">JAVASCRIPT</span>
+            <span class="skill-tag">REACT</span>
+            <span class="skill-tag">REACT NATIVE</span>
+            <span class="skill-tag">PYTHON</span>
+            <span class="skill-tag">SWIFT / iOS</span>
+            <span class="skill-tag">FIREBASE</span>
+            <span class="skill-tag">CLOUDINARY</span>
+            <span class="skill-tag">UNREAL ENGINE</span>
+            <span class="skill-tag">AI / ML</span>
+            <span class="skill-tag">CYBERSECURITY</span>
+            <span class="skill-tag">CANVAS LMS</span>
+            <span class="skill-tag">GIT / GITHUB</span>
+            <span class="skill-tag">NETLIFY</span>
+            <span class="skill-tag">UI/UX DESIGN</span>
+            <span class="skill-tag">PROJECT MANAGEMENT</span>
+        </div>
+    </section>
+
+    <!-- Ventures Section -->
+    <section class="ventures-section">
+        <div class="section-header">
+            <p class="section-label">PORTFOLIO</p>
+            <h2 class="section-title">Ventures & Creations</h2>
+        </div>
+
+        <div class="ventures-grid">
+            <div class="venture-card">
+                <p class="venture-type">COMPANY</p>
+                <h3 class="venture-name">Nexus Tech Digital Solutions</h3>
+                <p class="venture-desc">Full-service tech company: web, mobile, game development & support</p>
+            </div>
+
+            <div class="venture-card">
+                <p class="venture-type">COMPANY</p>
+                <h3 class="venture-name">Codex Labs Institute</h3>
+                <p class="venture-desc">Tech education platform with beginner-friendly programming courses</p>
+            </div>
+
+            <div class="venture-card">
+                <p class="venture-type">COMMUNITY</p>
+                <h3 class="venture-name">The Tech Collective</h3>
+                <p class="venture-desc">Building a community of aspiring technologists</p>
+            </div>
+
+            <div class="venture-card">
+                <p class="venture-type">AI PRODUCT</p>
+                <h3 class="venture-name">MARC AI</h3>
+                <p class="venture-desc">AI-powered marketing assistant for business growth</p>
+            </div>
+
+            <div class="venture-card">
+                <p class="venture-type">AI PRODUCT</p>
+                <h3 class="venture-name">TARA AI</h3>
+                <p class="venture-desc">Teaching & Retention Assistant for learning</p>
+            </div>
+
+            <div class="venture-card">
+                <p class="venture-type">APPLICATION</p>
+                <h3 class="venture-name">Tech Deck App</h3>
+                <p class="venture-desc">Flashcard study platform for tech certifications</p>
+            </div>
+
+            <div class="venture-card">
+                <p class="venture-type">GAME</p>
+                <h3 class="venture-name">The Nexora</h3>
+                <p class="venture-desc">Narrative-driven game about AI and corporate betrayal</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section class="timeline-section">
+        <div class="section-header">
+            <p class="section-label">THE JOURNEY</p>
+            <h2 class="section-title">My Path</h2>
+        </div>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <p class="timeline-year">2008</p>
+                    <h4 class="timeline-title">Opened Daycare</h4>
+                    <p class="timeline-desc">Started and operated a daycare, nurturing the next generation</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <p class="timeline-year">2015</p>
+                    <h4 class="timeline-title">Entered Tech</h4>
+                    <p class="timeline-desc">Started at Apple Help Desk, discovering my passion for technology</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <p class="timeline-year">2021</p>
+                    <h4 class="timeline-title">Full Tech Pivot</h4>
+                    <p class="timeline-desc">Closed daycare to pursue tech full-time</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <p class="timeline-year">2024</p>
+                    <h4 class="timeline-title">Graduated TCC</h4>
+                    <p class="timeline-desc">A.S. in Cybersecurity & Programming/Mobile Applications</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <p class="timeline-year">NOW</p>
+                    <h4 class="timeline-title">Building the Future</h4>
+                    <p class="timeline-desc">Managing Partner, Software Engineer, pursuing B.S. & M.S.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <p class="timeline-year">2032</p>
+                    <h4 class="timeline-title">The Vision</h4>
+                    <p class="timeline-desc">M.S. in Artificial Intelligence from NC A&T</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <h2 class="cta-title">Let's Build Something Together</h2>
+        <p class="cta-subtitle">
+            Whether you need a website, an app, or a technology partner—I'm here to help bring your vision to life.
+        </p>
+        <a href="connect.html" class="cta-btn">GET IN TOUCH</a>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p class="footer-text">© 2025 MEISHA VERNELL. ALL RIGHTS RESERVED.</p>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile menu toggle
+        const navToggle = document.getElementById('navToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        navToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Close menu when clicking a link
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>

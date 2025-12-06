@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MEISHA VERNELL | Coming Soon</title>
+    <title>MEISHA VERNELL | Welcome to my world </title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Bebas+Neue&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
@@ -60,128 +60,6 @@
             position: fixed;
             pointer-events: none;
             z-index: 9999;
-        }
-
-        /* Navigation */
-        .nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            padding: 20px 50px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.7) 50%, transparent 100%);
-            transition: background 0.3s ease, opacity 0.3s ease;
-        }
-
-        .nav.scrolled {
-            background: rgba(0, 0, 0, 0.95);
-            backdrop-filter: blur(10px);
-        }
-
-        .nav.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .nav-logo {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.8rem;
-            font-weight: 300;
-            font-style: italic;
-            color: var(--gold);
-            text-decoration: none;
-            letter-spacing: 0.1rem;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 40px;
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .nav-link {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.7rem;
-            font-weight: 400;
-            letter-spacing: 0.15rem;
-            color: var(--white);
-            text-decoration: none;
-            text-transform: uppercase;
-            transition: color 0.3s ease;
-            position: relative;
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background: var(--gold);
-            transition: width 0.3s ease;
-        }
-
-        .nav-link:hover {
-            color: var(--gold);
-        }
-
-        .nav-link:hover::after {
-            width: 100%;
-        }
-
-        .nav-right {
-            width: 100px;
-        }
-
-        .nav-toggle {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            cursor: pointer;
-            z-index: 1001;
-        }
-
-        .nav-toggle span {
-            width: 25px;
-            height: 1px;
-            background: var(--white);
-            transition: all 0.3s ease;
-        }
-
-        @media (max-width: 768px) {
-            .nav {
-                padding: 15px 25px;
-            }
-
-            .nav-links {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100vh;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                background: var(--black);
-                gap: 30px;
-                transform: translateX(-100%);
-                transition: transform 0.3s ease;
-            }
-
-            .nav-links.active {
-                transform: translateX(0);
-            }
-
-            .nav-toggle {
-                display: flex;
-            }
         }
 
         /* Intro Video Screen */
@@ -300,6 +178,9 @@
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             overflow: hidden;
         }
 
@@ -311,8 +192,8 @@
         .intro-video {
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            object-position: center top; /* Shows your face at the top */
+            object-fit: contain; /* Shows FULL video, no cropping */
+            background: var(--black);
         }
 
         /* Skip Button */
@@ -1244,27 +1125,6 @@
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="nav" id="nav">
-        <a href="index.html" class="nav-logo">MV</a>
-        
-        <div class="nav-links" id="navLinks">
-            <a href="portfolio.html" class="nav-link">Portfolio</a>
-            <a href="about.html" class="nav-link">About Mei</a>
-            <a href="connect.html" class="nav-link">Connect</a>
-        </div>
-
-        <div class="nav-right">
-            <!-- Future: Login button -->
-        </div>
-
-        <div class="nav-toggle" id="navToggle">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-    </nav>
-
     <!-- Intro Video Screen -->
     <div class="intro-screen" id="introScreen">
         <!-- Poster/Thumbnail Background -->
@@ -1273,8 +1133,8 @@
         <!-- Enter Content -->
         <div class="intro-content" id="introContent">
             <h1 class="intro-logo">MEISHA VERNELL</h1>
-            <button class="enter-btn" id="enterBtn">ENTER</button>
-            <p class="intro-hint">CLICK TO EXPERIENCE</p>
+            <button class="enter-btn" id="enterBtn">Welcome</button>
+            <p class="intro-hint">CLICK TO  EXPERIENCE MYWORLD</p>
         </div>
 
         <!-- Video Player (hidden until Enter is clicked) -->
@@ -1321,7 +1181,7 @@
             <p class="tagline">REBRANDING IN PROGRESS</p>
             <p class="coming-soon">SOMETHING EXTRAORDINARY IS COMING</p>
             
-            <div class="hero-cta" id="connect">
+            <div class="hero-cta">
                 <button class="cta-btn" id="openModalBtn">JOIN THE WAITLIST</button>
             </div>
 
@@ -1360,7 +1220,7 @@
 
         <!-- Footer -->
         <div class="footer">
-            <p class="footer-text">© 2025 MEISHA VERNELL</p>
+            <p class="footer-text">© 2026 MEISHA VERNELL</p>
         </div>
     </section>
 
@@ -1371,15 +1231,15 @@
         <div class="modal">
             <button class="modal-close" id="closeModalBtn">✕</button>
             
-            <h2 class="modal-title">Join the Inner Circle</h2>
-            <p class="modal-subtitle">Be first to know about brand updates, collaborations, and partnership opportunities</p>
+            <h2 class="modal-title">Be a part of my cirle</h2>
+            <p class="modal-subtitle"> Get to know me as an engineer, a mother,and a business woman. <br /> Step into my world.</p>
 
             <!-- Success Message -->
             <div class="success-message" id="successMessage">
                 <div class="success-icon">✓</div>
-                <h3 class="success-title">Thank You!</h3>
-                <p class="success-text">Your inquiry has been received.<br>We'll be in touch soon.</p>
-                <button class="success-close-btn" id="successCloseBtn">CONTINUE</button>
+                <h3 class="success-title">Welcome!</h3>
+                <p class="success-text">I am sure my team or me have recieved your message. <br /> We will touch base soon.<br>Keep an eye out on your inbox.</p>
+                <button class="success-close-btn" id="successCloseBtn">keep exploring</button>
             </div>
 
             <!-- =====================================================
@@ -1442,7 +1302,7 @@
                     <textarea name="message" class="form-textarea" placeholder="Tell us more about your inquiry..."></textarea>
                 </div>
 
-                <button type="submit" class="submit-btn">SUBMIT</button>
+                <button type="submit" class="submit-btn">Take A Peak</button>
             </form>
         </div>
     </div>
@@ -1943,52 +1803,6 @@
                 submitBtn.textContent = 'SUBMIT';
                 submitBtn.disabled = false;
             }
-        });
-
-        // Nav scroll effect
-        window.addEventListener('scroll', () => {
-            const nav = document.getElementById('nav');
-            if (window.scrollY > 50) {
-                nav.classList.add('scrolled');
-            } else {
-                nav.classList.remove('scrolled');
-            }
-        });
-
-        // Hide nav during intro screen
-        const introScreen = document.getElementById('introScreen');
-        const nav = document.getElementById('nav');
-        
-        const observer = new MutationObserver((mutations) => {
-            mutations.forEach((mutation) => {
-                if (mutation.target.classList.contains('hidden')) {
-                    nav.classList.remove('hidden');
-                } else {
-                    nav.classList.add('hidden');
-                }
-            });
-        });
-        
-        observer.observe(introScreen, { attributes: true, attributeFilter: ['class'] });
-        
-        // Initially hide nav if intro is showing
-        if (!introScreen.classList.contains('hidden')) {
-            nav.classList.add('hidden');
-        }
-
-        // Mobile nav toggle
-        const navToggle = document.getElementById('navToggle');
-        const navLinks = document.getElementById('navLinks');
-
-        navToggle.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-        });
-
-        // Close nav on link click
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-            });
         });
     </script>
 </body>

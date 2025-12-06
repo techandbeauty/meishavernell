@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | MEISHA VERNELL</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Bebas+Neue&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --black: #000000;
+            --dark: #0a0a0a;
+            --dark-gray: #1a1a1a;
+            --mid-gray: #2a2a2a;
+            --light-gray: #888888;
+            --white: #ffffff;
+            --gold: #c9a962;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--black);
+            color: var(--white);
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.7) 50%, transparent 100%);
+            transition: background 0.3s ease;
+        }
+
+        .nav.scrolled {
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            font-weight: 300;
+            font-style: italic;
+            color: var(--gold);
+            text-decoration: none;
+            letter-spacing: 0.1rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .nav-link {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 400;
+            letter-spacing: 0.15rem;
+            color: var(--white);
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--gold);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--gold);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-link.active {
+            color: var(--gold);
+        }
+
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .nav-right {
+            width: 100px;
+        }
+
+        .nav-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .nav-toggle span {
+            width: 25px;
+            height: 1px;
+            background: var(--white);
+            transition: all 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .nav {
+                padding: 15px 25px;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                background: var(--black);
+                gap: 30px;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            .nav-links.active {
+                transform: translateX(0);
+            }
+
+            .nav-toggle {
+                display: flex;
+            }
+        }
+
+        /* Header */
+        .header {
+            padding: 120px 40px 60px;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-weight: 300;
+            letter-spacing: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .header-subtitle {
+            font-size: 0.75rem;
+            letter-spacing: 0.2rem;
+            color: var(--light-gray);
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+
+        .header-description {
+            font-size: 0.9rem;
+            line-height: 1.8;
+            color: var(--light-gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Filter Tabs */
+        .filter-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 20px 40px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .filter-tab {
+            padding: 10px 25px;
+            background: transparent;
+            border: 1px solid var(--mid-gray);
+            color: var(--light-gray);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.65rem;
+            letter-spacing: 0.15rem;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-tab:hover, .filter-tab.active {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        /* Portfolio Grid - Instagram Style */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4px;
+            padding: 0 4px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .portfolio-item {
+            position: relative;
+            aspect-ratio: 1;
+            overflow: hidden;
+            cursor: pointer;
+            background: var(--dark-gray);
+        }
+
+        .portfolio-item img,
+        .portfolio-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease, filter 0.3s ease;
+        }
+
+        .portfolio-item:hover img,
+        .portfolio-item:hover video {
+            transform: scale(1.05);
+            filter: brightness(0.6);
+        }
+
+        .portfolio-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .portfolio-item:hover .portfolio-overlay { opacity: 1; }
+
+        .portfolio-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.1rem;
+            letter-spacing: 0.15rem;
+            margin-bottom: 5px;
+        }
+
+        .portfolio-category {
+            font-size: 0.6rem;
+            letter-spacing: 0.1rem;
+            color: var(--gold);
+            text-transform: uppercase;
+        }
+
+        .portfolio-video-hint {
+            font-size: 0.55rem;
+            letter-spacing: 0.1rem;
+            color: var(--white);
+            margin-top: 8px;
+            opacity: 0.8;
+        }
+
+        /* Loading Animation */
+        .portfolio-item.loading {
+            background: linear-gradient(90deg, var(--dark-gray) 25%, var(--mid-gray) 50%, var(--dark-gray) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Project Modal */
+        .project-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            padding: 20px;
+        }
+
+        .project-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .project-modal-content {
+            background: var(--dark);
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid var(--mid-gray);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .project-modal-image {
+            aspect-ratio: 1;
+            overflow: hidden;
+            background: var(--black);
+        }
+
+        .project-modal-image img,
+        .project-modal-image video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .project-modal-info {
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: transparent;
+            border: 1px solid var(--mid-gray);
+            color: var(--white);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .project-modal-close:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        .project-modal-category {
+            font-size: 0.6rem;
+            letter-spacing: 0.2rem;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .project-modal-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            font-weight: 300;
+            margin-bottom: 15px;
+        }
+
+        .project-modal-description {
+            font-size: 0.85rem;
+            line-height: 1.8;
+            color: var(--light-gray);
+            margin-bottom: 25px;
+            flex-grow: 1;
+        }
+
+        .project-modal-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 25px;
+        }
+
+        .tech-tag {
+            padding: 5px 12px;
+            background: var(--mid-gray);
+            font-size: 0.6rem;
+            letter-spacing: 0.1rem;
+            text-transform: uppercase;
+        }
+
+        .project-modal-actions {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .project-btn {
+            padding: 14px 30px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 0.2rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .project-btn-primary {
+            background: var(--gold);
+            color: var(--black);
+            border: 1px solid var(--gold);
+        }
+
+        .project-btn-primary:hover {
+            background: transparent;
+            color: var(--gold);
+        }
+
+        .project-btn-secondary {
+            background: transparent;
+            color: var(--white);
+            border: 1px solid var(--mid-gray);
+        }
+
+        .project-btn-secondary:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        /* Featured Brands Section */
+        .featured-section {
+            padding: 80px 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 0.8rem;
+            letter-spacing: 0.3rem;
+            color: var(--gold);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .featured-brands {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .brand-card {
+            background: var(--dark-gray);
+            border: 1px solid var(--mid-gray);
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .brand-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-5px);
+        }
+
+        .brand-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 300;
+            margin-bottom: 10px;
+        }
+
+        .brand-url {
+            font-size: 0.7rem;
+            color: var(--gold);
+            letter-spacing: 0.1rem;
+        }
+
+        .brand-description {
+            font-size: 0.75rem;
+            color: var(--light-gray);
+            margin-top: 15px;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 40px;
+            text-align: center;
+            border-top: 1px solid var(--mid-gray);
+            margin-top: 60px;
+        }
+
+        .footer-text {
+            font-size: 0.6rem;
+            letter-spacing: 0.15rem;
+            color: var(--mid-gray);
+        }
+
+        /* Noise */
+        .noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .project-modal-content { grid-template-columns: 1fr; }
+            .project-modal-image { aspect-ratio: 16/9; }
+        }
+
+        @media (max-width: 768px) {
+            .nav { padding: 15px 20px; }
+            .header { padding: 100px 20px 40px; }
+            .portfolio-grid { grid-template-columns: repeat(2, 1fr); gap: 2px; padding: 0 2px; }
+            .filter-tabs { padding: 15px 20px; }
+            .filter-tab { padding: 8px 15px; font-size: 0.6rem; }
+            .project-modal-info { padding: 25px; }
+            .featured-section { padding: 60px 20px; }
+        }
+
+        @media (max-width: 480px) {
+            .project-modal-actions { flex-direction: column; }
+            .project-btn { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="noise"></div>
+
+    <!-- Navigation -->
+    <nav class="nav" id="nav">
+        <a href="index.html" class="nav-logo">MV</a>
+        
+        <div class="nav-links" id="navLinks">
+            <a href="portfolio.html" class="nav-link active">Portfolio</a>
+            <a href="about.html" class="nav-link">About Mei</a>
+            <a href="connect.html" class="nav-link">Connect</a>
+        </div>
+
+        <div class="nav-right">
+            <!-- Future: Login button -->
+        </div>
+
+        <div class="nav-toggle" id="navToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="header">
+        <h1 class="header-title">PORTFOLIO</h1>
+        <p class="header-subtitle">Projects & Work</p>
+        <p class="header-description">
+            A collection of brands, applications, and digital experiences I've built. 
+            Click any project to learn more or visit the live site.
+        </p>
+    </header>
+
+    <!-- Filter Tabs -->
+    <div class="filter-tabs">
+        <button class="filter-tab active" data-filter="all">All</button>
+        <button class="filter-tab" data-filter="website">Websites</button>
+        <button class="filter-tab" data-filter="app">Apps</button>
+        <button class="filter-tab" data-filter="game">Games</button>
+        <button class="filter-tab" data-filter="brand">Brands</button>
+    </div>
+
+    <!-- Portfolio Grid -->
+    <div class="portfolio-grid" id="portfolioGrid">
+        <!-- Loaded from Cloudinary -->
+    </div>
+
+    <!-- Featured Brands -->
+    <section class="featured-section">
+        <h2 class="section-title">LIVE BRANDS & WEBSITES</h2>
+        <div class="featured-brands">
+            <a href="https://usemarc.com" target="_blank" rel="noopener" class="brand-card">
+                <h3 class="brand-name">MARC</h3>
+                <p class="brand-url">usemarc.com</p>
+                <p class="brand-description">AI-powered marketing assistant platform for business growth and automation.</p>
+            </a>
+            <a href="https://codexlabsinstitute.com" target="_blank" rel="noopener" class="brand-card">
+                <h3 class="brand-name">Codex Labs Institute</h3>
+                <p class="brand-url">codexlabsinstitute.com</p>
+                <p class="brand-description">Technology education platform with beginner-friendly programming courses.</p>
+            </a>
+            <a href="https://nexustechdigitalsolutions.net" target="_blank" rel="noopener" class="brand-card">
+                <h3 class="brand-name">Nexus Tech Digital Solutions</h3>
+                <p class="brand-url">nexustechdigitalsolutions.net</p>
+                <p class="brand-description">Full-service tech company offering web, mobile, and game development.</p>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p class="footer-text">© 2025 MEISHA VERNELL. ALL RIGHTS RESERVED.</p>
+    </footer>
+
+    <!-- Project Modal -->
+    <div class="project-modal" id="projectModal">
+        <button class="project-modal-close" id="modalClose">✕</button>
+        <div class="project-modal-content">
+            <div class="project-modal-image" id="modalImageContainer"></div>
+            <div class="project-modal-info">
+                <p class="project-modal-category" id="modalCategory"></p>
+                <h2 class="project-modal-title" id="modalTitle"></h2>
+                <p class="project-modal-description" id="modalDescription"></p>
+                <div class="project-modal-tech" id="modalTech"></div>
+                <div class="project-modal-actions" id="modalActions"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // CLOUDINARY CONFIGURATION
+        // ============================================
+        const CLOUDINARY_CLOUD_NAME = 'didqb05ko';
+        const CLOUDINARY_PORTFOLIO_TAG = 'mv-portfolio';
+        const GITHUB_USERNAME = 'techandbeauty'; // Your GitHub username
+
+        // Project metadata (matched by filename)
+        const PROJECT_METADATA = {
+            'marc': {
+                title: 'MARC',
+                category: 'website',
+                description: 'AI-powered marketing assistant platform. Features voice integration, social media automation, and cross-platform synchronization.',
+                technologies: ['React', 'Node.js', 'AI/ML', 'Firebase'],
+                liveUrl: 'https://usemarc.com',
+                githubUrl: null
+            },
+            'codexlabs': {
+                title: 'Codex Labs Institute',
+                category: 'website',
+                description: 'Technology education platform with beginner-friendly programming courses in Python, iOS, and web development.',
+                technologies: ['HTML', 'CSS', 'JavaScript'],
+                liveUrl: 'https://codexlabsinstitute.com',
+                githubUrl: 'https://github.com/techandbeauty/Codex-Labs-Institute-Website'
+            },
+            'nexustech': {
+                title: 'Nexus Tech Digital Solutions',
+                category: 'brand',
+                description: 'Full-service tech company offering web, mobile, and game development services.',
+                technologies: ['HTML', 'CSS', 'JavaScript'],
+                liveUrl: 'https://nexustechdigitalsolutions.net',
+                githubUrl: 'https://github.com/techandbeauty/NexusTech-Service-Portal'
+            },
+            'meishavernell': {
+                title: 'Meisha Vernell',
+                category: 'brand',
+                description: 'Personal brand website with luxury dark theme, horizontal scrolling gallery, and Cloudinary integration.',
+                technologies: ['HTML', 'CSS', 'JavaScript', 'Cloudinary'],
+                liveUrl: null,
+                githubUrl: 'https://github.com/techandbeauty/meishavernell'
+            },
+            'techdeck': {
+                title: 'Tech Deck App',
+                category: 'app',
+                description: 'Flashcard-based study platform for technology certifications featuring TARA AI companion.',
+                technologies: ['React Native', 'AI', 'Mobile'],
+                liveUrl: null,
+                githubUrl: null
+            },
+            'nexora': {
+                title: 'NeXora',
+                category: 'game',
+                description: 'Narrative-driven game about corporate betrayal and AI ownership, built in Unreal Engine.',
+                technologies: ['Unreal Engine', 'C++', 'Blueprints'],
+                liveUrl: null,
+                githubUrl: null
+            }
+        };
+
+        // Default placeholder - Your headphones/Reebok photo
+        const DEFAULT_IMAGE = 'https://res.cloudinary.com/didqb05ko/image/upload/c_fill,g_auto,w_800,h_800,q_auto,f_auto/IMG_4465_2_v42fzh.jpg';
+        
+        let allProjects = [];
+        let defaultImageUrl = DEFAULT_IMAGE;
+
+        // ============================================
+        // LOAD FROM CLOUDINARY
+        // ============================================
+        async function loadPortfolio() {
+            const grid = document.getElementById('portfolioGrid');
+            grid.innerHTML = Array(6).fill('<div class="portfolio-item loading"></div>').join('');
+
+            let cloudinaryMedia = [];
+            let githubProjects = [];
+
+            // Load from Cloudinary
+            try {
+                // Fetch images
+                const imgRes = await fetch(`https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/list/${CLOUDINARY_PORTFOLIO_TAG}.json?_=${Date.now()}`);
+                if (imgRes.ok) {
+                    const imgData = await imgRes.json();
+                    if (imgData.resources) {
+                        cloudinaryMedia = cloudinaryMedia.concat(imgData.resources.map(r => ({
+                            type: 'image',
+                            publicId: r.public_id,
+                            format: r.format,
+                            thumb: `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/c_fill,g_auto,w_800,h_800,q_auto,f_auto/${r.public_id}.${r.format}`,
+                            full: `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/q_auto,f_auto/${r.public_id}.${r.format}`
+                        })));
+                    }
+                }
+
+                // Fetch videos
+                const vidRes = await fetch(`https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/video/list/${CLOUDINARY_PORTFOLIO_TAG}.json?_=${Date.now()}`);
+                if (vidRes.ok) {
+                    const vidData = await vidRes.json();
+                    if (vidData.resources) {
+                        cloudinaryMedia = cloudinaryMedia.concat(vidData.resources.map(r => ({
+                            type: 'video',
+                            publicId: r.public_id,
+                            format: r.format,
+                            thumb: `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/video/upload/c_fill,w_800,h_800,q_auto,so_0/${r.public_id}.jpg`,
+                            full: `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/video/upload/q_auto/${r.public_id}.${r.format}`
+                        })));
+                    }
+                }
+
+                console.log(`Loaded ${cloudinaryMedia.length} items from Cloudinary`);
+            } catch (e) {
+                console.log('Cloudinary error:', e.message);
+            }
+
+            // Load from GitHub
+            try {
+                const ghRes = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=30`);
+                if (ghRes.ok) {
+                    const repos = await ghRes.json();
+                    githubProjects = repos
+                        .filter(r => !r.fork)
+                        .map(r => ({
+                            title: formatName(r.name),
+                            category: detectCategory(r.name, r.description, r.language),
+                            description: r.description || `A ${r.language || 'code'} project.`,
+                            technologies: [r.language].filter(Boolean),
+                            liveUrl: r.homepage || null,
+                            githubUrl: r.html_url,
+                            image: `https://opengraph.githubassets.com/1/${GITHUB_USERNAME}/${r.name}`,
+                            fullImage: `https://opengraph.githubassets.com/1/${GITHUB_USERNAME}/${r.name}`,
+                            mediaType: 'image',
+                            isGitHub: true
+                        }));
+                    console.log(`Loaded ${githubProjects.length} repos from GitHub`);
+                }
+            } catch (e) {
+                console.log('GitHub error:', e.message);
+            }
+
+            // Build projects list
+            if (cloudinaryMedia.length > 0) {
+                // Use Cloudinary as primary, match with metadata
+                allProjects = cloudinaryMedia.map((media, i) => {
+                    const filename = media.publicId.split('/').pop().toLowerCase().replace(/[^a-z0-9]/g, '');
+                    const meta = Object.entries(PROJECT_METADATA).find(([key]) => filename.includes(key));
+                    
+                    return {
+                        title: meta ? meta[1].title : formatName(media.publicId),
+                        category: meta ? meta[1].category : 'website',
+                        description: meta ? meta[1].description : 'A project from my portfolio.',
+                        technologies: meta ? meta[1].technologies : [],
+                        liveUrl: meta ? meta[1].liveUrl : null,
+                        githubUrl: meta ? meta[1].githubUrl : null,
+                        image: media.thumb,
+                        fullImage: media.full,
+                        mediaType: media.type
+                    };
+                });
+
+                // Add GitHub projects that aren't already in Cloudinary
+                const cloudinaryTitles = allProjects.map(p => p.title.toLowerCase());
+                githubProjects.forEach(gp => {
+                    if (!cloudinaryTitles.includes(gp.title.toLowerCase())) {
+                        allProjects.push(gp);
+                    }
+                });
+            } else if (githubProjects.length > 0) {
+                // Use GitHub projects with default image
+                allProjects = githubProjects.map(p => ({
+                    ...p,
+                    image: p.image || defaultImageUrl,
+                    fullImage: p.fullImage || defaultImageUrl
+                }));
+            } else {
+                // Fallback to metadata with default image
+                allProjects = Object.entries(PROJECT_METADATA).map(([id, meta]) => ({
+                    ...meta,
+                    image: defaultImageUrl,
+                    fullImage: defaultImageUrl,
+                    mediaType: 'image'
+                }));
+            }
+
+            renderProjects(allProjects);
+        }
+
+        function detectCategory(name, desc, lang) {
+            const n = (name || '').toLowerCase();
+            const d = (desc || '').toLowerCase();
+            if (n.includes('game') || d.includes('game')) return 'game';
+            if (n.includes('app') || d.includes('app') || d.includes('mobile')) return 'app';
+            return 'website';
+        }
+
+        function formatName(str) {
+            return str.split('/').pop().replace(/[-_]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+        }
+
+        // ============================================
+        // RENDER
+        // ============================================
+        function renderProjects(projects, filter = 'all') {
+            const grid = document.getElementById('portfolioGrid');
+            const filtered = filter === 'all' ? projects : projects.filter(p => p.category === filter);
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--light-gray);">
+                    <p>No projects found.</p>
+                    <p style="font-size:0.7rem;margin-top:10px;">Upload to Cloudinary with tag: <strong style="color:var(--gold);">mv-portfolio</strong></p>
+                </div>`;
+                return;
+            }
+
+            grid.innerHTML = filtered.map((p, i) => `
+                <div class="portfolio-item" data-index="${i}">
+                    ${p.mediaType === 'video' ? 
+                        `<video src="${p.fullImage}" muted loop playsinline poster="${p.image}" 
+                                onmouseenter="this.play()" onmouseleave="this.pause();this.currentTime=0;"></video>` :
+                        `<img src="${p.image}" alt="${p.title}" loading="lazy" onerror="this.src='${defaultImageUrl}'">`
+                    }
+                    <div class="portfolio-overlay">
+                        <h3 class="portfolio-title">${p.title}</h3>
+                        <p class="portfolio-category">${p.category}</p>
+                        ${p.mediaType === 'video' ? '<p class="portfolio-video-hint">▶ VIDEO</p>' : ''}
+                    </div>
+                </div>
+            `).join('');
+
+            document.querySelectorAll('.portfolio-item').forEach(item => {
+                item.addEventListener('click', () => openModal(filtered[parseInt(item.dataset.index)]));
+            });
+        }
+
+        // ============================================
+        // FILTERS
+        // ============================================
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                renderProjects(allProjects, tab.dataset.filter);
+            });
+        });
+
+        // ============================================
+        // MODAL
+        // ============================================
+        const modal = document.getElementById('projectModal');
+
+        function openModal(project) {
+            const container = document.getElementById('modalImageContainer');
+            container.innerHTML = project.mediaType === 'video' ?
+                `<video src="${project.fullImage}" controls autoplay style="width:100%;height:100%;object-fit:cover;"></video>` :
+                `<img src="${project.fullImage || project.image}" alt="${project.title}" style="width:100%;height:100%;object-fit:cover;">`;
+
+            document.getElementById('modalCategory').textContent = project.category;
+            document.getElementById('modalTitle').textContent = project.title;
+            document.getElementById('modalDescription').textContent = project.description;
+            document.getElementById('modalTech').innerHTML = (project.technologies || []).map(t => `<span class="tech-tag">${t}</span>`).join('');
+            
+            let actions = '';
+            if (project.liveUrl) actions += `<a href="${project.liveUrl}" target="_blank" class="project-btn project-btn-primary">VISIT SITE</a>`;
+            if (project.githubUrl) actions += `<a href="${project.githubUrl}" target="_blank" class="project-btn project-btn-secondary">VIEW CODE</a>`;
+            if (!project.liveUrl && !project.githubUrl) actions = `<span class="project-btn project-btn-secondary" style="opacity:0.5;">COMING SOON</span>`;
+            document.getElementById('modalActions').innerHTML = actions;
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+            const video = document.querySelector('#modalImageContainer video');
+            if (video) video.pause();
+        }
+
+        document.getElementById('modalClose').addEventListener('click', closeModal);
+        modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', loadPortfolio);
+
+        // Nav scroll effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile nav toggle
+        const navToggle = document.getElementById('navToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        navToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>

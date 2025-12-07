@@ -3,19 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page Not Found | MEISHA VERNELL</title>
+    <title>Coming Soon | MEISHA VERNELL</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Bebas+Neue&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Bebas+Neue&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --black: #000000;
+            --black: #000;
             --dark: #0a0a0a;
             --dark-gray: #1a1a1a;
             --mid-gray: #2a2a2a;
-            --light-gray: #888888;
-            --white: #ffffff;
+            --light-gray: #888;
+            --white: #fff;
             --gold: #c9a962;
         }
 
@@ -25,70 +24,167 @@
             box-sizing: border-box;
         }
 
-        html, body {
-            height: 100%;
-        }
-
         body {
             font-family: 'Montserrat', sans-serif;
-            background-color: var(--black);
+            background: var(--black);
             color: var(--white);
+            min-height: 100vh;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
             padding: 20px;
+            overflow: hidden;
         }
 
-        .error-container {
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.03;
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, var(--gold) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: float 20s linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(50px, 50px) rotate(360deg); }
+        }
+
+        /* Vignette */
+        .vignette {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            background: radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.6) 100%);
+        }
+
+        /* Content */
+        .content {
+            position: relative;
+            z-index: 10;
             max-width: 600px;
         }
 
-        .error-code {
+        .logo {
             font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(6rem, 20vw, 12rem);
+            font-size: 1.5rem;
             font-weight: 300;
-            line-height: 1;
+            font-style: italic;
             color: var(--gold);
-            margin-bottom: 1rem;
-            animation: fadeInUp 1s ease backwards;
-        }
-
-        .error-title {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(1rem, 3vw, 1.5rem);
-            letter-spacing: 0.4rem;
-            color: var(--white);
-            margin-bottom: 1.5rem;
-            animation: fadeInUp 1s ease 0.2s backwards;
-        }
-
-        .error-text {
-            font-weight: 300;
-            font-size: 0.9rem;
-            line-height: 1.8;
-            color: var(--light-gray);
-            margin-bottom: 2.5rem;
-            animation: fadeInUp 1s ease 0.4s backwards;
-        }
-
-        .home-btn {
-            display: inline-block;
-            padding: 16px 45px;
-            background: transparent;
-            border: 1px solid var(--gold);
-            color: var(--gold);
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 0.9rem;
-            letter-spacing: 0.3rem;
+            letter-spacing: 0.1rem;
+            margin-bottom: 3rem;
             text-decoration: none;
+            display: inline-block;
+            transition: opacity 0.3s;
+        }
+
+        .logo:hover {
+            opacity: 0.8;
+        }
+
+        .error-code {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(6rem, 20vw, 12rem);
+            letter-spacing: 1rem;
+            color: var(--dark-gray);
+            line-height: 1;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .error-code::after {
+            content: '404';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            color: transparent;
+            -webkit-text-stroke: 1px var(--gold);
+            animation: glitch 3s infinite;
+        }
+
+        @keyframes glitch {
+            0%, 90%, 100% { transform: translate(0); opacity: 1; }
+            92% { transform: translate(2px, -2px); opacity: 0.8; }
+            94% { transform: translate(-2px, 2px); opacity: 0.8; }
+            96% { transform: translate(2px, 2px); opacity: 0.8; }
+            98% { transform: translate(-2px, -2px); opacity: 0.8; }
+        }
+
+        .title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.8rem, 5vw, 3rem);
+            font-weight: 300;
+            letter-spacing: 0.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1rem;
+            letter-spacing: 0.4rem;
+            color: var(--gold);
+            margin-bottom: 1.5rem;
+        }
+
+        .message {
+            font-size: 0.85rem;
+            font-weight: 300;
+            color: var(--light-gray);
+            line-height: 1.8;
+            margin-bottom: 2.5rem;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Buttons */
+        .buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 16px 40px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 0.25rem;
+            text-decoration: none;
+            cursor: pointer;
             transition: all 0.4s ease;
             position: relative;
             overflow: hidden;
-            animation: fadeInUp 1s ease 0.6s backwards;
         }
 
-        .home-btn::before {
+        .btn-primary {
+            background: transparent;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+        }
+
+        .btn-primary::before {
             content: '';
             position: absolute;
             top: 0;
@@ -100,77 +196,122 @@
             z-index: -1;
         }
 
-        .home-btn:hover {
+        .btn-primary:hover {
             color: var(--black);
         }
 
-        .home-btn:hover::before {
+        .btn-primary:hover::before {
             left: 0;
         }
 
-        .brand-name {
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid var(--mid-gray);
+            color: var(--white);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--white);
+        }
+
+        /* Social Links */
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 3rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--mid-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--light-gray);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+            transform: translateY(-3px);
+        }
+
+        .social-link svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Footer */
+        .footer {
             position: fixed;
-            bottom: 30px;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 0.9rem;
-            font-weight: 300;
-            letter-spacing: 0.3rem;
+            font-size: 0.55rem;
             color: var(--mid-gray);
+            letter-spacing: 0.15rem;
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
+        /* Responsive */
+        @media (max-width: 480px) {
+            .error-code {
+                letter-spacing: 0.5rem;
             }
-            to {
-                opacity: 1;
-                transform: translateY(0);
+
+            .buttons {
+                flex-direction: column;
+                align-items: center;
             }
-        }
 
-        /* Noise Overlay */
-        .noise {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1000;
-            opacity: 0.03;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-        }
-
-        /* Vignette */
-        .vignette {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 999;
-            background: radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.4) 100%);
+            .btn {
+                width: 100%;
+                max-width: 250px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="noise"></div>
+    <div class="bg-animation"></div>
     <div class="vignette"></div>
 
-    <div class="error-container">
-        <h1 class="error-code">404</h1>
-        <h2 class="error-title">PAGE NOT FOUND</h2>
-        <p class="error-text">
-            The page you're looking for doesn't exist or has been moved.<br>
-            Let's get you back on track.
+    <div class="content">
+        <a href="index.html" class="logo">MV</a>
+        
+        <div class="error-code">404</div>
+        
+        <h1 class="title">Page Not Found</h1>
+        <p class="subtitle">COMING SOON</p>
+        
+        <p class="message">
+            This page is currently under construction or doesn't exist yet. 
+            I'm always building something new — check back soon!
         </p>
-        <a href="/" class="home-btn">RETURN HOME</a>
+
+        <div class="buttons">
+            <a href="index.html" class="btn btn-primary">GO HOME</a>
+            <a href="portfolio.html" class="btn btn-secondary">VIEW PORTFOLIO</a>
+        </div>
+
+        <div class="social-links">
+            <a href="https://instagram.com/meisha_vernell" target="_blank" class="social-link" aria-label="Instagram">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </a>
+            <a href="https://www.tiktok.com/@meisha.vernell" target="_blank" class="social-link" aria-label="TikTok">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
+            </a>
+            <a href="https://www.linkedin.com/in/kemeishajones/" target="_blank" class="social-link" aria-label="LinkedIn">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+            </a>
+            <a href="https://github.com/techandbeauty" target="_blank" class="social-link" aria-label="GitHub">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            </a>
+        </div>
     </div>
 
-    <div class="brand-name">MEISHA VERNELL</div>
+    <p class="footer">© 2025 MEISHA VERNELL</p>
 </body>
 </html>

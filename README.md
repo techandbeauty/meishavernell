@@ -1,179 +1,199 @@
-# MEISHA VERNELL
+# MEISHA VERNELL — Personal Brand Website
 
-A modern, luxury brand website featuring an immersive intro experience, dynamic media gallery, and professional portfolio showcase.
+A luxury, cinematic personal brand website built from scratch with vanilla HTML, CSS, and JavaScript. Featuring a Beyoncé.com-inspired design with horizontal scrolling galleries, intro video experiences, and dynamic Cloudinary integration.
 
-![Status](https://img.shields.io/badge/Status-Live-brightgreen)
-![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)
-![Netlify](https://img.shields.io/badge/Netlify-00C7B7?logo=netlify&logoColor=white)
-![Cloudinary](https://img.shields.io/badge/Cloudinary-3448C5?logo=cloudinary&logoColor=white)
+🌐 **Live Site:** [meishavernell.com](https://meishavernell.com)
+
+![Status](https://img.shields.io/badge/Status-Live-success) ![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white) ![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black) ![Netlify](https://img.shields.io/badge/Netlify-00C7B7?logo=netlify&logoColor=white)
 
 ---
 
-## 🎯 Overview
+## 🎯 Project Overview
 
-This website serves as a professional brand presence and portfolio showcase, designed with a cinematic, high-end aesthetic inspired by luxury fashion brands. It features dynamic content management through Cloudinary, allowing for easy media updates without code changes.
+This website serves as my personal brand hub — showcasing my work as a **Software Engineer**, **Entrepreneur**, and **Tech Educator**. I designed and built every aspect of this site myself, demonstrating proficiency in modern web development practices.
 
-**Live Site:** [View Website](#) <!-- Add your Netlify URL here -->
-
----
-
-## ✨ Features
-
-### 🎬 Immersive Intro Experience
-- Full-screen video intro with sound (plays on user interaction)
-- Elegant "Enter" screen with brand identity
-- Skip option for returning visitors
-- Smooth fade transition to main content
-
-### 🖼️ Dynamic Media Gallery
-- Horizontal scrolling gallery (Beyoncé.com inspired)
-- Auto-advances with smooth animations
-- Supports images and videos
-- Touch/swipe enabled for mobile
-- Keyboard navigation (arrow keys)
-
-### 📁 Portfolio Section
-- Instagram-style grid layout
-- Filter by category (Websites, Apps, Games, Brands)
-- GitHub integration for automatic project updates
-- Click-to-expand project details with modal
-- Video previews play on hover
-
-### 📧 Contact & Lead Capture
-- Netlify Forms integration (no backend required)
-- Professional inquiry form with company/interest fields
-- Built-in spam protection
-- Success confirmation message
-
-### 📱 Fully Responsive
-- Optimized for desktop, tablet, and mobile
-- Touch-friendly navigation
-- Adaptive typography and spacing
+### What I Built
+- **Cinematic intro experience** with video playback from Cloudinary
+- **Horizontal scrolling image gallery** with smooth animations
+- **Dynamic portfolio** that pulls projects from GitHub API
+- **Responsive design** optimized for all devices
+- **Contact forms** integrated with Netlify Forms
+- **Custom 404 page** with animated effects
 
 ---
 
-## 🛠️ Tech Stack
+## 🛠️ Technical Skills Demonstrated
 
-| Technology | Purpose |
-|------------|---------|
-| **HTML5** | Semantic structure |
-| **CSS3** | Styling, animations, responsive design |
-| **JavaScript** | Interactivity, API integrations |
-| **Cloudinary** | Media hosting & optimization |
-| **Netlify** | Hosting & form handling |
-| **GitHub API** | Portfolio auto-sync |
+| Category | Technologies |
+|----------|-------------|
+| **Frontend** | HTML5, CSS3, JavaScript (ES6+) |
+| **Design** | Responsive Design, CSS Grid, Flexbox, CSS Animations |
+| **APIs** | GitHub REST API, Cloudinary API |
+| **Deployment** | Netlify, Git, GitHub |
+| **Media** | Cloudinary CDN, Video Integration |
+| **Forms** | Netlify Forms, AJAX Submissions |
+| **UX/UI** | Mobile-First Design, Custom Cursors, Smooth Scrolling |
 
 ---
 
-## 📂 Project Structure
+## 📁 Project Structure
 
 ```
 meishavernell/
-├── index.html          # Main landing page with intro & gallery
-├── portfolio.html      # Portfolio showcase with GitHub integration
-├── 404.html            # Custom error page
-└── README.md           # Documentation
+├── index.html          # Home page with intro video + horizontal gallery
+├── portfolio.html      # Dynamic portfolio with GitHub integration
+├── about.html          # Split-screen hero with credentials dashboard
+├── connect.html        # Contact form with Netlify integration
+├── 404.html            # Custom error page with animations
+└── README.md           # Project documentation
 ```
 
 ---
 
-## ⚙️ Configuration
+## ✨ Key Features
 
-### Cloudinary Setup
+### 1. Cinematic Intro Experience
+- Full-screen video plays on entry (loaded from Cloudinary)
+- Elegant "WELCOME" button with hover animations
+- Skip functionality for returning visitors
+- Smooth fade transition to main content
 
-The site uses Cloudinary for dynamic media management. Media is organized by tags:
+### 2. Horizontal Scrolling Gallery
+- Beyoncé.com-inspired horizontal scroll
+- Supports both images and videos
+- Mouse wheel, trackpad, touch, and keyboard navigation
+- Progress bar indicator
+- Smart cropping with face detection via Cloudinary
+
+### 3. Dynamic Portfolio
+- Fetches repositories directly from GitHub API
+- Displays project cards with descriptions and tech tags
+- Filter tabs: All, Websites, Apps, Games, Brands, Other
+- Modal popups with project details
+- Fallback images from Cloudinary
+
+### 4. Responsive Mobile Navigation
+- Hamburger menu slides from right
+- Overlay backdrop for focus
+- Smooth open/close animations
+- Touch-friendly tap targets
+
+### 5. Form Integration
+- Two Netlify-powered forms (village-signup, connect-form)
+- Honeypot spam protection
+- AJAX submission with loading states
+- Success message animations
+
+---
+
+## 🎨 Design System
+
+### Color Palette
+| Color | Hex | Usage |
+|-------|-----|-------|
+| Black | `#000000` | Background |
+| Dark Gray | `#1a1a1a` | Cards, containers |
+| Gold | `#c9a962` | Accents, CTAs, highlights |
+| White | `#ffffff` | Primary text |
+| Light Gray | `#888888` | Secondary text |
+
+### Typography
+- **Cormorant Garamond** — Elegant serif for headings
+- **Bebas Neue** — Bold sans-serif for labels/buttons
+- **Montserrat** — Clean sans-serif for body text
+
+---
+
+## 🔧 Cloudinary Integration
+
+The site uses Cloudinary for all media management:
 
 | Tag | Purpose |
 |-----|---------|
-| `mv-gallery` | Main page gallery images/videos |
+| `mv-gallery` | Main page horizontal gallery |
+| `mv-intro` | Intro video on homepage |
 | `mv-portfolio` | Portfolio project screenshots |
-| `mv-intro` | Intro video |
+| `mv-about-creator` | About page left hero image |
+| `mv-about-engineer` | About page right hero image |
 
-**To update content:**
-1. Upload media to Cloudinary
-2. Add the appropriate tag
-3. Content appears automatically (no code changes needed)
+**Setup:** Cloudinary Settings → Security → Uncheck "Resource list"
 
-### Environment Variables
+---
 
-```javascript
-CLOUDINARY_CLOUD_NAME = 'your_cloud_name'
-GITHUB_USERNAME = 'your_github_username'
-```
+## 📱 Responsive Breakpoints
+
+| Breakpoint | Target |
+|------------|--------|
+| `> 1024px` | Desktop |
+| `768px - 1024px` | Tablet |
+| `480px - 768px` | Mobile |
+| `< 480px` | Small phones |
 
 ---
 
 ## 🚀 Deployment
 
-### Deploy to Netlify
-
-1. Fork or clone this repository
-2. Connect to [Netlify](https://app.netlify.com)
-3. Deploy from GitHub (auto-deploys on push)
-4. Configure custom domain (optional)
-
-### Manual Deployment
-
-1. Download the files
-2. Drag folder to [Netlify Drop](https://app.netlify.com/drop)
-3. Get instant live URL
+The site is deployed on **Netlify** with:
+- Automatic deploys from GitHub main branch
+- Form detection enabled
+- Custom domain configuration
+- SSL/HTTPS enabled
 
 ---
 
-## 📊 Performance
+## 📚 What I Learned
 
-- **Lighthouse Score:** 90+ Performance
-- **CDN-delivered** media via Cloudinary
-- **Lazy loading** for images
-- **Optimized assets** with auto-format (WebP/AVIF)
+Building this project helped me develop skills in:
 
----
-
-## 🔗 Related Projects
-
-| Project | Description | Link |
-|---------|-------------|------|
-| **MARC** | AI Marketing Assistant | [usemarc.com](https://usemarc.com) |
-| **Codex Labs Institute** | Tech Education Platform | [codexlabsinstitute.com](https://codexlabsinstitute.com) |
-| **Nexus Tech Digital Solutions** | Full-Service Tech Company | [nexustechdigitalsolutions.net](https://nexustechdigitalsolutions.net) |
+1. **API Integration** — Fetching and displaying data from GitHub and Cloudinary APIs
+2. **Advanced CSS** — Complex animations, transitions, and responsive layouts
+3. **JavaScript DOM Manipulation** — Dynamic content loading without frameworks
+4. **Performance Optimization** — Lazy loading, efficient event handling
+5. **Mobile-First Design** — Building for mobile before scaling up
+6. **Form Handling** — AJAX submissions, validation, user feedback
+7. **Git Workflow** — Version control, branching, deployment pipelines
+8. **Problem Solving** — Debugging across browsers and devices
 
 ---
 
-## 👩‍💻 About the Developer
+## 🔮 Future Enhancements
 
-**Meisha Vernell** — Software Engineer
-
-- 🎓 B.S. Information Technology (In Progress - 2030)
-- 🎓 A.S. Programming & Mobile Development
-- 🎓 A.S. Information Systems Technology (Cybersecurity)
-- 🔒 Secret Clearance Eligible
-- 💼 Founder, Nexus Tech Digital Solutions
-
-**Specializations:**
-- Web Development (HTML, CSS, JavaScript, React)
-- Mobile App Development
-- Game Development (Unreal Engine)
-- AI/ML Integration
-- Cloud Infrastructure
+- [ ] Add blog section with markdown support
+- [ ] Implement dark/light mode toggle
+- [ ] Add project case studies with detailed write-ups
+- [ ] Integrate analytics dashboard
+- [ ] Add testimonials carousel
+- [ ] Build admin panel for content management
 
 ---
 
-## 📬 Contact
+## 👩🏽‍💻 About Me
 
-- **Website:** [nexustechdigitalsolutions.net](https://nexustechdigitalsolutions.net)
-- **GitHub:** [@techandbeauty](https://github.com/techandbeauty)
-- **Email:** [Contact Form on Website](#)
+**Meisha Vernell** — Software Engineer & Managing Partner at S & J Capital Group
+
+I'm a software engineer with an active Secret clearance, currently pursuing degrees in Information Technology and Artificial Intelligence. I build web applications, iOS apps, and digital solutions for businesses.
+
+### Connect With Me
+- 🌐 Website: [meishavernell.com](https://meishavernell.com)
+- 💼 LinkedIn: [/in/kemeishajones](https://linkedin.com/in/kemeishajones)
+- 🐙 GitHub: [@techandbeauty](https://github.com/techandbeauty)
+- 📸 Instagram: [@meisha_vernell](https://instagram.com/meisha_vernell)
+- 🎵 TikTok: [@meisha.vernell](https://tiktok.com/@meisha.vernell)
+
+### Other Projects
+- **Tech Deck App** — iOS flashcard app for tech certifications (Swift/SwiftUI)
+- **MARC** — AI-powered marketing assistant platform
+- **Codex Labs Institute** — Technology education platform
+- **Nexus Tech Digital Solutions** — Full-service tech company
 
 ---
 
 ## 📄 License
 
-© 2025 Meisha Vernell. All rights reserved.
+This project is personal portfolio work. Code structure and techniques may be referenced for learning purposes.
 
 ---
 
 <p align="center">
-  <i>Built with precision. Designed with purpose.</i>
+  <i>Designed & Developed by Meisha Vernell © 2025</i>
 </p>

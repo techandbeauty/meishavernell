@@ -638,14 +638,15 @@
                 top: 0;
                 right: -100%;
                 width: 70%;
-                max-width: 300px;
+                max-width: 280px;
                 height: 100vh;
-                background: var(--dark);
+                background: rgba(10, 10, 10, 0.98);
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
                 gap: 30px;
                 transition: right 0.3s ease;
+                z-index: 1000;
             }
 
             .nav-links.active {
@@ -658,6 +659,10 @@
 
             .nav-right {
                 display: none;
+            }
+
+            .nav {
+                padding: 15px 20px;
             }
 
             .timeline-item,
@@ -720,11 +725,10 @@
     <section class="hero-split">
         <div class="hero-side hero-side-left">
             <div class="hero-image-container">
-                <!-- Upload meisha_laughing.PNG to Cloudinary and tag with: mv-about -->
-                <img src="https://res.cloudinary.com/didqb05ko/image/upload/q_auto,f_auto/mv-about-creator" 
+                <img id="creatorImage"
+                     src="https://res.cloudinary.com/didqb05ko/image/upload/q_auto,f_auto/IMG_4465_2_v42fzh.jpg" 
                      alt="Meisha Vernell - The Creator" 
-                     class="hero-image"
-                     onerror="this.src='https://res.cloudinary.com/didqb05ko/image/upload/q_auto,f_auto/IMG_4465_2_v42fzh.jpg'">
+                     class="hero-image">
             </div>
             <div class="hero-side-content">
                 <p class="hero-label">THE CREATOR</p>
@@ -742,11 +746,10 @@
 
         <div class="hero-side hero-side-right">
             <div class="hero-image-container">
-                <!-- Upload meishavernell_close_up_.JPG to Cloudinary and tag with: mv-about -->
-                <img src="https://res.cloudinary.com/didqb05ko/image/upload/q_auto,f_auto/mv-about-engineer" 
+                <img id="engineerImage"
+                     src="https://res.cloudinary.com/didqb05ko/image/upload/q_auto,f_auto/IMG_4465_2_v42fzh.jpg" 
                      alt="Meisha Vernell - The Engineer" 
-                     class="hero-image"
-                     onerror="this.src='https://res.cloudinary.com/didqb05ko/image/upload/q_auto,f_auto/IMG_4465_2_v42fzh.jpg'">
+                     class="hero-image">
             </div>
             <div class="hero-side-content">
                 <p class="hero-label">THE ENGINEER</p>
@@ -1011,6 +1014,40 @@
     </footer>
 
     <script>
+        const CLOUDINARY_CLOUD_NAME = 'didqb05ko';
+
+        // Load images from Cloudinary by tag
+        async function loadAboutImages() {
+            // Load Creator image (tagged: mv-about-creator)
+            try {
+                const creatorRes = await fetch(`https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/list/mv-about-creator.json?_=${Date.now()}`);
+                if (creatorRes.ok) {
+                    const data = await creatorRes.json();
+                    if (data.resources && data.resources.length > 0) {
+                        const img = data.resources[0];
+                        document.getElementById('creatorImage').src = 
+                            `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/q_auto,f_auto/${img.public_id}.${img.format}`;
+                    }
+                }
+            } catch (e) { console.log('Creator image not found'); }
+
+            // Load Engineer image (tagged: mv-about-engineer)
+            try {
+                const engineerRes = await fetch(`https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/list/mv-about-engineer.json?_=${Date.now()}`);
+                if (engineerRes.ok) {
+                    const data = await engineerRes.json();
+                    if (data.resources && data.resources.length > 0) {
+                        const img = data.resources[0];
+                        document.getElementById('engineerImage').src = 
+                            `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/q_auto,f_auto/${img.public_id}.${img.format}`;
+                    }
+                }
+            } catch (e) { console.log('Engineer image not found'); }
+        }
+
+        // Load images on page load
+        document.addEventListener('DOMContentLoaded', loadAboutImages);
+
         // Navbar scroll effect
         window.addEventListener('scroll', () => {
             const nav = document.getElementById('nav');

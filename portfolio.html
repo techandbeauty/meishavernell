@@ -107,7 +107,9 @@
         }
 
         .nav-right {
-            width: 100px;
+            min-width: 100px;
+            display: flex;
+            justify-content: flex-end;
         }
 
         .nav-toggle {
@@ -127,30 +129,35 @@
 
         @media (max-width: 768px) {
             .nav {
-                padding: 15px 25px;
+                padding: 15px 20px;
             }
 
             .nav-links {
                 position: fixed;
                 top: 0;
-                left: 0;
-                width: 100%;
+                right: -100%;
+                width: 70%;
+                max-width: 280px;
                 height: 100vh;
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
-                background: var(--black);
+                background: rgba(10, 10, 10, 0.98);
                 gap: 30px;
-                transform: translateX(-100%);
-                transition: transform 0.3s ease;
+                transition: right 0.3s ease;
+                z-index: 1000;
             }
 
             .nav-links.active {
-                transform: translateX(0);
+                right: 0;
             }
 
             .nav-toggle {
                 display: flex;
+            }
+
+            .nav-right {
+                display: none;
             }
         }
 
@@ -702,11 +709,13 @@
             }
         };
 
-        // Default placeholder - Your headphones/Reebok photo
-        const DEFAULT_IMAGE = 'https://res.cloudinary.com/didqb05ko/image/upload/c_fill,g_auto,w_800,h_800,q_auto,f_auto/IMG_4465_2_v42fzh.jpg';
+        // Default placeholder - fetched from Cloudinary mv-portfolio tag or fallback
+        const CLOUDINARY_CLOUD_NAME = 'didqb05ko';
+        const CLOUDINARY_PORTFOLIO_TAG = 'mv-portfolio';
+        const FALLBACK_IMAGE = 'https://res.cloudinary.com/didqb05ko/image/upload/c_fill,g_auto,w_800,h_800,q_auto,f_auto/IMG_4465_2_v42fzh.jpg';
         
+        let defaultImageUrl = FALLBACK_IMAGE;
         let allProjects = [];
-        let defaultImageUrl = DEFAULT_IMAGE;
 
         // ============================================
         // LOAD FROM CLOUDINARY
@@ -724,7 +733,11 @@
                 const imgRes = await fetch(`https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/list/${CLOUDINARY_PORTFOLIO_TAG}.json?_=${Date.now()}`);
                 if (imgRes.ok) {
                     const imgData = await imgRes.json();
-                    if (imgData.resources) {
+                    if (imgData.resources && imgData.resources.length > 0) {
+                        // Set first image as default
+                        const firstImg = imgData.resources[0];
+                        defaultImageUrl = `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/c_fill,g_auto,w_800,h_800,q_auto,f_auto/${firstImg.public_id}.${firstImg.format}`;
+                        
                         cloudinaryMedia = cloudinaryMedia.concat(imgData.resources.map(r => ({
                             type: 'image',
                             publicId: r.public_id,

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MEISHA VERNELL | Welcome to my world </title>
+    <title>MEISHA VERNELL | Coming Soon</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Bebas+Neue&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
@@ -216,6 +216,8 @@
             background-size: cover;
             background-position: center;
             background-color: var(--black);
+            transition: opacity 0.5s ease;
+            z-index: 1;
         }
 
         .intro-poster::after {
@@ -232,6 +234,12 @@
             position: relative;
             z-index: 2;
             text-align: center;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .intro-content.hidden {
+            opacity: 0;
+            visibility: hidden;
         }
 
         .intro-logo {
@@ -296,11 +304,12 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: var(--black);
+            background: #000;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.5s ease;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
             overflow: hidden;
+            z-index: 100;
         }
 
         .intro-video-container.playing {
@@ -309,10 +318,14 @@
         }
 
         .intro-video {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: center top; /* Shows your face at the top */
+            object-position: center center;
+            background: #000;
         }
 
         /* Skip Button */
@@ -1273,7 +1286,7 @@
         <!-- Enter Content -->
         <div class="intro-content" id="introContent">
             <h1 class="intro-logo">MEISHA VERNELL</h1>
-            <button class="enter-btn" id="enterBtn">WELCOME</button>
+            <button class="enter-btn" id="enterBtn">ENTER</button>
             <p class="intro-hint">CLICK TO EXPERIENCE</p>
         </div>
 
@@ -1319,10 +1332,10 @@
         <div class="hero-content">
             <h1 class="brand-name">MEISHA VERNELL</h1>
             <p class="tagline">REBRANDING IN PROGRESS</p>
-            <p class="coming-soon">There are so many layers and aspects to me, I needed a website.</p>
+            <p class="coming-soon">SOMETHING EXTRAORDINARY IS COMING</p>
             
             <div class="hero-cta" id="connect">
-                <button class="cta-btn" id="openModalBtn">BE APART OF MY CIRCLE</button>
+                <button class="cta-btn" id="openModalBtn">JOIN THE WAITLIST</button>
             </div>
 
             <!-- Social Links - Compact -->
@@ -1360,7 +1373,7 @@
 
         <!-- Footer -->
         <div class="footer">
-            <p class="footer-text">© 2026 MEISHA VERNELL</p>
+            <p class="footer-text">© 2025 MEISHA VERNELL</p>
         </div>
     </section>
 
@@ -1371,14 +1384,14 @@
         <div class="modal">
             <button class="modal-close" id="closeModalBtn">✕</button>
             
-            <h2 class="modal-title">Be A part of My Circle</h2>
-            <p class="modal-subtitle"> Know about all things Mei (pronouced 'me') before social media. <br /> Step inside of my world, my head, from my point of view.</p>
+            <h2 class="modal-title">Join the Inner Circle</h2>
+            <p class="modal-subtitle">Be first to know about brand updates, collaborations, and partnership opportunities</p>
 
             <!-- Success Message -->
             <div class="success-message" id="successMessage">
                 <div class="success-icon">✓</div>
-                <h3 class="success-title">Awesome you are here!</h3>
-                <p class="success-text">I am sure my team or I got your message. I appreciate you becoming apart of my cirle. I will touch base with you soon. <br>Check your inbox!</p>
+                <h3 class="success-title">Thank You!</h3>
+                <p class="success-text">Your inquiry has been received.<br>We'll be in touch soon.</p>
                 <button class="success-close-btn" id="successCloseBtn">CONTINUE</button>
             </div>
 
@@ -1428,10 +1441,10 @@
                     <label class="form-label">I'm interested in...</label>
                     <select name="interest" class="form-select">
                         <option value="">Select an option</option>
-                        <option value="Brand Updates">General Updates & Communications</option>
-                        <option value="Brand Deal"> Technology Services </option>
-                        <option value="Partnership">Collaborations & Partnerships</option>
-                      <!-- <option value="Collaboration">Interview/Scheduling</option> -->
+                        <option value="Brand Updates">Brand Updates & News</option>
+                        <option value="Brand Deal">Brand Deal / Sponsorship</option>
+                        <option value="Partnership">Business Partnership</option>
+                        <option value="Collaboration">Creative Collaboration</option>
                         <option value="Media">Media / Press Inquiry</option>
                         <option value="Other">Other</option>
                     </select>
@@ -1442,7 +1455,7 @@
                     <textarea name="message" class="form-textarea" placeholder="Tell us more about your inquiry..."></textarea>
                 </div>
 
-                <button type="submit" class="submit-btn">Connect</button>
+                <button type="submit" class="submit-btn">SUBMIT</button>
             </form>
         </div>
     </div>
@@ -1638,16 +1651,24 @@
         let introPosterUrl = null;
 
         async function loadIntroVideo() {
+            console.log('Loading intro video from Cloudinary tag:', CLOUDINARY_INTRO_TAG);
+            
             try {
                 // Fetch intro video from Cloudinary
                 const response = await fetch(
                     `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/video/list/${CLOUDINARY_INTRO_TAG}.json?_=${Date.now()}`
                 );
 
+                console.log('Cloudinary response status:', response.status);
+
                 if (response.ok) {
                     const data = await response.json();
+                    console.log('Cloudinary data:', data);
+                    
                     if (data.resources && data.resources.length > 0) {
                         const video = data.resources[0]; // Use first video with this tag
+                        console.log('Found video:', video.public_id, video.format);
+                        
                         introVideoUrl = `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/video/upload/q_auto/${video.public_id}.${video.format}`;
                         // Generate poster/thumbnail from video
                         introPosterUrl = `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/video/upload/c_fill,g_auto,w_1920,h_1080,q_auto,f_auto,so_0/${video.public_id}.jpg`;
@@ -1655,16 +1676,26 @@
                         // Set poster background
                         document.getElementById('introPoster').style.backgroundImage = `url(${introPosterUrl})`;
                         
-                        // Preload video
-                        document.getElementById('introVideo').src = introVideoUrl;
+                        // Set video source
+                        const introVideo = document.getElementById('introVideo');
+                        introVideo.src = introVideoUrl;
                         
-                        console.log('Intro video loaded:', introVideoUrl);
+                        // Preload video
+                        introVideo.load();
+                        
+                        console.log('Intro video URL:', introVideoUrl);
+                        console.log('Intro poster URL:', introPosterUrl);
                     } else {
-                        console.log('No intro video found. Using simple enter screen.');
+                        console.log('No videos found with tag:', CLOUDINARY_INTRO_TAG);
+                        console.log('Make sure you tagged your intro video with exactly: mv-intro');
                     }
+                } else {
+                    console.log('Cloudinary API error. Status:', response.status);
+                    console.log('Make sure "Resource list" is UNCHECKED in Cloudinary Settings → Security');
                 }
             } catch (error) {
                 console.log('Could not load intro video:', error.message);
+                console.log('Check browser console for CORS errors');
             }
         }
 
@@ -1682,24 +1713,42 @@
             const introContent = document.getElementById('introContent');
             const introVideoContainer = document.getElementById('introVideoContainer');
             const introVideo = document.getElementById('introVideo');
-            const introScreen = document.getElementById('introScreen');
+            const introPoster = document.getElementById('introPoster');
 
-            if (introVideoUrl) {
-                // Hide enter content, show video
-                introContent.style.opacity = '0';
-                introContent.style.visibility = 'hidden';
+            console.log('Enter clicked');
+            console.log('introVideoUrl:', introVideoUrl);
+            console.log('Video src:', introVideo.src);
+
+            if (introVideo.src && introVideo.src !== window.location.href) {
+                // Hide content and poster
+                introContent.style.display = 'none';
+                introPoster.style.display = 'none';
                 
-                setTimeout(() => {
-                    introVideoContainer.classList.add('playing');
-                    introVideo.play();
-                }, 500);
-
-                // When video ends, transition to main site
-                introVideo.addEventListener('ended', () => {
+                // Show video container immediately
+                introVideoContainer.classList.add('playing');
+                
+                // Play video
+                introVideo.play().then(() => {
+                    console.log('Video started playing');
+                    console.log('Video size:', introVideo.videoWidth, 'x', introVideo.videoHeight);
+                }).catch(err => {
+                    console.log('Play error:', err);
                     transitionToMainSite();
                 });
+
+                // When video ends
+                introVideo.onended = () => {
+                    console.log('Video ended');
+                    transitionToMainSite();
+                };
+
+                // If error
+                introVideo.onerror = (e) => {
+                    console.log('Video error:', e);
+                    transitionToMainSite();
+                };
             } else {
-                // No video, just transition to main site
+                console.log('No video, going to main site');
                 transitionToMainSite();
             }
         });

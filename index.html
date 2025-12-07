@@ -157,30 +157,53 @@
 
         @media (max-width: 768px) {
             .nav {
-                padding: 15px 25px;
+                padding: 15px 20px;
             }
 
             .nav-links {
                 position: fixed;
                 top: 0;
-                left: 0;
-                width: 100%;
+                right: -100%;
+                left: auto;
+                width: 75%;
+                max-width: 300px;
                 height: 100vh;
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
-                background: var(--black);
+                background: rgba(0, 0, 0, 0.98);
                 gap: 30px;
-                transform: translateX(-100%);
-                transition: transform 0.3s ease;
+                transition: right 0.3s ease;
+                z-index: 1001;
             }
 
             .nav-links.active {
-                transform: translateX(0);
+                right: 0;
             }
 
             .nav-toggle {
                 display: flex;
+                z-index: 1002;
+            }
+
+            .nav-right {
+                display: none;
+            }
+
+            /* Overlay behind mobile menu */
+            .nav-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 1000;
+            }
+
+            .nav-overlay.active {
+                display: block;
             }
         }
 
@@ -412,8 +435,26 @@
         .gallery-slide video {
             width: 100%;
             height: 100%;
-            object-fit: contain; /* Shows FULL image/video, no cropping */
+            object-fit: contain; /* Desktop: Shows full image */
             filter: brightness(0.55) contrast(1.1);
+        }
+
+        /* Mobile/Tablet: Fill the screen */
+        @media (max-width: 1024px) {
+            .gallery-slide img,
+            .gallery-slide video {
+                object-fit: cover; /* Fill screen, crop if needed */
+                object-position: center center;
+            }
+        }
+
+        /* For portrait orientation on mobile - prioritize showing faces */
+        @media (max-width: 768px) and (orientation: portrait) {
+            .gallery-slide img,
+            .gallery-slide video {
+                object-fit: cover;
+                object-position: center top; /* Show top of image (usually faces) */
+            }
         }
 
         .gallery-overlay {
@@ -1277,6 +1318,7 @@
             <span></span>
         </div>
     </nav>
+    <div class="nav-overlay" id="navOverlay"></div>
 
     <!-- Intro Video Screen -->
     <div class="intro-screen" id="introScreen">
@@ -1541,8 +1583,8 @@
                     if (imageData.resources && imageData.resources.length > 0) {
                         const images = imageData.resources.map(resource => ({
                             type: 'image',
-                            // Using g_auto for smart cropping (detects faces/subjects automatically)
-                            url: `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/c_fill,g_auto,w_1920,h_1080,q_auto,f_auto/${resource.public_id}.${resource.format}`
+                            // Fetch high quality without forced crop - let CSS handle display
+                            url: `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/q_auto,f_auto/${resource.public_id}.${resource.format}`
                         }));
                         mediaList = mediaList.concat(images);
                     }
@@ -1558,8 +1600,8 @@
                     if (videoData.resources && videoData.resources.length > 0) {
                         const videos = videoData.resources.map(resource => ({
                             type: 'video',
-                            // Videos with proper aspect ratio
-                            url: `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/video/upload/c_fill,w_1920,h_1080,q_auto/${resource.public_id}.${resource.format}`
+                            // Fetch video without forced crop
+                            url: `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/video/upload/q_auto/${resource.public_id}.${resource.format}`
                         }));
                         mediaList = mediaList.concat(videos);
                     }
@@ -2028,15 +2070,35 @@
         // Mobile nav toggle
         const navToggle = document.getElementById('navToggle');
         const navLinks = document.getElementById('navLinks');
+        const navOverlay = document.getElementById('navOverlay');
+
+        function openMobileNav() {
+            navLinks.classList.add('active');
+            navOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent scroll when menu open
+        }
+
+        function closeMobileNav() {
+            navLinks.classList.remove('active');
+            navOverlay.classList.remove('active');
+            document.body.style.overflow = ''; // Restore scroll
+        }
 
         navToggle.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
+            if (navLinks.classList.contains('active')) {
+                closeMobileNav();
+            } else {
+                openMobileNav();
+            }
         });
+
+        // Close nav when clicking overlay
+        navOverlay.addEventListener('click', closeMobileNav);
 
         // Close nav on link click
         document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
+                closeMobileNav();
             });
         });
     </script>

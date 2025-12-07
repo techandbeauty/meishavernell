@@ -55,10 +55,12 @@
         .noise { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:9999; opacity:0.03; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
         @media(max-width:768px) {
             .nav { padding:15px 20px; }
-            .nav-links { position:fixed; top:0; right:-100%; width:70%; max-width:280px; height:100vh; background:rgba(10,10,10,0.98); flex-direction:column; justify-content:center; align-items:center; gap:25px; transition:right 0.3s; z-index:1000; }
+            .nav-links { position:fixed; top:0; right:-100%; left:auto; width:75%; max-width:300px; height:100vh; background:rgba(0,0,0,0.98); flex-direction:column; justify-content:center; align-items:center; gap:25px; transition:right 0.3s; z-index:1001; }
             .nav-links.active { right:0; }
-            .nav-toggle { display:flex; }
+            .nav-toggle { display:flex; z-index:1002; }
             .nav-right { display:none; }
+            .nav-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; }
+            .nav-overlay.active { display:block; }
             .contact-section { grid-template-columns:1fr; gap:40px; padding:30px 20px 80px; }
             .form-row { grid-template-columns:1fr; }
             .contact-form { padding:30px 20px; }
@@ -86,6 +88,7 @@
             <span></span>
         </div>
     </nav>
+    <div class="nav-overlay" id="navOverlay"></div>
 
     <section class="hero">
         <div>
@@ -104,7 +107,7 @@
             </div>
             <div class="contact-item">
                 <p class="contact-label">EMAIL</p>
-                <p class="contact-value"><a href="mailto:officeof.meishavernell@gmail.com">officeof.meishavernell@gmail.com</a></p>
+                <p class="contact-value"><a href="/cdn-cgi/l/email-protection#2e414848474d4b414800434b475d464f584b5c404b42426e49434f4742004d4143"><span class="__cf_email__" data-cfemail="761910101f15131910581b131f051e1700130418131a1a36111b171f1a5815191b">[email&#160;protected]</span></a></p>
             </div>
             <div class="contact-item">
                 <p class="contact-label">COMPANY</p>
@@ -174,7 +177,7 @@
         <p class="footer-text">© 2025 MEISHA VERNELL. ALL RIGHTS RESERVED.</p>
     </footer>
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         // Navbar scroll effect
         window.addEventListener('scroll', () => {
             const nav = document.getElementById('nav');
@@ -186,15 +189,35 @@
         });
 
         // Mobile menu toggle
-        document.getElementById('navToggle').addEventListener('click', () => {
-            document.getElementById('navLinks').classList.toggle('active');
+        const navToggle = document.getElementById('navToggle');
+        const navLinks = document.getElementById('navLinks');
+        const navOverlay = document.getElementById('navOverlay');
+
+        function openMobileNav() {
+            navLinks.classList.add('active');
+            navOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMobileNav() {
+            navLinks.classList.remove('active');
+            navOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        navToggle.addEventListener('click', () => {
+            if (navLinks.classList.contains('active')) {
+                closeMobileNav();
+            } else {
+                openMobileNav();
+            }
         });
+
+        navOverlay.addEventListener('click', closeMobileNav);
 
         // Close menu on link click
         document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', () => {
-                document.getElementById('navLinks').classList.remove('active');
-            });
+            link.addEventListener('click', closeMobileNav);
         });
 
         // Form submission
@@ -202,11 +225,4 @@
             e.preventDefault();
             const form = e.target;
             try {
-                await fetch('/', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:new URLSearchParams(new FormData(form)).toString() });
-                form.style.display = 'none';
-                document.getElementById('formSuccess').classList.add('show');
-            } catch(err) { alert('Error submitting form. Please try again.'); }
-        });
-    </script>
-</body>
-</html>
+                await fetch('/', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:new URLSearchParams(new FormDa

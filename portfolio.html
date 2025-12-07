@@ -136,16 +136,17 @@
                 position: fixed;
                 top: 0;
                 right: -100%;
-                width: 70%;
-                max-width: 280px;
+                left: auto;
+                width: 75%;
+                max-width: 300px;
                 height: 100vh;
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
-                background: rgba(10, 10, 10, 0.98);
+                background: rgba(0, 0, 0, 0.98);
                 gap: 30px;
                 transition: right 0.3s ease;
-                z-index: 1000;
+                z-index: 1001;
             }
 
             .nav-links.active {
@@ -154,10 +155,26 @@
 
             .nav-toggle {
                 display: flex;
+                z-index: 1002;
             }
 
             .nav-right {
                 display: none;
+            }
+
+            .nav-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 1000;
+            }
+
+            .nav-overlay.active {
+                display: block;
             }
         }
 
@@ -582,6 +599,7 @@
             <span></span>
         </div>
     </nav>
+    <div class="nav-overlay" id="navOverlay"></div>
 
     <!-- Header -->
     <header class="header">
@@ -967,15 +985,32 @@
         // Mobile nav toggle
         const navToggle = document.getElementById('navToggle');
         const navLinks = document.getElementById('navLinks');
+        const navOverlay = document.getElementById('navOverlay');
+
+        function openMobileNav() {
+            navLinks.classList.add('active');
+            navOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMobileNav() {
+            navLinks.classList.remove('active');
+            navOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
 
         navToggle.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
+            if (navLinks.classList.contains('active')) {
+                closeMobileNav();
+            } else {
+                openMobileNav();
+            }
         });
 
+        navOverlay.addEventListener('click', closeMobileNav);
+
         document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-            });
+            link.addEventListener('click', closeMobileNav);
         });
     </script>
 </body>

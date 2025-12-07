@@ -774,11 +774,11 @@
                 if (ghRes.ok) {
                     const repos = await ghRes.json();
                     githubProjects = repos
-                        .filter(r => !r.fork)
+                        .filter(r => !r.fork) // Only exclude forks
                         .map(r => ({
                             title: formatName(r.name),
                             category: detectCategory(r.name, r.description, r.language),
-                            description: r.description || `A ${r.language || 'code'} project.`,
+                            description: r.description || `${r.language || 'Code'} project on GitHub.`,
                             technologies: [r.language].filter(Boolean),
                             liveUrl: r.homepage || null,
                             githubUrl: r.html_url,
@@ -788,19 +788,35 @@
                             isGitHub: true
                         }));
                     console.log(`Loaded ${githubProjects.length} repos from GitHub`);
+                } else {
+                    console.log('GitHub API error:', ghRes.status);
                 }
             } catch (e) {
                 console.log('GitHub error:', e.message);
             }
 
-            // Build projects list
+            // Build projects list - Always show GitHub + Cloudinary
+            // Start with GitHub projects
+            if (githubProjects.length > 0) {
+                allProjects = githubProjects.map(p => ({
+                    ...p,
+                    image: defaultImageUrl, // Use your default photo
+                    fullImage: defaultImageUrl
+                }));
+            }
+
+            // Add Cloudinary media as additional projects (or replace matching ones)
             if (cloudinaryMedia.length > 0) {
-                // Use Cloudinary as primary, match with metadata
-                allProjects = cloudinaryMedia.map((media, i) => {
+                cloudinaryMedia.forEach((media) => {
                     const filename = media.publicId.split('/').pop().toLowerCase().replace(/[^a-z0-9]/g, '');
                     const meta = Object.entries(PROJECT_METADATA).find(([key]) => filename.includes(key));
                     
-                    return {
+                    // Check if this matches an existing GitHub project
+                    const existingIndex = allProjects.findIndex(p => 
+                        filename.includes(p.title.toLowerCase().replace(/[^a-z0-9]/g, ''))
+                    );
+
+                    const project = {
                         title: meta ? meta[1].title : formatName(media.publicId),
                         category: meta ? meta[1].category : 'website',
                         description: meta ? meta[1].description : 'A project from my portfolio.',
@@ -811,24 +827,24 @@
                         fullImage: media.full,
                         mediaType: media.type
                     };
-                });
 
-                // Add GitHub projects that aren't already in Cloudinary
-                const cloudinaryTitles = allProjects.map(p => p.title.toLowerCase());
-                githubProjects.forEach(gp => {
-                    if (!cloudinaryTitles.includes(gp.title.toLowerCase())) {
-                        allProjects.push(gp);
+                    if (existingIndex >= 0) {
+                        // Replace with Cloudinary image but keep GitHub data
+                        allProjects[existingIndex] = {
+                            ...allProjects[existingIndex],
+                            image: media.thumb,
+                            fullImage: media.full,
+                            mediaType: media.type
+                        };
+                    } else {
+                        // Add as new project
+                        allProjects.push(project);
                     }
                 });
-            } else if (githubProjects.length > 0) {
-                // Use GitHub projects with default image
-                allProjects = githubProjects.map(p => ({
-                    ...p,
-                    image: p.image || defaultImageUrl,
-                    fullImage: p.fullImage || defaultImageUrl
-                }));
-            } else {
-                // Fallback to metadata with default image
+            }
+
+            // If still nothing, use fallback metadata
+            if (allProjects.length === 0) {
                 allProjects = Object.entries(PROJECT_METADATA).map(([id, meta]) => ({
                     ...meta,
                     image: defaultImageUrl,

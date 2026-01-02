@@ -37,7 +37,7 @@
             width: 100%;
             padding: 20px 50px;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
             z-index: 1000;
             background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.7) 50%, transparent 100%);
@@ -49,22 +49,10 @@
             backdrop-filter: blur(10px);
         }
 
-        .nav-logo {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.8rem;
-            font-weight: 300;
-            font-style: italic;
-            color: var(--gold);
-            text-decoration: none;
-            letter-spacing: 0.1rem;
-        }
-
         .nav-links {
             display: flex;
             gap: 40px;
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
+            align-items: center;
         }
 
         .nav-link {
@@ -106,8 +94,20 @@
             width: 100%;
         }
 
-        .nav-right {
-            min-width: 100px;
+        .nav-star {
+            font-size: 1.2rem;
+            color: var(--gold);
+            padding: 0 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-star::after {
+            display: none;
+        }
+
+        .nav-star:hover {
+            transform: scale(1.2);
+        }
             display: flex;
             justify-content: flex-end;
         }
@@ -153,13 +153,18 @@
                 right: 0;
             }
 
+            .nav-links .nav-link {
+                padding: 15px 30px;
+                display: block;
+                cursor: pointer;
+                -webkit-tap-highlight-color: transparent;
+            }
+
             .nav-toggle {
                 display: flex;
                 z-index: 1002;
-            }
-
-            .nav-right {
-                display: none;
+                position: absolute;
+                right: 20px;
             }
 
             .nav-overlay {
@@ -254,6 +259,20 @@
             overflow: hidden;
             cursor: pointer;
             background: var(--dark-gray);
+        }
+
+        .coming-soon-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 8px 16px;
+            background: rgba(201, 169, 98, 0.9);
+            color: var(--black);
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 0.15rem;
+            z-index: 10;
+            border-radius: 2px;
         }
 
         .portfolio-item img,
@@ -581,25 +600,23 @@
 
     <!-- Navigation -->
     <nav class="nav" id="nav">
-        <a href="index.html" class="nav-logo">MV</a>
-        
         <div class="nav-links" id="navLinks">
             <a href="portfolio.html" class="nav-link active">Portfolio</a>
-            <a href="about.html" class="nav-link">About Mei</a>
+            <a href="gallery.html" class="nav-link">The LookBook</a>
+            <a href="https://www.nexustechdigitalsolutions.net" target="_blank" class="nav-link">Tech</a>
+            <a href="index.html" class="nav-link nav-star">★</a>
+            <a href="https://www.codexlabsinstitute.com" target="_blank" class="nav-link">Codex Labs</a>
+            <a href="apps.html" class="nav-link">Apps</a>
             <a href="connect.html" class="nav-link">Connect</a>
         </div>
 
-        <div class="nav-right">
-            <!-- Future: Login button -->
-        </div>
-
-        <div class="nav-toggle" id="navToggle">
+        <div class="nav-toggle" id="navToggle" onclick="toggleMobileNav()">
             <span></span>
             <span></span>
             <span></span>
         </div>
     </nav>
-    <div class="nav-overlay" id="navOverlay"></div>
+    <div class="nav-overlay" id="navOverlay" onclick="closeMobileNav()"></div>
 
     <!-- Header -->
     <header class="header">
@@ -683,7 +700,8 @@
                 category: 'website',
                 description: 'AI-powered marketing assistant platform. Features voice integration, social media automation, and cross-platform synchronization.',
                 technologies: ['React', 'Node.js', 'AI/ML', 'Firebase'],
-                liveUrl: 'https://usemarc.com',
+                status: 'Coming Soon',
+                liveUrl: null,
                 githubUrl: null
             },
             'codexlabs': {
@@ -723,6 +741,7 @@
                 category: 'app',
                 description: 'AI-powered teaching assistant integrated into Tech Deck. Provides personalized study guidance and certification prep.',
                 technologies: ['Swift', 'OpenAI API', 'Firebase'],
+                status: 'Coming Soon',
                 liveUrl: null,
                 githubUrl: null
             },
@@ -928,6 +947,7 @@
 
             grid.innerHTML = filtered.map((p, i) => `
                 <div class="portfolio-item" data-index="${i}">
+                    ${p.status === 'Coming Soon' ? '<div class="coming-soon-badge">COMING SOON</div>' : ''}
                     ${p.mediaType === 'video' ? 
                         `<video src="${p.fullImage}" muted loop playsinline poster="${p.image}" 
                                 onmouseenter="this.play()" onmouseleave="this.pause();this.currentTime=0;"></video>` :
@@ -1009,34 +1029,26 @@
 
         // Mobile nav toggle
         const navToggle = document.getElementById('navToggle');
-        const navLinks = document.getElementById('navLinks');
-        const navOverlay = document.getElementById('navOverlay');
-
-        function openMobileNav() {
-            navLinks.classList.add('active');
-            navOverlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
+        // Simple global functions for mobile nav
+        function toggleMobileNav() {
+            const navLinks = document.getElementById('navLinks');
+            const navOverlay = document.getElementById('navOverlay');
+            if (navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+                navOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            } else {
+                navLinks.classList.add('active');
+                navOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
         }
 
         function closeMobileNav() {
-            navLinks.classList.remove('active');
-            navOverlay.classList.remove('active');
+            document.getElementById('navLinks').classList.remove('active');
+            document.getElementById('navOverlay').classList.remove('active');
             document.body.style.overflow = '';
         }
-
-        navToggle.addEventListener('click', () => {
-            if (navLinks.classList.contains('active')) {
-                closeMobileNav();
-            } else {
-                openMobileNav();
-            }
-        });
-
-        navOverlay.addEventListener('click', closeMobileNav);
-
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', closeMobileNav);
-        });
     </script>
 </body>
 </html>

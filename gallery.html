@@ -297,6 +297,10 @@
             cursor: pointer;
         }
 
+        .page-media-container video:hover {
+            opacity: 0.9;
+        }
+
         /* Video Play Button */
         .video-play-btn {
             position: absolute;
@@ -313,6 +317,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             z-index: 10;
+            pointer-events: auto;
         }
 
         .video-play-btn:hover {
@@ -745,9 +750,6 @@
             });
 
             bookInitialized = true;
-
-            // Attach video click handlers
-            attachVideoHandlers();
         }
 
         function createPageHTML(item, pageNum, side) {
@@ -779,26 +781,29 @@
         }
 
         function attachVideoHandlers() {
-            $('[data-video-container]').each(function() {
-                const container = $(this);
+            // Use event delegation since Turn.js manipulates the DOM
+            $(document).on('click', '[data-play-btn]', function(e) {
+                e.stopPropagation();
+                const container = $(this).closest('[data-video-container]');
                 const video = container.find('[data-video]')[0];
-                const playBtn = container.find('[data-play-btn]');
+                toggleVideo(video, container);
+            });
 
-                playBtn.on('click', function(e) {
-                    e.stopPropagation();
-                    toggleVideo(video, container);
-                });
-
-                $(video).on('click', function(e) {
-                    e.stopPropagation();
-                    toggleVideo(video, container);
-                });
+            $(document).on('click', '[data-video]', function(e) {
+                e.stopPropagation();
+                const video = this;
+                const container = $(this).closest('[data-video-container]');
+                toggleVideo(video, container);
             });
         }
 
         function toggleVideo(video, container) {
+            if (!video) return;
+            
             if (video.paused) {
-                video.play();
+                video.play().catch(err => {
+                    console.log('Video play failed:', err);
+                });
                 container.addClass('video-playing');
             } else {
                 video.pause();
@@ -868,6 +873,10 @@
         // INITIALIZE
         // ============================================
         $(document).ready(async function() {
+            // Attach video handlers first (using event delegation)
+            attachVideoHandlers();
+            
+            // Then load and build book
             await loadMedia(currentYear);
             buildBook();
         });

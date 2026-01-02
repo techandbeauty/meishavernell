@@ -7,6 +7,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Bebas+Neue&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Turn.js Library for Realistic Page Flipping -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/3/turn.min.js"></script>
+    
     <style>
         :root {
             --black: #000;
@@ -16,6 +21,7 @@
             --light-gray: #888;
             --white: #fff;
             --gold: #c9a962;
+            --paper: #f5f1e8;
         }
 
         * {
@@ -26,9 +32,10 @@
 
         body {
             font-family: 'Montserrat', sans-serif;
-            background: var(--black);
+            background: radial-gradient(ellipse at center, #1a1a1a 0%, #000000 100%);
             color: var(--white);
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
         /* Navigation */
@@ -79,19 +86,11 @@
             transition: width 0.3s ease;
         }
 
-        .nav-link:hover {
+        .nav-link:hover, .nav-link.active {
             color: var(--gold);
         }
 
-        .nav-link:hover::after {
-            width: 100%;
-        }
-
-        .nav-link.active {
-            color: var(--gold);
-        }
-
-        .nav-link.active::after {
+        .nav-link:hover::after, .nav-link.active::after {
             width: 100%;
         }
 
@@ -125,223 +124,298 @@
             transition: all 0.3s ease;
         }
 
-        /* Banner */
-        .gallery-banner {
-            width: 100%;
-            max-height: 400px;
-            object-fit: cover;
-            object-position: center;
-            display: block;
-            margin-top: 70px;
-        }
-
         /* Header */
-        .header {
-            padding: 60px 50px 40px;
-            max-width: 1400px;
-            margin: 0 auto;
+        .lookbook-header {
+            position: absolute;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            z-index: 10;
         }
 
-        .header-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-
-        .header-title-group h1 {
+        .lookbook-title {
             font-family: 'Cormorant Garamond', serif;
             font-size: clamp(2rem, 5vw, 3.5rem);
             font-weight: 600;
             color: var(--gold);
-            margin-bottom: 5px;
+            margin-bottom: 10px;
         }
 
-        .header-title-group p {
+        .lookbook-subtitle {
             font-family: 'Bebas Neue', sans-serif;
             font-size: 1rem;
             letter-spacing: 0.3rem;
             color: var(--white);
         }
 
-        /* Year Tabs - Netflix Style */
-        .year-tabs {
+        /* Year Selector */
+        .year-selector {
+            position: absolute;
+            top: 200px;
+            left: 50%;
+            transform: translateX(-50%);
             display: flex;
-            gap: 30px;
-            border-bottom: 2px solid var(--mid-gray);
-            padding-bottom: 0;
+            gap: 20px;
+            z-index: 10;
         }
 
-        .year-tab {
-            padding: 15px 5px;
+        .year-btn {
+            padding: 10px 25px;
             background: transparent;
-            border: none;
-            border-bottom: 3px solid transparent;
+            border: 1px solid var(--mid-gray);
+            color: var(--white);
             font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.2rem;
+            font-size: 0.9rem;
             letter-spacing: 0.15rem;
-            color: var(--light-gray);
             cursor: pointer;
             transition: all 0.3s ease;
+        }
+
+        .year-btn:hover, .year-btn.active {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        /* Book Container */
+        .book-wrapper {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 280px 40px 100px;
+            perspective: 2500px;
+        }
+
+        .book-container {
             position: relative;
-            bottom: -2px;
         }
 
-        .year-tab:hover {
-            color: var(--white);
-        }
-
-        .year-tab.active {
-            color: var(--white);
-            border-bottom-color: var(--gold);
-        }
-
-        /* Gallery Container */
-        .gallery-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 40px 50px 100px;
-        }
-
-        /* Instagram-style Grid */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 3px;
-        }
-
-        .gallery-item {
-            aspect-ratio: 1;
+        /* The Realistic 3D Book */
+        #flipbook {
+            width: 900px;
+            height: 600px;
             position: relative;
-            overflow: hidden;
-            cursor: pointer;
-            background: var(--dark-gray);
         }
 
-        .gallery-item.hidden {
-            display: none;
+        #flipbook .page {
+            width: 450px;
+            height: 600px;
+            background: var(--paper);
+            padding: 0;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
         }
 
-        .gallery-item img,
-        .gallery-item video {
+        #flipbook .page-content {
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            transition: transform 0.4s ease;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            background: var(--paper);
         }
 
-        .gallery-item:hover img,
-        .gallery-item:hover video {
-            transform: scale(1.05);
+        /* Cover Pages */
+        .cover {
+            background: linear-gradient(135deg, #1a1a1a 0%, #000 100%) !important;
+            border: 2px solid var(--gold);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
         }
 
-        /* Video play icon */
-        .gallery-item.video::before {
-            content: '▶';
+        .cover::before {
+            content: '';
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 2rem;
-            color: var(--white);
-            z-index: 2;
-            opacity: 0.8;
-            transition: opacity 0.3s ease;
-        }
-
-        .gallery-item.video:hover::before {
-            opacity: 1;
-        }
-
-        /* Lightbox - Netflix Style */
-        .lightbox {
-            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.97);
-            z-index: 9999;
-            display: none;
+            background: 
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(201, 169, 98, 0.03) 2px,
+                    rgba(201, 169, 98, 0.03) 4px
+                );
+            pointer-events: none;
+        }
+
+        .cover-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3.5rem;
+            font-weight: 600;
+            color: var(--gold);
+            margin-bottom: 15px;
+            text-align: center;
+            z-index: 2;
+            text-shadow: 0 2px 10px rgba(201, 169, 98, 0.5);
+        }
+
+        .cover-subtitle {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            letter-spacing: 0.4rem;
+            color: var(--white);
+            z-index: 2;
+        }
+
+        .cover-year {
+            position: absolute;
+            bottom: 40px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1rem;
+            letter-spacing: 0.3rem;
+            color: var(--light-gray);
+            z-index: 2;
+        }
+
+        /* Content Pages */
+        .page-media-container {
+            flex: 1;
+            width: 100%;
+            display: flex;
             align-items: center;
             justify-content: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .lightbox.active {
-            display: flex;
-            opacity: 1;
-        }
-
-        .lightbox-content {
-            max-width: 90vw;
-            max-height: 90vh;
+            overflow: hidden;
+            background: #000;
+            margin-bottom: 20px;
             position: relative;
         }
 
-        .lightbox-content img,
-        .lightbox-content video {
-            max-width: 90vw;
-            max-height: 85vh;
+        .page-media-container img,
+        .page-media-container video {
+            max-width: 100%;
+            max-height: 100%;
             object-fit: contain;
         }
 
-        .lightbox-close {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 50px;
-            height: 50px;
-            background: rgba(0,0,0,0.8);
-            border: 1px solid var(--mid-gray);
-            color: var(--white);
-            font-size: 1.5rem;
+        .page-media-container video {
             cursor: pointer;
-            transition: all 0.3s ease;
+        }
+
+        /* Video Play Button */
+        .video-play-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70px;
+            height: 70px;
+            background: rgba(201, 169, 98, 0.95);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
         }
 
-        .lightbox-close:hover {
-            border-color: var(--gold);
-            color: var(--gold);
+        .video-play-btn:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+            background: var(--gold);
         }
 
-        .lightbox-nav {
-            position: fixed;
+        .video-play-btn::after {
+            content: '';
+            width: 0;
+            height: 0;
+            border-left: 20px solid var(--black);
+            border-top: 12px solid transparent;
+            border-bottom: 12px solid transparent;
+            margin-left: 5px;
+        }
+
+        .video-playing .video-play-btn {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .page-number {
+            position: absolute;
+            bottom: 20px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 0.8rem;
+            color: var(--mid-gray);
+            letter-spacing: 0.15rem;
+        }
+
+        .page-number.left {
+            left: 30px;
+        }
+
+        .page-number.right {
+            right: 30px;
+        }
+
+        /* Page Caption */
+        .page-caption {
+            font-size: 0.75rem;
+            color: var(--mid-gray);
+            text-align: center;
+            font-style: italic;
+            margin-top: 10px;
+        }
+
+        /* Book Shadow & 3D Effect */
+        .turn-page {
+            box-shadow: 
+                0 0 20px rgba(0,0,0,0.5),
+                inset 0 0 0 1px rgba(255,255,255,0.1);
+        }
+
+        .turn-page-wrapper {
+            perspective: 2000px;
+        }
+
+        /* Navigation Arrows */
+        .book-nav {
+            position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            width: 50px;
-            height: 50px;
-            background: rgba(0, 0, 0, 0.8);
-            border: 1px solid var(--mid-gray);
+            width: 60px;
+            height: 60px;
+            background: rgba(0,0,0,0.8);
+            border: 2px solid var(--mid-gray);
             color: var(--white);
-            font-size: 1.5rem;
+            font-size: 2rem;
             cursor: pointer;
-            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 100;
+            border-radius: 50%;
         }
 
-        .lightbox-nav:hover {
+        .book-nav:hover {
             border-color: var(--gold);
             color: var(--gold);
+            background: rgba(0,0,0,0.95);
         }
 
-        .lightbox-prev { left: 20px; }
-        .lightbox-next { right: 20px; }
+        .book-nav.prev {
+            left: -100px;
+        }
 
-        .lightbox-counter {
-            position: fixed;
-            bottom: 30px;
+        .book-nav.next {
+            right: -100px;
+        }
+
+        /* Loading State */
+        .loading {
+            position: absolute;
+            top: 50%;
             left: 50%;
-            transform: translateX(-50%);
-            font-size: 0.75rem;
-            color: var(--light-gray);
-            letter-spacing: 0.1rem;
+            transform: translate(-50%, -50%);
+            font-size: 0.9rem;
+            color: var(--gold);
+            letter-spacing: 0.2rem;
+            font-family: 'Bebas Neue', sans-serif;
         }
 
         /* Footer */
@@ -358,6 +432,26 @@
         }
 
         /* Mobile Styles */
+        @media (max-width: 1024px) {
+            #flipbook {
+                width: 700px;
+                height: 467px;
+            }
+
+            #flipbook .page {
+                width: 350px;
+                height: 467px;
+            }
+
+            .book-nav.prev {
+                left: -70px;
+            }
+
+            .book-nav.next {
+                right: -70px;
+            }
+        }
+
         @media (max-width: 768px) {
             .nav {
                 padding: 15px 20px;
@@ -406,46 +500,56 @@
                 display: block;
             }
 
-            .gallery-banner {
-                max-height: 250px;
-                margin-top: 60px;
+            .book-wrapper {
+                padding: 260px 20px 60px;
             }
 
-            .header {
-                padding: 40px 20px 30px;
+            .lookbook-header {
+                top: 80px;
             }
 
-            .header-top {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 20px;
+            .year-selector {
+                top: 160px;
             }
 
-            .year-tabs {
-                width: 100%;
-                overflow-x: auto;
+            #flipbook {
+                width: 90vw;
+                max-width: 500px;
+                height: 60vw;
+                max-height: 333px;
             }
 
-            .gallery-container {
-                padding: 30px 0 80px;
+            #flipbook .page {
+                width: 45vw;
+                max-width: 250px;
+                height: 60vw;
+                max-height: 333px;
             }
 
-            .gallery-grid {
-                gap: 2px;
+            .page-content {
+                padding: 20px;
             }
 
-            .lightbox-nav {
-                width: 40px;
-                height: 40px;
+            .cover-title {
+                font-size: 2rem;
             }
 
-            .lightbox-prev { left: 10px; }
-            .lightbox-next { right: 10px; }
-        }
+            .cover-subtitle {
+                font-size: 0.9rem;
+            }
 
-        @media (max-width: 480px) {
-            .gallery-banner {
-                max-height: 180px;
+            .book-nav {
+                width: 45px;
+                height: 45px;
+                font-size: 1.5rem;
+            }
+
+            .book-nav.prev {
+                left: -60px;
+            }
+
+            .book-nav.next {
+                right: -60px;
             }
         }
     </style>
@@ -470,40 +574,25 @@
     </nav>
     <div class="nav-overlay" id="navOverlay" onclick="closeMobileNav()"></div>
 
-    <!-- Banner -->
-    <img src="https://res.cloudinary.com/didqb05ko/image/upload/c_fill,w_1920,h_400,g_auto,q_auto,f_auto/mv-banner.jpg" 
-         alt="Unfiltered: Pieces of Mei" 
-         class="gallery-banner"
-         onerror="this.style.display='none'">
-
-    <header class="header">
-        <div class="header-top">
-            <div class="header-title-group">
-                <h1>Unfiltered</h1>
-                <p>PIECES OF MEI</p>
-            </div>
-        </div>
-
-        <!-- Year Tabs - Netflix Style -->
-        <div class="year-tabs">
-            <button class="year-tab active" data-year="2026">2026</button>
-            <button class="year-tab" data-year="archive">Archive</button>
-        </div>
-    </header>
-
-    <div class="gallery-container">
-        <div class="gallery-grid" id="galleryGrid">
-            <!-- Gallery items loaded from Cloudinary -->
-        </div>
+    <div class="lookbook-header">
+        <h1 class="lookbook-title">Unfiltered</h1>
+        <p class="lookbook-subtitle">PIECES OF MEI</p>
     </div>
 
-    <!-- Lightbox -->
-    <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
-        <button class="lightbox-close" onclick="closeLightbox()">✕</button>
-        <button class="lightbox-nav lightbox-prev" onclick="prevItem(event)">‹</button>
-        <div class="lightbox-content" id="lightboxContent"></div>
-        <button class="lightbox-nav lightbox-next" onclick="nextItem(event)">›</button>
-        <p class="lightbox-counter" id="lightboxCounter"></p>
+    <div class="year-selector">
+        <button class="year-btn active" data-year="2026" onclick="loadYear('2026')">2026</button>
+        <button class="year-btn" data-year="archive" onclick="loadYear('archive')">Archive</button>
+    </div>
+
+    <div class="book-wrapper">
+        <div class="book-container">
+            <div id="flipbook">
+                <div class="loading">LOADING LOOKBOOK...</div>
+            </div>
+            
+            <button class="book-nav prev" onclick="previousPage()">‹</button>
+            <button class="book-nav next" onclick="nextPage()">›</button>
+        </div>
     </div>
 
     <footer class="footer">
@@ -521,18 +610,27 @@
         };
 
         let currentYear = '2026';
-        let galleryItems = [];
-        let currentIndex = 0;
+        let mediaItems = [];
+        let bookInitialized = false;
 
         // ============================================
-        // LOAD GALLERY
+        // LOAD MEDIA
         // ============================================
-        async function loadGallery(year) {
-            const grid = document.getElementById('galleryGrid');
-            grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 60px; color: var(--light-gray);">Loading...</div>';
+        async function loadYear(year) {
+            currentYear = year;
+            
+            // Update buttons
+            document.querySelectorAll('.year-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.year === year);
+            });
 
+            await loadMedia(year);
+            buildBook();
+        }
+
+        async function loadMedia(year) {
             const tag = CLOUDINARY_TAGS[year];
-            let mediaList = [];
+            let allMedia = [];
 
             try {
                 // Fetch images
@@ -542,15 +640,12 @@
 
                 if (imageResponse.ok) {
                     const imageData = await imageResponse.json();
-                    if (imageData.resources && imageData.resources.length > 0) {
+                    if (imageData.resources) {
                         const images = imageData.resources.map(resource => ({
                             type: 'image',
-                            id: resource.public_id,
-                            url: `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/c_fill,g_auto,w_600,h_600,q_auto,f_auto/${resource.public_id}.${resource.format}`,
-                            fullUrl: `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/q_auto,f_auto/${resource.public_id}.${resource.format}`,
-                            created: resource.created_at
+                            url: `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/q_auto,f_auto/${resource.public_id}.${resource.format}`
                         }));
-                        mediaList = mediaList.concat(images);
+                        allMedia = allMedia.concat(images);
                     }
                 }
 
@@ -561,151 +656,174 @@
 
                 if (videoResponse.ok) {
                     const videoData = await videoResponse.json();
-                    if (videoData.resources && videoData.resources.length > 0) {
+                    if (videoData.resources) {
                         const videos = videoData.resources.map(resource => ({
                             type: 'video',
-                            id: resource.public_id,
-                            url: `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/video/upload/c_fill,w_600,h_600,q_auto,so_0/${resource.public_id}.jpg`,
-                            fullUrl: `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/video/upload/q_auto/${resource.public_id}.${resource.format}`,
-                            created: resource.created_at
+                            url: `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/video/upload/q_auto/${resource.public_id}.${resource.format}`
                         }));
-                        mediaList = mediaList.concat(videos);
+                        allMedia = allMedia.concat(videos);
                     }
                 }
 
-                if (mediaList.length === 0) {
-                    grid.innerHTML = `
-                        <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px;">
-                            <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; color: var(--light-gray); margin-bottom: 1rem;">
-                                Coming Soon
-                            </p>
-                            <p style="font-size: 0.8rem; color: var(--mid-gray);">
-                                New moments will be shared here soon.
-                            </p>
-                        </div>
-                    `;
-                    return;
-                }
-
-                galleryItems = mediaList;
-                renderGallery(mediaList);
+                mediaItems = allMedia;
 
             } catch (error) {
-                console.error('Error loading gallery:', error);
-                grid.innerHTML = `
-                    <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px;">
-                        <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; color: var(--light-gray);">
-                            Gallery Coming Soon
-                        </p>
+                console.error('Error loading media:', error);
+                mediaItems = [];
+            }
+        }
+
+        // ============================================
+        // BUILD BOOK
+        // ============================================
+        function buildBook() {
+            const flipbook = $('#flipbook');
+            
+            // Destroy existing book if any
+            if (bookInitialized) {
+                flipbook.turn('destroy');
+            }
+
+            // Clear and rebuild pages
+            flipbook.html('');
+
+            // Front cover
+            flipbook.append(`
+                <div class="page cover">
+                    <h2 class="cover-title">The LookBook</h2>
+                    <p class="cover-subtitle">PIECES OF MEI</p>
+                    <p class="cover-year">${currentYear === '2026' ? '2026 EDITION' : 'ARCHIVE EDITION'}</p>
+                </div>
+            `);
+
+            // Content pages
+            if (mediaItems.length === 0) {
+                flipbook.append(`
+                    <div class="page">
+                        <div class="page-content" style="display:flex;align-items:center;justify-content:center;">
+                            <div style="text-align:center;color:var(--mid-gray);">
+                                <p style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;margin-bottom:1rem;">Coming Soon</p>
+                                <p style="font-size:0.8rem;">Upload photos/videos to Cloudinary</p>
+                                <p style="font-size:0.7rem;margin-top:0.5rem;">Tag: <strong style="color:var(--gold);">${CLOUDINARY_TAGS[currentYear]}</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                `);
+            } else {
+                mediaItems.forEach((item, index) => {
+                    const pageNum = index + 2; // +1 for cover, +1 for 1-based indexing
+                    const side = pageNum % 2 === 0 ? 'left' : 'right';
+                    
+                    flipbook.append(createPageHTML(item, pageNum, side));
+                });
+            }
+
+            // Back cover
+            flipbook.append(`
+                <div class="page cover">
+                    <h2 class="cover-title">Unfiltered</h2>
+                    <p class="cover-subtitle">THE END</p>
+                </div>
+            `);
+
+            // Initialize Turn.js
+            flipbook.turn({
+                width: 900,
+                height: 600,
+                autoCenter: true,
+                acceleration: true,
+                gradients: true,
+                elevation: 50,
+                duration: 1000,
+                pages: flipbook.children().length,
+                when: {
+                    turned: function(event, page) {
+                        // Update page numbers or other UI as needed
+                    }
+                }
+            });
+
+            bookInitialized = true;
+
+            // Attach video click handlers
+            attachVideoHandlers();
+        }
+
+        function createPageHTML(item, pageNum, side) {
+            if (item.type === 'video') {
+                return `
+                    <div class="page">
+                        <div class="page-content">
+                            <div class="page-media-container" data-video-container>
+                                <video src="${item.url}" playsinline data-video>
+                                </video>
+                                <div class="video-play-btn" data-play-btn></div>
+                            </div>
+                            <div class="page-number ${side}">${pageNum}</div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                return `
+                    <div class="page">
+                        <div class="page-content">
+                            <div class="page-media-container">
+                                <img src="${item.url}" alt="Page ${pageNum}" loading="lazy">
+                            </div>
+                            <div class="page-number ${side}">${pageNum}</div>
+                        </div>
                     </div>
                 `;
             }
         }
 
-        // ============================================
-        // RENDER GALLERY
-        // ============================================
-        function renderGallery(items) {
-            const grid = document.getElementById('galleryGrid');
-            grid.innerHTML = '';
+        function attachVideoHandlers() {
+            $('[data-video-container]').each(function() {
+                const container = $(this);
+                const video = container.find('[data-video]')[0];
+                const playBtn = container.find('[data-play-btn]');
 
-            items.forEach((item, index) => {
-                const div = document.createElement('div');
-                div.className = `gallery-item ${item.type === 'video' ? 'video' : ''}`;
-                div.onclick = () => openLightbox(index);
+                playBtn.on('click', function(e) {
+                    e.stopPropagation();
+                    toggleVideo(video, container);
+                });
 
-                if (item.type === 'video') {
-                    div.innerHTML = `<img src="${item.url}" alt="Video thumbnail" loading="lazy">`;
-                } else {
-                    div.innerHTML = `<img src="${item.url}" alt="Gallery image" loading="lazy">`;
-                }
-
-                grid.appendChild(div);
+                $(video).on('click', function(e) {
+                    e.stopPropagation();
+                    toggleVideo(video, container);
+                });
             });
         }
 
-        // ============================================
-        // YEAR TABS
-        // ============================================
-        const yearTabs = document.querySelectorAll('.year-tab');
-        yearTabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                yearTabs.forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                currentYear = tab.getAttribute('data-year');
-                loadGallery(currentYear);
-            });
-        });
-
-        // ============================================
-        // LIGHTBOX
-        // ============================================
-        function openLightbox(index) {
-            currentIndex = index;
-            const lightbox = document.getElementById('lightbox');
-            updateLightboxContent();
-            lightbox.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeLightbox(event) {
-            if (event && event.target !== event.currentTarget) return;
-            const lightbox = document.getElementById('lightbox');
-            lightbox.classList.remove('active');
-            document.body.style.overflow = '';
-            
-            const video = document.querySelector('#lightboxContent video');
-            if (video) video.pause();
-        }
-
-        function updateLightboxContent() {
-            const content = document.getElementById('lightboxContent');
-            const counter = document.getElementById('lightboxCounter');
-            const item = galleryItems[currentIndex];
-
-            if (item.type === 'video') {
-                content.innerHTML = `
-                    <video src="${item.fullUrl}" controls autoplay style="max-width: 90vw; max-height: 85vh;">
-                        Your browser does not support video.
-                    </video>
-                `;
+        function toggleVideo(video, container) {
+            if (video.paused) {
+                video.play();
+                container.addClass('video-playing');
             } else {
-                content.innerHTML = `<img src="${item.fullUrl}" alt="Gallery image">`;
+                video.pause();
+                container.removeClass('video-playing');
             }
-
-            counter.textContent = `${currentIndex + 1} / ${galleryItems.length}`;
         }
-
-        function nextItem(event) {
-            event.stopPropagation();
-            const video = document.querySelector('#lightboxContent video');
-            if (video) video.pause();
-
-            currentIndex = (currentIndex + 1) % galleryItems.length;
-            updateLightboxContent();
-        }
-
-        function prevItem(event) {
-            event.stopPropagation();
-            const video = document.querySelector('#lightboxContent video');
-            if (video) video.pause();
-
-            currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
-            updateLightboxContent();
-        }
-
-        // Keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            const lightbox = document.getElementById('lightbox');
-            if (!lightbox.classList.contains('active')) return;
-
-            if (e.key === 'Escape') closeLightbox();
-            if (e.key === 'ArrowRight') nextItem(e);
-            if (e.key === 'ArrowLeft') prevItem(e);
-        });
 
         // ============================================
         // NAVIGATION
+        // ============================================
+        function nextPage() {
+            $('#flipbook').turn('next');
+        }
+
+        function previousPage() {
+            $('#flipbook').turn('previous');
+        }
+
+        // Keyboard navigation
+        $(document).keydown(function(e) {
+            if (e.keyCode === 37) previousPage(); // Left arrow
+            if (e.keyCode === 39) nextPage(); // Right arrow
+        });
+
+        // ============================================
+        // NAV & MOBILE
         // ============================================
         window.addEventListener('scroll', () => {
             const nav = document.getElementById('nav');
@@ -736,8 +854,13 @@
             document.body.style.overflow = '';
         }
 
-        // Load initial gallery
-        document.addEventListener('DOMContentLoaded', () => loadGallery(currentYear));
+        // ============================================
+        // INITIALIZE
+        // ============================================
+        $(document).ready(async function() {
+            await loadMedia(currentYear);
+            buildBook();
+        });
     </script>
 </body>
 </html>

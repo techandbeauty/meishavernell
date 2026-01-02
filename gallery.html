@@ -598,11 +598,10 @@
 
         async function loadMedia(year) {
             const tag = CLOUDINARY_TAGS[year];
-            const galleryTag = 'mv-gallery'; // Also pull from main gallery tag
             let allMedia = [];
 
             try {
-                // Fetch images from year-specific tag
+                // Fetch images from year-specific tag ONLY
                 const imageResponse = await fetch(
                     `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/list/${tag}.json?_=${Date.now()}`
                 );
@@ -618,23 +617,7 @@
                     }
                 }
 
-                // Also fetch from mv-gallery tag
-                const galleryImageResponse = await fetch(
-                    `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/list/${galleryTag}.json?_=${Date.now()}`
-                );
-
-                if (galleryImageResponse.ok) {
-                    const galleryImageData = await galleryImageResponse.json();
-                    if (galleryImageData.resources) {
-                        const galleryImages = galleryImageData.resources.map(resource => ({
-                            type: 'image',
-                            url: `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/q_auto,f_auto/${resource.public_id}.${resource.format}`
-                        }));
-                        allMedia = allMedia.concat(galleryImages);
-                    }
-                }
-
-                // Fetch videos from year-specific tag
+                // Fetch videos from year-specific tag ONLY
                 const videoResponse = await fetch(
                     `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/video/list/${tag}.json?_=${Date.now()}`
                 );
@@ -650,28 +633,7 @@
                     }
                 }
 
-                // Also fetch videos from mv-gallery tag
-                const galleryVideoResponse = await fetch(
-                    `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/video/list/${galleryTag}.json?_=${Date.now()}`
-                );
-
-                if (galleryVideoResponse.ok) {
-                    const galleryVideoData = await galleryVideoResponse.json();
-                    if (galleryVideoData.resources) {
-                        const galleryVideos = galleryVideoData.resources.map(resource => ({
-                            type: 'video',
-                            url: `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/video/upload/q_auto/${resource.public_id}.${resource.format}`
-                        }));
-                        allMedia = allMedia.concat(galleryVideos);
-                    }
-                }
-
-                // Remove duplicates (in case same item has multiple tags)
-                const uniqueMedia = allMedia.filter((item, index, self) =>
-                    index === self.findIndex((t) => t.url === item.url)
-                );
-
-                mediaItems = uniqueMedia;
+                mediaItems = allMedia;
 
             } catch (error) {
                 console.error('Error loading media:', error);
@@ -743,13 +705,29 @@
                 duration: 1000,
                 pages: flipbook.children().length,
                 when: {
+                    turning: function(event, page, view) {
+                        // Pause all videos when page starts turning
+                        pauseAllVideos();
+                    },
                     turned: function(event, page) {
-                        // Update page numbers or other UI as needed
+                        // Page turn complete
                     }
                 }
             });
 
             bookInitialized = true;
+        }
+
+        function pauseAllVideos() {
+            // Find all videos in the book and pause them
+            $('[data-video]').each(function() {
+                const video = this;
+                const container = $(this).closest('[data-video-container]');
+                if (!video.paused) {
+                    video.pause();
+                    container.removeClass('video-playing');
+                }
+            });
         }
 
         function createPageHTML(item, pageNum, side) {

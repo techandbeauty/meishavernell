@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The LookBook | MEISHA VERNELL</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Bebas+Neue&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Turn.js Library for Realistic Page Flipping -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/3/turn.min.js"></script>
+    
+    <style>
+        :root {
+            --black: #000;
+            --dark: #0a0a0a;
+            --dark-gray: #1a1a1a;
+            --mid-gray: #2a2a2a;
+            --light-gray: #888;
+            --white: #fff;
+            --gold: #c9a962;
+            --paper: #f5f1e8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: radial-gradient(ellipse at center, #1a1a1a 0%, #000000 100%);
+            color: var(--white);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.7) 50%, transparent 100%);
+            transition: background 0.3s ease;
+        }
+
+        .nav.scrolled {
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .nav-link {
+            font-size: 0.7rem;
+            font-weight: 400;
+            letter-spacing: 0.15rem;
+            color: var(--white);
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--gold);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--gold);
+        }
+
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+
+        .nav-star {
+            font-size: 1.2rem;
+            color: var(--gold);
+            padding: 0 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-star::after {
+            display: none;
+        }
+
+        .nav-star:hover {
+            transform: scale(1.2);
+        }
+
+        .nav-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 1002;
+        }
+
+        .nav-toggle span {
+            width: 25px;
+            height: 1px;
+            background: var(--white);
+            transition: all 0.3s ease;
+        }
+
+        /* Header */
+        .lookbook-header {
+            position: absolute;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            z-index: 10;
+        }
+
+        .lookbook-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 600;
+            color: var(--gold);
+            margin-bottom: 10px;
+        }
+
+        .lookbook-subtitle {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1rem;
+            letter-spacing: 0.3rem;
+            color: var(--white);
+        }
+
+        /* Year Selector */
+        .year-selector {
+            position: absolute;
+            top: 200px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 10;
+        }
+
+        .year-btn {
+            padding: 10px 25px;
+            background: transparent;
+            border: 1px solid var(--mid-gray);
+            color: var(--white);
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 0.15rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .year-btn:hover, .year-btn.active {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        /* Book Container */
+        .book-wrapper {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 280px 40px 100px;
+            perspective: 2500px;
+        }
+
+        .book-container {
+            position: relative;
+        }
+
+        /* The Realistic 3D Book */
+        #flipbook {
+            width: 900px;
+            height: 600px;
+            position: relative;
+        }
+
+        #flipbook .page {
+            width: 450px;
+            height: 600px;
+            background: var(--paper);
+            padding: 0;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+        }
+
+        #flipbook .page-content {
+            width: 100%;
+            height: 100%;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            background: var(--paper);
+        }
+
+        /* Cover Pages */
+        .cover {
+            background: linear-gradient(135deg, #1a1a1a 0%, #000 100%) !important;
+            border: 2px solid var(--gold);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .cover::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(201, 169, 98, 0.03) 2px,
+                    rgba(201, 169, 98, 0.03) 4px
+                );
+            pointer-events: none;
+        }
+
+        .cover-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3.5rem;
+            font-weight: 600;
+            color: var(--gold);
+            margin-bottom: 15px;
+            text-align: center;
+            z-index: 2;
+            text-shadow: 0 2px 10px rgba(201, 169, 98, 0.5);
+        }
+
+        .cover-subtitle {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            letter-spacing: 0.4rem;
+            color: var(--white);
+            z-index: 2;
+        }
+
+        .cover-year {
+            position: absolute;
+            bottom: 40px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1rem;
+            letter-spacing: 0.3rem;
+            color: var(--light-gray);
+            z-index: 2;
+        }
+
+        /* Content Pages */
+        .page-media-container {
+            flex: 1;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: #000;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .page-media-container img,
+        .page-media-container video {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .page-media-container video {
+            cursor: pointer;
+        }
+
+        /* Video Play Button */
+        .video-play-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70px;
+            height: 70px;
+            background: rgba(201, 169, 98, 0.95);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .video-play-btn:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+            background: var(--gold);
+        }
+
+        .video-play-btn::after {
+            content: '';
+            width: 0;
+            height: 0;
+            border-left: 20px solid var(--black);
+            border-top: 12px solid transparent;
+            border-bottom: 12px solid transparent;
+            margin-left: 5px;
+        }
+
+        .video-playing .video-play-btn {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .page-number {
+            position: absolute;
+            bottom: 20px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 0.8rem;
+            color: var(--mid-gray);
+            letter-spacing: 0.15rem;
+        }
+
+        .page-number.left {
+            left: 30px;
+        }
+
+        .page-number.right {
+            right: 30px;
+        }
+
+        /* Page Caption */
+        .page-caption {
+            font-size: 0.75rem;
+            color: var(--mid-gray);
+            text-align: center;
+            font-style: italic;
+            margin-top: 10px;
+        }
+
+        /* Book Shadow & 3D Effect */
+        .turn-page {
+            box-shadow: 
+                0 0 20px rgba(0,0,0,0.5),
+                inset 0 0 0 1px rgba(255,255,255,0.1);
+        }
+
+        .turn-page-wrapper {
+            perspective: 2000px;
+        }
+
+        /* Navigation Arrows */
+        .book-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 60px;
+            height: 60px;
+            background: rgba(0,0,0,0.8);
+            border: 2px solid var(--mid-gray);
+            color: var(--white);
+            font-size: 2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 100;
+            border-radius: 50%;
+        }
+
+        .book-nav:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+            background: rgba(0,0,0,0.95);
+        }
+
+        .book-nav.prev {
+            left: -100px;
+        }
+
+        .book-nav.next {
+            right: -100px;
+        }
+
+        /* Loading State */
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 0.9rem;
+            color: var(--gold);
+            letter-spacing: 0.2rem;
+            font-family: 'Bebas Neue', sans-serif;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px;
+            border-top: 1px solid var(--dark-gray);
+        }
+
+        .footer-text {
+            font-size: 0.65rem;
+            color: var(--mid-gray);
+            letter-spacing: 0.1rem;
+        }
+
+        /* Mobile Styles */
+        @media (max-width: 1024px) {
+            #flipbook {
+                width: 700px;
+                height: 467px;
+            }
+
+            #flipbook .page {
+                width: 350px;
+                height: 467px;
+            }
+
+            .book-nav.prev {
+                left: -70px;
+            }
+
+            .book-nav.next {
+                right: -70px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav {
+                padding: 15px 20px;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 75%;
+                max-width: 300px;
+                height: 100vh;
+                flex-direction: column;
+                background: rgba(0, 0, 0, 0.98);
+                gap: 30px;
+                transition: right 0.3s ease;
+                z-index: 1001;
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .nav-links .nav-link {
+                padding: 15px 30px;
+            }
+
+            .nav-toggle {
+                display: flex;
+                position: absolute;
+                right: 20px;
+            }
+
+            .nav-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 1000;
+            }
+
+            .nav-overlay.active {
+                display: block;
+            }
+
+            .book-wrapper {
+                padding: 260px 20px 60px;
+            }
+
+            .lookbook-header {
+                top: 80px;
+            }
+
+            .year-selector {
+                top: 160px;
+            }
+
+            #flipbook {
+                width: 90vw;
+                max-width: 500px;
+                height: 60vw;
+                max-height: 333px;
+            }
+
+            #flipbook .page {
+                width: 45vw;
+                max-width: 250px;
+                height: 60vw;
+                max-height: 333px;
+            }
+
+            .page-content {
+                padding: 20px;
+            }
+
+            .cover-title {
+                font-size: 2rem;
+            }
+
+            .cover-subtitle {
+                font-size: 0.9rem;
+            }
+
+            .book-nav {
+                width: 45px;
+                height: 45px;
+                font-size: 1.5rem;
+            }
+
+            .book-nav.prev {
+                left: -60px;
+            }
+
+            .book-nav.next {
+                right: -60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav" id="nav">
+        <div class="nav-links" id="navLinks">
+            <a href="portfolio.html" class="nav-link">Portfolio</a>
+            <a href="gallery.html" class="nav-link active">The LookBook</a>
+            <a href="https://www.nexustechdigitalsolutions.net" target="_blank" class="nav-link">Tech</a>
+            <a href="index.html" class="nav-link nav-star">★</a>
+            <a href="https://www.codexlabsinstitute.com" target="_blank" class="nav-link">Codex Labs</a>
+            <a href="apps.html" class="nav-link">Apps</a>
+            <a href="connect.html" class="nav-link">Connect</a>
+        </div>
+
+        <div class="nav-toggle" id="navToggle" onclick="toggleMobileNav()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+    <div class="nav-overlay" id="navOverlay" onclick="closeMobileNav()"></div>
+
+    <div class="lookbook-header">
+        <h1 class="lookbook-title">Unfiltered</h1>
+        <p class="lookbook-subtitle">PIECES OF MEI</p>
+    </div>
+
+    <div class="year-selector">
+        <button class="year-btn active" data-year="2026" onclick="loadYear('2026')">2026</button>
+        <button class="year-btn" data-year="archive" onclick="loadYear('archive')">Archive</button>
+    </div>
+
+    <div class="book-wrapper">
+        <div class="book-container">
+            <div id="flipbook">
+                <div class="loading">LOADING LOOKBOOK...</div>
+            </div>
+            
+            <button class="book-nav prev" onclick="previousPage()">‹</button>
+            <button class="book-nav next" onclick="nextPage()">›</button>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p class="footer-text">© 2026 MEISHA VERNELL. ALL RIGHTS RESERVED.</p>
+    </footer>
+
+    <script>
+        // ============================================
+        // CLOUDINARY CONFIGURATION
+        // ============================================
+        const CLOUDINARY_CLOUD_NAME = 'didqb05ko';
+        const CLOUDINARY_TAGS = {
+            '2026': 'mv-2026',
+            'archive': 'mv-archive'
+        };
+
+        let currentYear = '2026';
+        let mediaItems = [];
+        let bookInitialized = false;
+
+        // ============================================
+        // LOAD MEDIA
+        // ============================================
+        async function loadYear(year) {
+            currentYear = year;
+            
+            // Update buttons
+            document.querySelectorAll('.year-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.year === year);
+            });
+
+            await loadMedia(year);
+            buildBook();
+        }
+
+        async function loadMedia(year) {
+            const tag = CLOUDINARY_TAGS[year];
+            let allMedia = [];
+
+            try {
+                // Fetch images
+                const imageResponse = await fetch(
+                    `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/list/${tag}.json?_=${Date.now()}`
+                );
+
+                if (imageResponse.ok) {
+                    const imageData = await imageResponse.json();
+                    if (imageData.resources) {
+                        const images = imageData.resources.map(resource => ({
+                            type: 'image',
+                            url: `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/q_auto,f_auto/${resource.public_id}.${resource.format}`
+                        }));
+                        allMedia = allMedia.concat(images);
+                    }
+                }
+
+                // Fetch videos
+                const videoResponse = await fetch(
+                    `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/video/list/${tag}.json?_=${Date.now()}`
+                );
+
+                if (videoResponse.ok) {
+                    const videoData = await videoResponse.json();
+                    if (videoData.resources) {
+                        const videos = videoData.resources.map(resource => ({
+                            type: 'video',
+                            url: `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/video/upload/q_auto/${resource.public_id}.${resource.format}`
+                        }));
+                        allMedia = allMedia.concat(videos);
+                    }
+                }
+
+                mediaItems = allMedia;
+
+            } catch (error) {
+                console.error('Error loading media:', error);
+                mediaItems = [];
+            }
+        }
+
+        // ============================================
+        // BUILD BOOK
+        // ============================================
+        function buildBook() {
+            const flipbook = $('#flipbook');
+            
+            // Destroy existing book if any
+            if (bookInitialized) {
+                flipbook.turn('destroy');
+            }
+
+            // Clear and rebuild pages
+            flipbook.html('');
+
+            // Front cover
+            flipbook.append(`
+                <div class="page cover">
+                    <h2 class="cover-title">The LookBook</h2>
+                    <p class="cover-subtitle">PIECES OF MEI</p>
+                    <p class="cover-year">${currentYear === '2026' ? '2026 EDITION' : 'ARCHIVE EDITION'}</p>
+                </div>
+            `);
+
+            // Content pages
+            if (mediaItems.length === 0) {
+                flipbook.append(`
+                    <div class="page">
+                        <div class="page-content" style="display:flex;align-items:center;justify-content:center;">
+                            <div style="text-align:center;color:var(--mid-gray);">
+                                <p style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;margin-bottom:1rem;">Coming Soon</p>
+                                <p style="font-size:0.8rem;">Upload photos/videos to Cloudinary</p>
+                                <p style="font-size:0.7rem;margin-top:0.5rem;">Tag: <strong style="color:var(--gold);">${CLOUDINARY_TAGS[currentYear]}</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                `);
+            } else {
+                mediaItems.forEach((item, index) => {
+                    const pageNum = index + 2; // +1 for cover, +1 for 1-based indexing
+                    const side = pageNum % 2 === 0 ? 'left' : 'right';
+                    
+                    flipbook.append(createPageHTML(item, pageNum, side));
+                });
+            }
+
+            // Back cover
+            flipbook.append(`
+                <div class="page cover">
+                    <h2 class="cover-title">Unfiltered</h2>
+                    <p class="cover-subtitle">THE END</p>
+                </div>
+            `);
+
+            // Initialize Turn.js
+            flipbook.turn({
+                width: 900,
+                height: 600,
+                autoCenter: true,
+                acceleration: true,
+                gradients: true,
+                elevation: 50,
+                duration: 1000,
+                pages: flipbook.children().length,
+                when: {
+                    turned: function(event, page) {
+                        // Update page numbers or other UI as needed
+                    }
+                }
+            });
+
+            bookInitialized = true;
+
+            // Attach video click handlers
+            attachVideoHandlers();
+        }
+
+        function createPageHTML(item, pageNum, side) {
+            if (item.type === 'video') {
+                return `
+                    <div class="page">
+                        <div class="page-content">
+                            <div class="page-media-container" data-video-container>
+                                <video src="${item.url}" playsinline data-video>
+                                </video>
+                                <div class="video-play-btn" data-play-btn></div>
+                            </div>
+                            <div class="page-number ${side}">${pageNum}</div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                return `
+                    <div class="page">
+                        <div class="page-content">
+                            <div class="page-media-container">
+                                <img src="${item.url}" alt="Page ${pageNum}" loading="lazy">
+                            </div>
+                            <div class="page-number ${side}">${pageNum}</div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function attachVideoHandlers() {
+            $('[data-video-container]').each(function() {
+                const container = $(this);
+                const video = container.find('[data-video]')[0];
+                const playBtn = container.find('[data-play-btn]');
+
+                playBtn.on('click', function(e) {
+                    e.stopPropagation();
+                    toggleVideo(video, container);
+                });
+
+                $(video).on('click', function(e) {
+                    e.stopPropagation();
+                    toggleVideo(video, container);
+                });
+            });
+        }
+
+        function toggleVideo(video, container) {
+            if (video.paused) {
+                video.play();
+                container.addClass('video-playing');
+            } else {
+                video.pause();
+                container.removeClass('video-playing');
+            }
+        }
+
+        // ============================================
+        // NAVIGATION
+        // ============================================
+        function nextPage() {
+            $('#flipbook').turn('next');
+        }
+
+        function previousPage() {
+            $('#flipbook').turn('previous');
+        }
+
+        // Keyboard navigation
+        $(document).keydown(function(e) {
+            if (e.keyCode === 37) previousPage(); // Left arrow
+            if (e.keyCode === 39) nextPage(); // Right arrow
+        });
+
+        // ============================================
+        // NAV & MOBILE
+        // ============================================
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        function toggleMobileNav() {
+            const navLinks = document.getElementById('navLinks');
+            const navOverlay = document.getElementById('navOverlay');
+            if (navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+                navOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            } else {
+                navLinks.classList.add('active');
+                navOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeMobileNav() {
+            document.getElementById('navLinks').classList.remove('active');
+            document.getElementById('navOverlay').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // ============================================
+        // INITIALIZE
+        // ============================================
+        $(document).ready(async function() {
+            await loadMedia(currentYear);
+            buildBook();
+        });
+    </script>
+</body>
+</html>

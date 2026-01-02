@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gallery | MEISHA VERNELL</title>
+    <title>The LookBook | MEISHA VERNELL</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Bebas+Neue&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
@@ -14,10 +14,8 @@
             --dark-gray: #1a1a1a;
             --mid-gray: #2a2a2a;
             --light-gray: #888;
-            --off-white: #f5f5f5;
             --white: #fff;
             --gold: #c9a962;
-            --gold-light: #e8d5a3;
         }
 
         * {
@@ -41,7 +39,7 @@
             width: 100%;
             padding: 20px 50px;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
             z-index: 1000;
             background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.7) 50%, transparent 100%);
@@ -53,22 +51,10 @@
             backdrop-filter: blur(10px);
         }
 
-        .nav-logo {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.8rem;
-            font-weight: 300;
-            font-style: italic;
-            color: var(--gold);
-            text-decoration: none;
-            letter-spacing: 0.1rem;
-        }
-
         .nav-links {
             display: flex;
             gap: 40px;
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
+            align-items: center;
         }
 
         .nav-link {
@@ -93,16 +79,35 @@
             transition: width 0.3s ease;
         }
 
-        .nav-link:hover, .nav-link.active {
+        .nav-link:hover {
             color: var(--gold);
         }
 
-        .nav-link:hover::after, .nav-link.active::after {
+        .nav-link:hover::after {
             width: 100%;
         }
 
-        .nav-right {
-            width: 100px;
+        .nav-link.active {
+            color: var(--gold);
+        }
+
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .nav-star {
+            font-size: 1.2rem;
+            color: var(--gold);
+            padding: 0 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-star::after {
+            display: none;
+        }
+
+        .nav-star:hover {
+            transform: scale(1.2);
         }
 
         .nav-toggle {
@@ -120,7 +125,7 @@
             transition: all 0.3s ease;
         }
 
-        /* Gallery Banner */
+        /* Banner */
         .gallery-banner {
             width: 100%;
             max-height: 400px;
@@ -130,106 +135,99 @@
             margin-top: 70px;
         }
 
-        @media (max-width: 768px) {
-            .gallery-banner {
-                max-height: 250px;
-                margin-top: 60px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .gallery-banner {
-                max-height: 180px;
-            }
-        }
-
         /* Header */
         .header {
-            padding: 60px 50px 60px;
-            text-align: center;
+            padding: 60px 50px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
-        .header-title {
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .header-title-group h1 {
             font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(2.5rem, 6vw, 4rem);
-            font-weight: 300;
-            letter-spacing: 0.3rem;
-            margin-bottom: 1rem;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 600;
+            color: var(--gold);
+            margin-bottom: 5px;
         }
 
-        .header-subtitle {
+        .header-title-group p {
             font-family: 'Bebas Neue', sans-serif;
             font-size: 1rem;
-            letter-spacing: 0.4rem;
-            color: var(--gold);
-            margin-bottom: 1rem;
+            letter-spacing: 0.3rem;
+            color: var(--white);
         }
 
-        .header-description {
-            font-size: 0.85rem;
+        /* Year Tabs - Netflix Style */
+        .year-tabs {
+            display: flex;
+            gap: 30px;
+            border-bottom: 2px solid var(--mid-gray);
+            padding-bottom: 0;
+        }
+
+        .year-tab {
+            padding: 15px 5px;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.2rem;
+            letter-spacing: 0.15rem;
             color: var(--light-gray);
-            max-width: 600px;
-            margin: 0 auto;
-            line-height: 1.8;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            bottom: -2px;
         }
 
-        /* Gallery Grid - Masonry Style */
+        .year-tab:hover {
+            color: var(--white);
+        }
+
+        .year-tab.active {
+            color: var(--white);
+            border-bottom-color: var(--gold);
+        }
+
+        /* Gallery Container */
         .gallery-container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 40px 30px 100px;
+            padding: 40px 50px 100px;
         }
 
+        /* Instagram-style Grid */
         .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-            grid-auto-rows: 10px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3px;
         }
 
         .gallery-item {
+            aspect-ratio: 1;
             position: relative;
             overflow: hidden;
             cursor: pointer;
-            border-radius: 4px;
             background: var(--dark-gray);
         }
 
-        /* Different heights for variety */
-        .gallery-item.tall { grid-row: span 35; }
-        .gallery-item.medium { grid-row: span 28; }
-        .gallery-item.short { grid-row: span 22; }
-        .gallery-item.wide { grid-column: span 2; grid-row: span 30; }
+        .gallery-item.hidden {
+            display: none;
+        }
 
         .gallery-item img,
         .gallery-item video {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.6s ease, filter 0.4s ease;
-        }
-
-        .gallery-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                to bottom,
-                transparent 0%,
-                transparent 60%,
-                rgba(0,0,0,0.8) 100%
-            );
-            opacity: 0;
-            transition: opacity 0.4s ease;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        .gallery-item:hover::before {
-            opacity: 1;
+            transition: transform 0.4s ease;
         }
 
         .gallery-item:hover img,
@@ -237,108 +235,43 @@
             transform: scale(1.05);
         }
 
-        /* Play icon for videos */
-        .gallery-item.video::after {
-            content: '';
+        /* Video play icon */
+        .gallery-item.video::before {
+            content: '▶';
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 60px;
-            height: 60px;
-            background: rgba(0, 0, 0, 0.6);
-            border: 2px solid var(--gold);
-            border-radius: 50%;
+            font-size: 2rem;
+            color: var(--white);
             z-index: 2;
-            transition: all 0.3s ease;
-        }
-
-        .gallery-item.video::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 52%;
-            transform: translate(-50%, -50%);
-            width: 0;
-            height: 0;
-            border-left: 16px solid var(--gold);
-            border-top: 10px solid transparent;
-            border-bottom: 10px solid transparent;
-            z-index: 3;
-            transition: all 0.3s ease;
-        }
-
-        .gallery-item.video:hover::after {
-            background: var(--gold);
-            transform: translate(-50%, -50%) scale(1.1);
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
         }
 
         .gallery-item.video:hover::before {
-            border-left-color: var(--black);
-        }
-
-        /* Item overlay info */
-        .gallery-info {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            padding: 20px;
-            z-index: 2;
-            opacity: 0;
-            transform: translateY(10px);
-            transition: all 0.4s ease;
-        }
-
-        .gallery-item:hover .gallery-info {
             opacity: 1;
-            transform: translateY(0);
         }
 
-        .gallery-info-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.2rem;
-            font-weight: 400;
-            margin-bottom: 5px;
-        }
-
-        .gallery-info-date {
-            font-size: 0.65rem;
-            color: var(--gold);
-            letter-spacing: 0.1rem;
-        }
-
-        /* Loading state */
-        .gallery-item.loading {
-            background: linear-gradient(110deg, var(--dark-gray) 8%, var(--mid-gray) 18%, var(--dark-gray) 33%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s linear infinite;
-        }
-
-        @keyframes shimmer {
-            to { background-position: -200% 0; }
-        }
-
-        /* Lightbox Modal */
+        /* Lightbox - Netflix Style */
         .lightbox {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.95);
+            background: rgba(0, 0, 0, 0.97);
             z-index: 9999;
-            display: flex;
+            display: none;
             align-items: center;
             justify-content: center;
             opacity: 0;
-            visibility: hidden;
-            transition: all 0.4s ease;
+            transition: opacity 0.3s ease;
         }
 
         .lightbox.active {
+            display: flex;
             opacity: 1;
-            visibility: visible;
         }
 
         .lightbox-content {
@@ -352,16 +285,15 @@
             max-width: 90vw;
             max-height: 85vh;
             object-fit: contain;
-            border-radius: 4px;
         }
 
         .lightbox-close {
-            position: absolute;
+            position: fixed;
             top: 20px;
             right: 20px;
             width: 50px;
             height: 50px;
-            background: transparent;
+            background: rgba(0,0,0,0.8);
             border: 1px solid var(--mid-gray);
             color: var(--white);
             font-size: 1.5rem;
@@ -378,12 +310,12 @@
         }
 
         .lightbox-nav {
-            position: absolute;
+            position: fixed;
             top: 50%;
             transform: translateY(-50%);
             width: 50px;
             height: 50px;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.8);
             border: 1px solid var(--mid-gray);
             color: var(--white);
             font-size: 1.5rem;
@@ -402,15 +334,11 @@
         .lightbox-prev { left: 20px; }
         .lightbox-next { right: 20px; }
 
-        .lightbox-info {
-            position: absolute;
-            bottom: 20px;
+        .lightbox-counter {
+            position: fixed;
+            bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
-            text-align: center;
-        }
-
-        .lightbox-counter {
             font-size: 0.75rem;
             color: var(--light-gray);
             letter-spacing: 0.1rem;
@@ -439,18 +367,14 @@
                 position: fixed;
                 top: 0;
                 right: -100%;
-                left: auto;
                 width: 75%;
                 max-width: 300px;
                 height: 100vh;
                 flex-direction: column;
-                align-items: center;
-                justify-content: center;
                 background: rgba(0, 0, 0, 0.98);
                 gap: 30px;
                 transition: right 0.3s ease;
                 z-index: 1001;
-                transform: none;
             }
 
             .nav-links.active {
@@ -459,16 +383,12 @@
 
             .nav-links .nav-link {
                 padding: 15px 30px;
-                display: block;
             }
 
             .nav-toggle {
                 display: flex;
-                z-index: 1002;
-            }
-
-            .nav-right {
-                display: none;
+                position: absolute;
+                right: 20px;
             }
 
             .nav-overlay {
@@ -486,23 +406,33 @@
                 display: block;
             }
 
+            .gallery-banner {
+                max-height: 250px;
+                margin-top: 60px;
+            }
+
             .header {
-                padding: 40px 20px 40px;
+                padding: 40px 20px 30px;
+            }
+
+            .header-top {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+
+            .year-tabs {
+                width: 100%;
+                overflow-x: auto;
             }
 
             .gallery-container {
-                padding: 20px 15px 80px;
+                padding: 30px 0 80px;
             }
 
             .gallery-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
+                gap: 2px;
             }
-
-            .gallery-item.tall { grid-row: span 25; }
-            .gallery-item.medium { grid-row: span 20; }
-            .gallery-item.short { grid-row: span 16; }
-            .gallery-item.wide { grid-column: span 2; grid-row: span 20; }
 
             .lightbox-nav {
                 width: 40px;
@@ -514,26 +444,23 @@
         }
 
         @media (max-width: 480px) {
-            .gallery-grid {
-                grid-template-columns: 1fr;
+            .gallery-banner {
+                max-height: 180px;
             }
-
-            .gallery-item.wide { grid-column: span 1; }
         }
     </style>
 </head>
 <body>
     <nav class="nav" id="nav">
-        <a href="index.html" class="nav-logo">MV</a>
-        
         <div class="nav-links" id="navLinks">
             <a href="portfolio.html" class="nav-link">Portfolio</a>
-            <a href="gallery.html" class="nav-link active">Gallery</a>
-            <a href="about.html" class="nav-link">About Mei</a>
+            <a href="gallery.html" class="nav-link active">The LookBook</a>
+            <a href="https://www.nexustechdigitalsolutions.net" target="_blank" class="nav-link">Tech</a>
+            <a href="index.html" class="nav-link nav-star">★</a>
+            <a href="https://www.codexlabsinstitute.com" target="_blank" class="nav-link">Codex Labs</a>
+            <a href="apps.html" class="nav-link">Apps</a>
             <a href="connect.html" class="nav-link">Connect</a>
         </div>
-
-        <div class="nav-right"></div>
 
         <div class="nav-toggle" id="navToggle" onclick="toggleMobileNav()">
             <span></span>
@@ -543,48 +470,44 @@
     </nav>
     <div class="nav-overlay" id="navOverlay" onclick="closeMobileNav()"></div>
 
-    <!-- Gallery Banner -->
-    <!-- Option 1: Upload to Cloudinary with tag 'mv-banner' and it will load automatically -->
-    <!-- Option 2: Replace the src below with your direct image URL -->
+    <!-- Banner -->
     <img src="https://res.cloudinary.com/didqb05ko/image/upload/c_fill,w_1920,h_400,g_auto,q_auto,f_auto/mv-banner.jpg" 
          alt="Unfiltered: Pieces of Mei" 
          class="gallery-banner"
          onerror="this.style.display='none'">
 
     <header class="header">
-        <h1 class="header-title">Unfiltered</h1>
-        <p class="header-subtitle">PIECES OF MEI</p>
-        <p class="header-description">
-            A visual journey through my world — family, business, tech, and faith. 
-            The real me, unfiltered.
-        </p>
+        <div class="header-top">
+            <div class="header-title-group">
+                <h1>Unfiltered</h1>
+                <p>PIECES OF MEI</p>
+            </div>
+        </div>
+
+        <!-- Year Tabs - Netflix Style -->
+        <div class="year-tabs">
+            <button class="year-tab active" data-year="2026">2026</button>
+            <button class="year-tab" data-year="archive">Archive</button>
+        </div>
     </header>
 
     <div class="gallery-container">
         <div class="gallery-grid" id="galleryGrid">
             <!-- Gallery items loaded from Cloudinary -->
-            <div class="gallery-item loading tall"></div>
-            <div class="gallery-item loading medium"></div>
-            <div class="gallery-item loading short"></div>
-            <div class="gallery-item loading medium"></div>
-            <div class="gallery-item loading tall"></div>
-            <div class="gallery-item loading short"></div>
         </div>
     </div>
 
     <!-- Lightbox -->
-    <div class="lightbox" id="lightbox">
+    <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
         <button class="lightbox-close" onclick="closeLightbox()">✕</button>
-        <button class="lightbox-nav lightbox-prev" onclick="prevItem()">‹</button>
+        <button class="lightbox-nav lightbox-prev" onclick="prevItem(event)">‹</button>
         <div class="lightbox-content" id="lightboxContent"></div>
-        <button class="lightbox-nav lightbox-next" onclick="nextItem()">›</button>
-        <div class="lightbox-info">
-            <p class="lightbox-counter" id="lightboxCounter"></p>
-        </div>
+        <button class="lightbox-nav lightbox-next" onclick="nextItem(event)">›</button>
+        <p class="lightbox-counter" id="lightboxCounter"></p>
     </div>
 
     <footer class="footer">
-        <p class="footer-text">© 2025 MEISHA VERNELL. ALL RIGHTS RESERVED.</p>
+        <p class="footer-text">© 2026 MEISHA VERNELL. ALL RIGHTS RESERVED.</p>
     </footer>
 
     <script>
@@ -592,25 +515,29 @@
         // CLOUDINARY CONFIGURATION
         // ============================================
         const CLOUDINARY_CLOUD_NAME = 'didqb05ko';
-        const CLOUDINARY_GALLERY_TAG = 'mv-moments'; // Tag for personal gallery images
+        const CLOUDINARY_TAGS = {
+            '2026': 'mv-2026',
+            'archive': 'mv-archive'
+        };
 
-        // Size classes for masonry effect
-        const SIZE_CLASSES = ['tall', 'medium', 'short', 'medium', 'tall', 'short', 'medium', 'wide'];
-        
+        let currentYear = '2026';
         let galleryItems = [];
         let currentIndex = 0;
 
         // ============================================
-        // LOAD GALLERY FROM CLOUDINARY
+        // LOAD GALLERY
         // ============================================
-        async function loadGallery() {
+        async function loadGallery(year) {
             const grid = document.getElementById('galleryGrid');
+            grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 60px; color: var(--light-gray);">Loading...</div>';
+
+            const tag = CLOUDINARY_TAGS[year];
             let mediaList = [];
 
             try {
                 // Fetch images
                 const imageResponse = await fetch(
-                    `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/list/${CLOUDINARY_GALLERY_TAG}.json?_=${Date.now()}`
+                    `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/list/${tag}.json?_=${Date.now()}`
                 );
 
                 if (imageResponse.ok) {
@@ -619,7 +546,7 @@
                         const images = imageData.resources.map(resource => ({
                             type: 'image',
                             id: resource.public_id,
-                            url: `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/c_fill,g_auto,w_600,h_800,q_auto,f_auto/${resource.public_id}.${resource.format}`,
+                            url: `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/c_fill,g_auto,w_600,h_600,q_auto,f_auto/${resource.public_id}.${resource.format}`,
                             fullUrl: `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/q_auto,f_auto/${resource.public_id}.${resource.format}`,
                             created: resource.created_at
                         }));
@@ -629,7 +556,7 @@
 
                 // Fetch videos
                 const videoResponse = await fetch(
-                    `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/video/list/${CLOUDINARY_GALLERY_TAG}.json?_=${Date.now()}`
+                    `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/video/list/${tag}.json?_=${Date.now()}`
                 );
 
                 if (videoResponse.ok) {
@@ -638,7 +565,7 @@
                         const videos = videoData.resources.map(resource => ({
                             type: 'video',
                             id: resource.public_id,
-                            url: `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/video/upload/c_fill,w_600,h_800,q_auto,so_0/${resource.public_id}.jpg`,
+                            url: `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/video/upload/c_fill,w_600,h_600,q_auto,so_0/${resource.public_id}.jpg`,
                             fullUrl: `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/video/upload/q_auto/${resource.public_id}.${resource.format}`,
                             created: resource.created_at
                         }));
@@ -646,15 +573,14 @@
                     }
                 }
 
-                // If no media found, show placeholder message
                 if (mediaList.length === 0) {
                     grid.innerHTML = `
-                        <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
+                        <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px;">
                             <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; color: var(--light-gray); margin-bottom: 1rem;">
-                                Gallery Coming Soon
+                                Coming Soon
                             </p>
                             <p style="font-size: 0.8rem; color: var(--mid-gray);">
-                                Beautiful moments will be shared here soon.
+                                New moments will be shared here soon.
                             </p>
                         </div>
                     `;
@@ -667,7 +593,7 @@
             } catch (error) {
                 console.error('Error loading gallery:', error);
                 grid.innerHTML = `
-                    <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
+                    <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px;">
                         <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; color: var(--light-gray);">
                             Gallery Coming Soon
                         </p>
@@ -684,9 +610,8 @@
             grid.innerHTML = '';
 
             items.forEach((item, index) => {
-                const sizeClass = SIZE_CLASSES[index % SIZE_CLASSES.length];
                 const div = document.createElement('div');
-                div.className = `gallery-item ${sizeClass} ${item.type === 'video' ? 'video' : ''}`;
+                div.className = `gallery-item ${item.type === 'video' ? 'video' : ''}`;
                 div.onclick = () => openLightbox(index);
 
                 if (item.type === 'video') {
@@ -700,6 +625,19 @@
         }
 
         // ============================================
+        // YEAR TABS
+        // ============================================
+        const yearTabs = document.querySelectorAll('.year-tab');
+        yearTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                yearTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                currentYear = tab.getAttribute('data-year');
+                loadGallery(currentYear);
+            });
+        });
+
+        // ============================================
         // LIGHTBOX
         // ============================================
         function openLightbox(index) {
@@ -710,12 +648,12 @@
             document.body.style.overflow = 'hidden';
         }
 
-        function closeLightbox() {
+        function closeLightbox(event) {
+            if (event && event.target !== event.currentTarget) return;
             const lightbox = document.getElementById('lightbox');
             lightbox.classList.remove('active');
             document.body.style.overflow = '';
             
-            // Pause any playing video
             const video = document.querySelector('#lightboxContent video');
             if (video) video.pause();
         }
@@ -738,8 +676,8 @@
             counter.textContent = `${currentIndex + 1} / ${galleryItems.length}`;
         }
 
-        function nextItem() {
-            // Pause current video if playing
+        function nextItem(event) {
+            event.stopPropagation();
             const video = document.querySelector('#lightboxContent video');
             if (video) video.pause();
 
@@ -747,8 +685,8 @@
             updateLightboxContent();
         }
 
-        function prevItem() {
-            // Pause current video if playing
+        function prevItem(event) {
+            event.stopPropagation();
             const video = document.querySelector('#lightboxContent video');
             if (video) video.pause();
 
@@ -762,8 +700,8 @@
             if (!lightbox.classList.contains('active')) return;
 
             if (e.key === 'Escape') closeLightbox();
-            if (e.key === 'ArrowRight') nextItem();
-            if (e.key === 'ArrowLeft') prevItem();
+            if (e.key === 'ArrowRight') nextItem(e);
+            if (e.key === 'ArrowLeft') prevItem(e);
         });
 
         // ============================================
@@ -778,7 +716,6 @@
             }
         });
 
-        // Simple global functions for mobile nav
         function toggleMobileNav() {
             const navLinks = document.getElementById('navLinks');
             const navOverlay = document.getElementById('navOverlay');
@@ -799,8 +736,8 @@
             document.body.style.overflow = '';
         }
 
-        // Load gallery on page load
-        document.addEventListener('DOMContentLoaded', loadGallery);
+        // Load initial gallery
+        document.addEventListener('DOMContentLoaded', () => loadGallery(currentYear));
     </script>
 </body>
 </html>

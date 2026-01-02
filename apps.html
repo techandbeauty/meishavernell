@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apps | MEISHA VERNELL</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Bebas+Neue&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #000;
+            --dark: #0a0a0a;
+            --dark-gray: #1a1a1a;
+            --mid-gray: #2a2a2a;
+            --light-gray: #888;
+            --white: #fff;
+            --gold: #c9a962;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--black);
+            color: var(--white);
+            min-height: 100vh;
+        }
+
+        /* Navigation - Same as index.html */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.7) 50%, transparent 100%);
+            transition: background 0.3s ease;
+        }
+
+        .nav.scrolled {
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .nav-link {
+            font-size: 0.7rem;
+            font-weight: 400;
+            letter-spacing: 0.15rem;
+            color: var(--white);
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--gold);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--gold);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-link.active {
+            color: var(--gold);
+        }
+
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .nav-star {
+            font-size: 1.2rem;
+            color: var(--gold);
+            padding: 0 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-star::after {
+            display: none;
+        }
+
+        .nav-star:hover {
+            transform: scale(1.2);
+        }
+
+        .nav-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 1002;
+        }
+
+        .nav-toggle span {
+            width: 25px;
+            height: 1px;
+            background: var(--white);
+            transition: all 0.3s ease;
+        }
+
+        /* Header */
+        .header {
+            padding: 160px 50px 80px;
+            text-align: center;
+        }
+
+        .header-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 300;
+            letter-spacing: 0.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .header-subtitle {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1rem;
+            letter-spacing: 0.4rem;
+            color: var(--gold);
+            margin-bottom: 1.5rem;
+        }
+
+        .header-description {
+            font-size: 0.85rem;
+            color: var(--light-gray);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        /* Platform Selector - Large Interactive Cards */
+        .platform-selector {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 50px 100px;
+        }
+
+        .platform-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .platform-card {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, var(--dark-gray) 0%, var(--dark) 100%);
+            border: 2px solid var(--mid-gray);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .platform-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent 0%, var(--gold) 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .platform-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(201, 169, 98, 0.2);
+        }
+
+        .platform-card:hover::before {
+            opacity: 0.1;
+        }
+
+        .platform-card-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .platform-icon {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5rem;
+            letter-spacing: 0.2rem;
+            color: var(--gold);
+            margin-bottom: 20px;
+            transition: all 0.4s ease;
+            text-transform: uppercase;
+        }
+
+        .platform-card:hover .platform-icon {
+            transform: scale(1.05);
+            letter-spacing: 0.3rem;
+        }
+
+        .platform-name {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8rem;
+            letter-spacing: 0.2rem;
+            color: var(--white);
+            margin-bottom: 10px;
+        }
+
+        .platform-count {
+            font-size: 0.75rem;
+            color: var(--light-gray);
+            letter-spacing: 0.1rem;
+        }
+
+        /* Apps Grid - Hidden by default */
+        .apps-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 50px 100px;
+            display: none;
+        }
+
+        .apps-container.active {
+            display: block;
+        }
+
+        .apps-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--mid-gray);
+        }
+
+        .apps-header h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            letter-spacing: 0.3rem;
+            color: var(--gold);
+        }
+
+        .back-btn {
+            padding: 12px 30px;
+            background: transparent;
+            border: 1px solid var(--mid-gray);
+            color: var(--white);
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 0.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 40px;
+        }
+
+        /* App Card */
+        .app-card {
+            background: linear-gradient(135deg, var(--dark-gray) 0%, var(--dark) 100%);
+            border: 1px solid var(--mid-gray);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+
+        .app-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(201, 169, 98, 0.1);
+        }
+
+        .app-card.hidden {
+            display: none;
+        }
+
+        .app-icon-container {
+            aspect-ratio: 16/9;
+            background: var(--mid-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .app-icon {
+            width: 120px;
+            height: 120px;
+            border-radius: 24px;
+            object-fit: cover;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .platform-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 6px 15px;
+            background: rgba(0,0,0,0.8);
+            border: 1px solid var(--gold);
+            font-size: 0.65rem;
+            letter-spacing: 0.1rem;
+            color: var(--gold);
+            font-family: 'Bebas Neue', sans-serif;
+        }
+
+        .app-content {
+            padding: 30px;
+        }
+
+        .app-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            color: var(--white);
+        }
+
+        .app-tagline {
+            font-size: 0.75rem;
+            color: var(--gold);
+            letter-spacing: 0.1rem;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+
+        .app-description {
+            font-size: 0.85rem;
+            color: var(--light-gray);
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .app-tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .tech-tag {
+            padding: 5px 12px;
+            background: transparent;
+            border: 1px solid var(--mid-gray);
+            font-size: 0.65rem;
+            color: var(--light-gray);
+            letter-spacing: 0.05rem;
+        }
+
+        .app-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .app-link {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 0.8rem;
+            letter-spacing: 0.15rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 1px solid var(--mid-gray);
+            color: var(--white);
+        }
+
+        .app-link.primary {
+            background: transparent;
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        .app-link.primary:hover {
+            background: var(--gold);
+            color: var(--black);
+        }
+
+        .app-link:hover {
+            border-color: var(--white);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px;
+            border-top: 1px solid var(--dark-gray);
+        }
+
+        .footer-text {
+            font-size: 0.65rem;
+            color: var(--mid-gray);
+            letter-spacing: 0.1rem;
+        }
+
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            .nav {
+                padding: 15px 20px;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 75%;
+                max-width: 300px;
+                height: 100vh;
+                flex-direction: column;
+                background: rgba(0, 0, 0, 0.98);
+                gap: 30px;
+                transition: right 0.3s ease;
+                z-index: 1001;
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .nav-links .nav-link {
+                padding: 15px 30px;
+            }
+
+            .nav-toggle {
+                display: flex;
+                position: absolute;
+                right: 20px;
+            }
+
+            .nav-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 1000;
+            }
+
+            .nav-overlay.active {
+                display: block;
+            }
+
+            .header {
+                padding: 120px 20px 60px;
+            }
+
+            .platform-selector {
+                padding: 0 20px 80px;
+            }
+
+            .platform-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+
+            .platform-icon {
+                font-size: 2rem;
+            }
+
+            .platform-name {
+                font-size: 1.3rem;
+            }
+
+            .apps-container {
+                padding: 0 20px 80px;
+            }
+
+            .apps-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .apps-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav" id="nav">
+        <div class="nav-links" id="navLinks">
+            <a href="portfolio.html" class="nav-link">Portfolio</a>
+            <a href="gallery.html" class="nav-link">The LookBook</a>
+            <a href="https://www.nexustechdigitalsolutions.net" target="_blank" class="nav-link">Tech</a>
+            <a href="index.html" class="nav-link nav-star">★</a>
+            <a href="https://www.codexlabsinstitute.com" target="_blank" class="nav-link">Codex Labs</a>
+            <a href="apps.html" class="nav-link active">Apps</a>
+            <a href="connect.html" class="nav-link">Connect</a>
+        </div>
+
+        <div class="nav-toggle" id="navToggle" onclick="toggleMobileNav()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+    <div class="nav-overlay" id="navOverlay" onclick="closeMobileNav()"></div>
+
+    <header class="header">
+        <h1 class="header-title">Mobile Apps</h1>
+        <p class="header-subtitle">IOS & ANDROID & WEB</p>
+        <p class="header-description">
+            Building experiences that blend innovation, education, and purpose. 
+            Select a platform to explore my apps.
+        </p>
+    </header>
+
+    <!-- Platform Selector - Choose First -->
+    <div class="platform-selector" id="platformSelector">
+        <div class="platform-grid">
+            <div class="platform-card" onclick="showApps('ios')">
+                <div class="platform-card-content">
+                    <div class="platform-icon">iOS</div>
+                    <h3 class="platform-name">iPhone & iPad</h3>
+                    <p class="platform-count" id="iosCount">0 Apps</p>
+                </div>
+            </div>
+            <div class="platform-card" onclick="showApps('android')">
+                <div class="platform-card-content">
+                    <div class="platform-icon">Android</div>
+                    <h3 class="platform-name">Android Devices</h3>
+                    <p class="platform-count" id="androidCount">0 Apps</p>
+                </div>
+            </div>
+            <div class="platform-card" onclick="showApps('web')">
+                <div class="platform-card-content">
+                    <div class="platform-icon">Web</div>
+                    <h3 class="platform-name">Web Applications</h3>
+                    <p class="platform-count" id="webCount">0 Apps</p>
+                </div>
+            </div>
+            <div class="platform-card" onclick="showApps('archived')">
+                <div class="platform-card-content">
+                    <div class="platform-icon">Archive</div>
+                    <h3 class="platform-name">Previous Projects</h3>
+                    <p class="platform-count" id="archivedCount">0 Apps</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Apps Grid - Hidden until platform selected -->
+    <div class="apps-container" id="appsContainer">
+        <div class="apps-header">
+            <h2 id="platformTitle">iOS Apps</h2>
+            <button class="back-btn" onclick="backToPlatforms()">← Back to Platforms</button>
+        </div>
+        <div class="apps-grid" id="appsGrid"></div>
+    </div>
+
+    <!-- Hidden App Cards Template -->
+    <div style="display: none;" id="appCardsTemplate">
+            <!-- Tech Deck App -->
+            <div class="app-card" data-platform="ios">
+                <div class="app-icon-container">
+                    <img src="https://via.placeholder.com/120?text=TD" alt="Tech Deck" class="app-icon">
+                    <div class="platform-badge">iOS</div>
+                </div>
+                <div class="app-content">
+                    <h3 class="app-name">Tech Deck</h3>
+                    <p class="app-tagline">Master Tech Certifications</p>
+                    <p class="app-description">
+                        AI-powered flashcard study platform featuring TARA, your intelligent study companion. 
+                        Master technology certifications with personalized learning paths and adaptive quizzing.
+                    </p>
+                    <div class="app-tech-stack">
+                        <span class="tech-tag">Swift</span>
+                        <span class="tech-tag">SwiftUI</span>
+                        <span class="tech-tag">Firebase</span>
+                        <span class="tech-tag">OpenAI</span>
+                    </div>
+                    <div class="app-links">
+                        <a href="https://github.com/techandbeauty/Tech-Deck-App" target="_blank" class="app-link">GitHub</a>
+                        <a href="#" target="_blank" class="app-link primary">TestFlight</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example Web App - MARC -->
+            <div class="app-card" data-platform="web">
+                <div class="app-icon-container">
+                    <img src="https://via.placeholder.com/120?text=MARC" alt="MARC" class="app-icon">
+                    <div class="platform-badge">WEB APP</div>
+                </div>
+                <div class="app-content">
+                    <h3 class="app-name">MARC</h3>
+                    <p class="app-tagline">AI Marketing Assistant</p>
+                    <p class="app-description">
+                        Marketing, AI, Relations & Communications platform for small businesses. 
+                        Voice commands, social media automation, and cross-platform synchronization.
+                    </p>
+                    <div class="app-tech-stack">
+                        <span class="tech-tag">React</span>
+                        <span class="tech-tag">Node.js</span>
+                        <span class="tech-tag">OpenAI</span>
+                        <span class="tech-tag">Firebase</span>
+                    </div>
+                    <div class="app-links">
+                        <a href="#" target="_blank" class="app-link">GitHub</a>
+                        <a href="#" target="_blank" class="app-link primary">Launch App</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example Archived App -->
+            <!-- Uncomment when you have archived apps
+            <div class="app-card" data-platform="archived">
+                <div class="app-icon-container">
+                    <img src="https://via.placeholder.com/120?text=OLD" alt="Old App" class="app-icon">
+                    <div class="platform-badge">ARCHIVED</div>
+                </div>
+                <div class="app-content">
+                    <h3 class="app-name">Old App Name</h3>
+                    <p class="app-tagline">Previous Project</p>
+                    <p class="app-description">
+                        Description of archived app...
+                    </p>
+                    <div class="app-tech-stack">
+                        <span class="tech-tag">Legacy Tech</span>
+                    </div>
+                    <div class="app-links">
+                        <a href="#" target="_blank" class="app-link">View Archive</a>
+                    </div>
+                </div>
+            </div>
+            -->
+
+            <!-- Add more apps here as you build them -->
+    </div>
+
+    <footer class="footer">
+        <p class="footer-text">© 2025 MEISHA VERNELL. ALL RIGHTS RESERVED.</p>
+    </footer>
+
+    <script>
+        // Navigation
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        function toggleMobileNav() {
+            const navLinks = document.getElementById('navLinks');
+            const navOverlay = document.getElementById('navOverlay');
+            if (navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+                navOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            } else {
+                navLinks.classList.add('active');
+                navOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeMobileNav() {
+            document.getElementById('navLinks').classList.remove('active');
+            document.getElementById('navOverlay').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Platform Filter
+        let allAppCards = [];
+        let currentPlatform = '';
+
+        // Get all app cards and count them on load
+        document.addEventListener('DOMContentLoaded', () => {
+            allAppCards = Array.from(document.querySelectorAll('.app-card'));
+            updatePlatformCounts();
+        });
+
+        function updatePlatformCounts() {
+            const counts = {
+                ios: allAppCards.filter(card => card.getAttribute('data-platform') === 'ios').length,
+                android: allAppCards.filter(card => card.getAttribute('data-platform') === 'android').length,
+                web: allAppCards.filter(card => card.getAttribute('data-platform') === 'web').length,
+                archived: allAppCards.filter(card => card.getAttribute('data-platform') === 'archived').length
+            };
+
+            document.getElementById('iosCount').textContent = `${counts.ios} App${counts.ios !== 1 ? 's' : ''}`;
+            document.getElementById('androidCount').textContent = `${counts.android} App${counts.android !== 1 ? 's' : ''}`;
+            document.getElementById('webCount').textContent = `${counts.web} App${counts.web !== 1 ? 's' : ''}`;
+            document.getElementById('archivedCount').textContent = `${counts.archived} App${counts.archived !== 1 ? 's' : ''}`;
+        }
+
+        function showApps(platform) {
+            currentPlatform = platform;
+            
+            // Hide platform selector, show apps container
+            document.getElementById('platformSelector').style.display = 'none';
+            document.getElementById('appsContainer').classList.add('active');
+
+            // Update title
+            const titles = {
+                ios: 'iOS Apps',
+                android: 'Android Apps',
+                web: 'Web Apps',
+                archived: 'Archived Apps'
+            };
+            document.getElementById('platformTitle').textContent = titles[platform];
+
+            // Filter and display apps
+            const appsGrid = document.getElementById('appsGrid');
+            appsGrid.innerHTML = '';
+
+            const filteredApps = allAppCards.filter(card => card.getAttribute('data-platform') === platform);
+
+            if (filteredApps.length === 0) {
+                appsGrid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px;">
+                        <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; color: var(--light-gray); margin-bottom: 1rem;">
+                            No ${titles[platform]} Yet
+                        </p>
+                        <p style="font-size: 0.85rem; color: var(--mid-gray);">
+                            Check back soon for new apps!
+                        </p>
+                    </div>
+                `;
+            } else {
+                filteredApps.forEach(card => {
+                    appsGrid.appendChild(card.cloneNode(true));
+                });
+            }
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function backToPlatforms() {
+            // Show platform selector, hide apps container
+            document.getElementById('platformSelector').style.display = 'block';
+            document.getElementById('appsContainer').classList.remove('active');
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

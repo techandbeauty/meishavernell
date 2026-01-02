@@ -372,40 +372,6 @@
             perspective: 2000px;
         }
 
-        /* Navigation Arrows */
-        .book-nav {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 60px;
-            height: 60px;
-            background: rgba(0,0,0,0.8);
-            border: 2px solid var(--mid-gray);
-            color: var(--white);
-            font-size: 2rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            z-index: 100;
-            border-radius: 50%;
-        }
-
-        .book-nav:hover {
-            border-color: var(--gold);
-            color: var(--gold);
-            background: rgba(0,0,0,0.95);
-        }
-
-        .book-nav.prev {
-            left: -100px;
-        }
-
-        .book-nav.next {
-            right: -100px;
-        }
-
         /* Loading State */
         .loading {
             position: absolute;
@@ -589,9 +555,6 @@
             <div id="flipbook">
                 <div class="loading">LOADING LOOKBOOK...</div>
             </div>
-            
-            <button class="book-nav prev" onclick="previousPage()">‹</button>
-            <button class="book-nav next" onclick="nextPage()">›</button>
         </div>
     </div>
 
@@ -630,10 +593,11 @@
 
         async function loadMedia(year) {
             const tag = CLOUDINARY_TAGS[year];
+            const galleryTag = 'mv-gallery'; // Also pull from main gallery tag
             let allMedia = [];
 
             try {
-                // Fetch images
+                // Fetch images from year-specific tag
                 const imageResponse = await fetch(
                     `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/list/${tag}.json?_=${Date.now()}`
                 );
@@ -649,7 +613,23 @@
                     }
                 }
 
-                // Fetch videos
+                // Also fetch from mv-gallery tag
+                const galleryImageResponse = await fetch(
+                    `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/list/${galleryTag}.json?_=${Date.now()}`
+                );
+
+                if (galleryImageResponse.ok) {
+                    const galleryImageData = await galleryImageResponse.json();
+                    if (galleryImageData.resources) {
+                        const galleryImages = galleryImageData.resources.map(resource => ({
+                            type: 'image',
+                            url: `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/q_auto,f_auto/${resource.public_id}.${resource.format}`
+                        }));
+                        allMedia = allMedia.concat(galleryImages);
+                    }
+                }
+
+                // Fetch videos from year-specific tag
                 const videoResponse = await fetch(
                     `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/video/list/${tag}.json?_=${Date.now()}`
                 );
@@ -665,7 +645,28 @@
                     }
                 }
 
-                mediaItems = allMedia;
+                // Also fetch videos from mv-gallery tag
+                const galleryVideoResponse = await fetch(
+                    `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/video/list/${galleryTag}.json?_=${Date.now()}`
+                );
+
+                if (galleryVideoResponse.ok) {
+                    const galleryVideoData = await galleryVideoResponse.json();
+                    if (galleryVideoData.resources) {
+                        const galleryVideos = galleryVideoData.resources.map(resource => ({
+                            type: 'video',
+                            url: `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/video/upload/q_auto/${resource.public_id}.${resource.format}`
+                        }));
+                        allMedia = allMedia.concat(galleryVideos);
+                    }
+                }
+
+                // Remove duplicates (in case same item has multiple tags)
+                const uniqueMedia = allMedia.filter((item, index, self) =>
+                    index === self.findIndex((t) => t.url === item.url)
+                );
+
+                mediaItems = uniqueMedia;
 
             } catch (error) {
                 console.error('Error loading media:', error);
@@ -690,7 +691,7 @@
             // Front cover
             flipbook.append(`
                 <div class="page cover">
-                    <h2 class="cover-title">The LookBook</h2>
+                    <h2 class="cover-title">Unfiltered</h2>
                     <p class="cover-subtitle">PIECES OF MEI</p>
                     <p class="cover-year">${currentYear === '2026' ? '2026 EDITION' : 'ARCHIVE EDITION'}</p>
                 </div>
@@ -853,6 +854,15 @@
             document.getElementById('navOverlay').classList.remove('active');
             document.body.style.overflow = '';
         }
+
+        // Close mobile nav when any nav link is clicked
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                // Allow the link to navigate naturally
+                // Just close the mobile menu
+                setTimeout(closeMobileNav, 100);
+            });
+        });
 
         // ============================================
         // INITIALIZE

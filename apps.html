@@ -703,6 +703,13 @@
             document.body.style.overflow = '';
         }
 
+        // Close mobile nav when any nav link is clicked
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function() {
+                setTimeout(closeMobileNav, 100);
+            });
+        });
+
         // Platform Filter
         let allAppCards = [];
         let currentPlatform = '';

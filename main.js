@@ -52,29 +52,29 @@ function closeMobileNav() {
     }
 }
 
-// Initialize navigation when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-    // Mobile toggle button
+// Initialize navigation
+function initNav() {
     const navToggle = document.getElementById('navToggle');
+    const navOverlay = document.getElementById('navOverlay');
+    
     if (navToggle) {
         navToggle.addEventListener('click', toggleMobileNav);
     }
     
-    // Close nav when clicking overlay
-    const navOverlay = document.getElementById('navOverlay');
     if (navOverlay) {
         navOverlay.addEventListener('click', closeMobileNav);
     }
     
-    // Close nav when clicking any nav link
-    const navLinks = document.querySelectorAll('.nav-link');
-  navLinks.forEach(link => {
-    link.addEventListener('click', () => {
-        closeMobileNav();
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+            // Small delay to allow navigation to start
+            setTimeout(closeMobileNav, 100);
+        });
     });
-});
+}
 
-});
+// Initialize navigation immediately (defer ensures DOM is ready)
+initNav();
 
 // ============================================
 // UTILITY FUNCTIONS

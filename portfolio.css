@@ -19,7 +19,8 @@
         }
 
         /* Navigation */
-
+        nav {
+            /* Add your navigation styles here if needed */
         }
 
         /* Header */
@@ -418,6 +419,7 @@
             .project-modal-image { aspect-ratio: 16/9; }
         }
 
+        @media (max-width: 768px) {
             .portfolio-grid { grid-template-columns: repeat(2, 1fr); gap: 2px; padding: 0 2px; }
             .filter-tabs { padding: 15px 20px; }
             .filter-tab { padding: 8px 15px; font-size: 0.6rem; }

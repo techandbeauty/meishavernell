@@ -543,22 +543,22 @@
 <body>
     <nav class="nav" id="nav">
         <div class="nav-links" id="navLinks">
-            <a href="portfolio.html" class="nav-link" onclick="closeMobileNav()">Portfolio</a>
+            <a href="portfolio.html" class="nav-link">Portfolio</a>
             <a href="gallery.html" class="nav-link" onclick="closeMobileNav() active">The LookBook</a>
-            <a href="https://www.nexustechdigitalsolutions.net" target="_blank" class="nav-link" onclick="closeMobileNav()">Tech</a>
-            <a href="index.html" class="nav-link nav-star" onclick="closeMobileNav()">★</a>
-            <a href="https://www.codexlabsinstitute.com" target="_blank" class="nav-link" onclick="closeMobileNav()">Codex Labs</a>
-            <a href="apps.html" class="nav-link" onclick="closeMobileNav()">Apps</a>
-            <a href="connect.html" class="nav-link" onclick="closeMobileNav()">Connect</a>
+            <a href="https://www.nexustechdigitalsolutions.net" target="_blank" class="nav-link">Tech</a>
+            <a href="index.html" class="nav-link nav-star">★</a>
+            <a href="https://www.codexlabsinstitute.com" target="_blank" class="nav-link">Codex Labs</a>
+            <a href="apps.html" class="nav-link">Apps</a>
+            <a href="connect.html" class="nav-link">Connect</a>
         </div>
 
-        <div class="nav-toggle" id="navToggle" onclick="toggleMobileNav()">
+        <div class="nav-toggle" id="navToggle">
             <span></span>
             <span></span>
             <span></span>
         </div>
     </nav>
-    <div class="nav-overlay" id="navOverlay" onclick="closeMobileNav()"></div>
+    <div class="nav-overlay" id="navOverlay"></div>
 
     <div class="lookbook-header">
         <h1 class="lookbook-title">Unfiltered</h1>
@@ -833,31 +833,6 @@
             }
         });
 
-        function toggleMobileNav() {
-            const navLinks = document.getElementById('navLinks');
-            const navOverlay = document.getElementById('navOverlay');
-            if (navLinks.classList.contains('active')) {
-                navLinks.classList.remove('active');
-                navOverlay.classList.remove('active');
-                document.body.style.overflow = '';
-            } else {
-                navLinks.classList.add('active');
-                navOverlay.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            }
-        }
-
-        function closeMobileNav() {
-            document.getElementById('navLinks').classList.remove('active');
-            document.getElementById('navOverlay').classList.remove('active');
-            document.body.style.overflow = '';
-        }
-            
-            link.addEventListener('touchend', function(e) {
-                setTimeout(closeMobileNav, 50);
-            }, { passive: true });
-        });
-
         // ============================================
         // INITIALIZE
         // ============================================
@@ -870,5 +845,8 @@
             buildBook();
         });
     </script>
+    
+    <!-- Navigation JS -->
+    <script src="main.js"></script>
 </body>
 </html>

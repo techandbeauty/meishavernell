@@ -654,6 +654,13 @@
                 right: 0;
             }
 
+            .nav-links .nav-link {
+                padding: 15px 30px;
+                display: block;
+                cursor: pointer;
+                -webkit-tap-highlight-color: transparent;
+            }
+
             .nav-toggle {
                 display: flex;
                 z-index: 1002;
@@ -723,6 +730,7 @@
         
         <div class="nav-links" id="navLinks">
             <a href="portfolio.html" class="nav-link">Portfolio</a>
+            <a href="gallery.html" class="nav-link">Gallery</a>
             <a href="about.html" class="nav-link active">About Mei</a>
             <a href="connect.html" class="nav-link">Connect</a>
         </div>
@@ -1079,34 +1087,10 @@
         // Mobile menu toggle
         const navToggle = document.getElementById('navToggle');
         const navLinks = document.getElementById('navLinks');
-        const navOverlay = document.getElementById('navOverlay');
-
-        function openMobileNav() {
-            navLinks.classList.add('active');
-            navOverlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeMobileNav() {
-            navLinks.classList.remove('active');
-            navOverlay.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        navToggle.addEventListener('click', () => {
-            if (navLinks.classList.contains('active')) {
-                closeMobileNav();
-            } else {
-                openMobileNav();
-            }
-        });
-
-        navOverlay.addEventListener('click', closeMobileNav);
-
-        // Close menu when clicking a link
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', closeMobileNav);
-        });
+        // Simple global functions for mobile nav
     </script>
+    
+    <!-- Global JavaScript -->
+    <script src="main.js"></script>
 </body>
 </html>

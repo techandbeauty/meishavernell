@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 5,
+            "activePatchIndex": 6,
             "patches": [
                 {
                     "date": 1767340506574,
@@ -28,6 +28,10 @@
                 {
                     "date": 1767459974137,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -543,9 +543,9 @@\n <body>\n     <nav class=\"nav\" id=\"nav\">\n         <div class=\"nav-links\" id=\"navLinks\">\n             <a href=\"portfolio.html\" class=\"nav-link\">Portfolio</a>\n-            <a href=\"gallery.html\" class=\"nav-link\" onclick=\"\">The LookBook</a>\n+            <a href=\"gallery.html\" class=\"nav-link\" onclick=\"\"The LookBook</a>\n             <a href=\"https://www.nexustechdigitalsolutions.net\" target=\"_blank\" class=\"nav-link\">Tech</a>\n             <a href=\"index.html\" class=\"nav-link nav-star\">★</a>\n             <a href=\"https://www.codexlabsinstitute.com\" target=\"_blank\" class=\"nav-link\">Codex Labs</a>\n             <a href=\"apps.html\" class=\"nav-link\">Apps</a>\n"
+                },
+                {
+                    "date": 1767460166629,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -543,9 +543,10 @@\n <body>\n     <nav class=\"nav\" id=\"nav\">\n         <div class=\"nav-links\" id=\"navLinks\">\n             <a href=\"portfolio.html\" class=\"nav-link\">Portfolio</a>\n-            <a href=\"gallery.html\" class=\"nav-link\" onclick=\"\"The LookBook</a>\n+           <a href=\"gallery.html\" class=\"nav-link\">The LookBook</a>\n+\n             <a href=\"https://www.nexustechdigitalsolutions.net\" target=\"_blank\" class=\"nav-link\">Tech</a>\n             <a href=\"index.html\" class=\"nav-link nav-star\">★</a>\n             <a href=\"https://www.codexlabsinstitute.com\" target=\"_blank\" class=\"nav-link\">Codex Labs</a>\n             <a href=\"apps.html\" class=\"nav-link\">Apps</a>\n"
                 }
             ],
             "date": 1767340506574,

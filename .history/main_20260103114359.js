@@ -68,12 +68,12 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Close nav when clicking any nav link
     const navLinks = document.querySelectorAll('.nav-link');
-  navLinks.forEach(link => {
-    link.addEventListener('click', () => {
-        closeMobileNav();
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            // Small delay to allow navigation to start
+            setTimeout(closeMobileNav, 100);
+        });
     });
-});
-
 });
 
 // ============================================

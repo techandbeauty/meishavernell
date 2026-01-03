@@ -1,0 +1,18 @@
+{
+    "sourceFile": "main.js",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1767459657598,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1767459657598,
+            "name": "Commit-0",
+            "content": "// ============================================\n// MAIN.JS - Global JavaScript for meishavernell.com\n// ============================================\n\n'use strict';\n\n// ============================================\n// NAVIGATION\n// ============================================\n\n// Navigation scroll effect\nwindow.addEventListener('scroll', () => {\n    const nav = document.getElementById('nav');\n    if (nav) {\n        if (window.scrollY > 50) {\n            nav.classList.add('scrolled');\n        } else {\n            nav.classList.remove('scrolled');\n        }\n    }\n});\n\n// Mobile navigation toggle\nfunction toggleMobileNav() {\n    const navLinks = document.getElementById('navLinks');\n    const navOverlay = document.getElementById('navOverlay');\n    \n    if (navLinks && navOverlay) {\n        const isActive = navLinks.classList.contains('active');\n        \n        if (isActive) {\n            navLinks.classList.remove('active');\n            navOverlay.classList.remove('active');\n            document.body.style.overflow = '';\n        } else {\n            navLinks.classList.add('active');\n            navOverlay.classList.add('active');\n            document.body.style.overflow = 'hidden';\n        }\n    }\n}\n\n// Close mobile navigation\nfunction closeMobileNav() {\n    const navLinks = document.getElementById('navLinks');\n    const navOverlay = document.getElementById('navOverlay');\n    \n    if (navLinks && navOverlay) {\n        navLinks.classList.remove('active');\n        navOverlay.classList.remove('active');\n        document.body.style.overflow = '';\n    }\n}\n\n// Initialize navigation when DOM is ready\ndocument.addEventListener('DOMContentLoaded', () => {\n    // Mobile toggle button\n    const navToggle = document.getElementById('navToggle');\n    if (navToggle) {\n        navToggle.addEventListener('click', toggleMobileNav);\n    }\n    \n    // Close nav when clicking overlay\n    const navOverlay = document.getElementById('navOverlay');\n    if (navOverlay) {\n        navOverlay.addEventListener('click', closeMobileNav);\n    }\n    \n    // Close nav when clicking any nav link\n    const navLinks = document.querySelectorAll('.nav-link');\n  navLinks.forEach(link => {\n    link.addEventListener('click', () => {\n        closeMobileNav();\n    });\n});\n\n});\n\n// ============================================\n// UTILITY FUNCTIONS\n// ============================================\n\n// Smooth scroll to element\nfunction smoothScrollTo(elementId) {\n    const element = document.getElementById(elementId);\n    if (element) {\n        element.scrollIntoView({ behavior: 'smooth', block: 'start' });\n    }\n}\n\n// Debounce function for performance\nfunction debounce(func, wait) {\n    let timeout;\n    return function executedFunction(...args) {\n        const later = () => {\n            clearTimeout(timeout);\n            func(...args);\n        };\n        clearTimeout(timeout);\n        timeout = setTimeout(later, wait);\n    };\n}\n\n"
+        }
+    ]
+}

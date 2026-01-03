@@ -108,9 +108,6 @@
         .nav-star:hover {
             transform: scale(1.2);
         }
-            display: flex;
-            justify-content: flex-end;
-        }
 
         .nav-toggle {
             display: none;
@@ -185,13 +182,6 @@
                 height: 100%;
                 background: rgba(0, 0, 0, 0.5);
                 z-index: 10000;
-            }
-
-            .nav-overlay.active {
-                display: block;
-            }
-        }
-                z-index: 1000;
             }
 
             .nav-overlay.active {
@@ -617,7 +607,7 @@
     <!-- Navigation -->
     <nav class="nav" id="nav">
         <div class="nav-links" id="navLinks">
-            <a href="portfolio.html" class="nav-link" onclick="closeMobileNav() active">Portfolio</a>
+            <a href="portfolio.html" class="nav-link active">Portfolio</a>
             <a href="gallery.html" class="nav-link">The LookBook</a>
             <a href="https://www.nexustechdigitalsolutions.net" target="_blank" class="nav-link">Tech</a>
             <a href="index.html" class="nav-link nav-star">★</a>

@@ -65,12 +65,8 @@ function initNav() {
         navOverlay.addEventListener('click', closeMobileNav);
     }
     
-    document.querySelectorAll('.nav-link').forEach(link => {
-        link.addEventListener('click', () => {
-            // Small delay to allow navigation to start
-            setTimeout(closeMobileNav, 100);
-        });
-    });
+    // Do NOT add click handlers to nav links - let them navigate naturally
+    // The browser will handle navigation, menu will close on page load
 }
 
 // Initialize navigation immediately (defer ensures DOM is ready)

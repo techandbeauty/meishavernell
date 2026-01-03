@@ -456,6 +456,9 @@
 
             .nav-links .nav-link {
                 padding: 15px 30px;
+                pointer-events: auto;
+                position: relative;
+                z-index: 1002;
             }
 
             .nav-toggle {
@@ -705,9 +708,14 @@
 
         // Close mobile nav when any nav link is clicked
         document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', function() {
-                setTimeout(closeMobileNav, 100);
+            // Handle both click and touch events for mobile compatibility
+            link.addEventListener('click', function(e) {
+                setTimeout(closeMobileNav, 50);
             });
+            
+            link.addEventListener('touchend', function(e) {
+                setTimeout(closeMobileNav, 50);
+            }, { passive: true });
         });
 
         // Platform Filter
